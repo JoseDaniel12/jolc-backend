@@ -1,4 +1,5 @@
 from src.Errores.Error import *
+import json
 
 tablaErrores = []
 
@@ -10,6 +11,12 @@ def getTablaErroresAsString():
     for i in tablaErrores:
         texto += i.getAsString() + "\n"
     return  texto
+
+def getTablaErroresAsJson():
+    res  = []
+    for err in tablaErrores:
+        res.append(err.getAsJson())
+    return res
 
 def limpiarTablaErrores():
     tablaErrores.clear()

@@ -1,11 +1,21 @@
-from datetime import date
-today = date.today()
+import time
+
 class Error:
     def __init__(self, descripcion, linea, columna ):
         self.descripcion = descripcion
         self.linea = linea
         self.columna = columna
-        self.fecha = str(today.day) + "/" + str(today.month) + "/" + str(today.year)
+        self.fecha = str(time.strftime('%Y-%m-%d'))
+        self.hora = str(time.strftime('%H:%M:%S'))
 
     def getAsString(self):
-        return f"Error(Linea: {self.linea}, Columna: {self.columna}, Fecha: {self.fecha}): {self.descripcion}."
+        return f"Error(Linea: {self.linea}, Columna: {self.columna}): {self.descripcion}."
+
+    def getAsJson(self):
+        return  {
+            "descripcion": self.descripcion,
+            "linea": self.linea,
+            "columna": self.columna,
+            "fecha": self.fecha,
+            "hora": self.hora,
+        }

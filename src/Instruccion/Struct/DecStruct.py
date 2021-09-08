@@ -11,6 +11,6 @@ class DecStruct(Instruction):
 
     def ejecutar(self, ambito) -> ResIns:
         res = ResIns()
-        simboloStruct = SimboloStruct(self.isMutable, self.id, self.listaPropiedades)
+        simboloStruct = SimboloStruct(self.isMutable, self.id, self.listaPropiedades, self.linea, self.columna)
         ambito.addVariable(self.id, simboloStruct)
         return res

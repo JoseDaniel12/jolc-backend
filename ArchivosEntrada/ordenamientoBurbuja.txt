@@ -1,0 +1,16 @@
+function swap(i::Int64,j::Int64,arr)
+    temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+end;
+
+arreglo = [32, 21, 7, 89, 56, 909, 109, 2, 9, 1, 44, 3, 8200, 11, 8, 10];
+for i in 1:(length(arreglo))
+    for j in 1:(length(arreglo) - 1)
+        if arreglo[j] > arreglo[j + 1]
+            swap(j, j+1, arreglo);
+        end;
+    end;
+end;
+
+println(arreglo);

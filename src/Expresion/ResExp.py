@@ -11,19 +11,26 @@ class ResExp:
 
     def getPresentationMode(self):
         if self.tipo == TipoDato.ARREGLO:
-            valoresPresentacion = []
-            for simbolo in self.valor:
-                valoresPresentacion.append(simbolo.getPresentationMode())
-            return valoresPresentacion
+            texto = "["
+            for i in range(len(self.valor)):
+                texto += self.valor[i].getPresentationMode()
+                if i != len(self.valor) - 1:
+                    texto += ", "
+            texto += "]"
+            return texto
         elif self.tipo == TipoDato.STRUCT:
             texto = self.valor.tipoStruct + "("
             contador = 0
             for key in self.valor.propiedades:
-                texto += str(self.valor.propiedades[key].getPresentationMode())
+                texto += self.valor.propiedades[key].getPresentationMode()
                 if contador != len(self.valor.propiedades) - 1:
                     texto += ", "
                 contador += 1
             texto += ")"
             return texto
         else:
-            return self.valor
+            if self.tipo == TipoDato.CADENA:
+                return "\"" + self.valor + "\""
+            elif self.tipo  ==  TipoDato.CARACTER:
+                return "\'" + self.valor + "\'"
+            return str(self.valor)

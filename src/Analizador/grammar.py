@@ -1,6 +1,8 @@
 import src.Analizador.ply.yacc as yacc
 import src.Analizador.ply.lex as lex
 
+from src.Reportes.TablaSimbolos import *
+from src.Errores.TablaErrores import *
 from src.Instruccion.Print import  *
 from src.Expresion.OpAritemtica import *
 from src.Expresion.AtomicExp import *
@@ -208,14 +210,18 @@ def t_FALSE(t):
 def t_COMENTARIO_DOBLE(t):
     r'\#=(.|\n)*?=\#'
     t.lexer.lineno += t.value.count('\n')
+    t.lexer.pos = 0
 
 def t_COMENTARIO_SIMPLE(t):
     r'\#.*\n'
     t.lexer.lineno += 1
+    t.lexer.pos = 0
 
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += t.value.count("\n")
+    t.lexer.pos = 0
+    
 
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
@@ -246,6 +252,8 @@ precedence = (
 def p_start(p):
     '''start : listaInstrucciones'''
     p[0] = p[1]
+    p.lexer.lineno = 1
+    p.lexer.pos = 1
     return p[0]
 
 def p_lista_instrucciones(p):
@@ -795,5 +803,22 @@ def p_error(p):
 # ________________________________________________PARSE_METHOD________________________________________________
 
 def parse(entrada):
+
+    limpiarTablaErrores()
+    limpiarTablaSimbolos()
+
     parser = yacc.yacc()
-    return parser.parse(entrada)
+    listaIns = parser.parse(entrada)
+    textoSalida  = ""
+    ambitoGlobal = Ambito(None, "GLOBAL")
+    for ins in listaIns:
+        textoSalida += ins.ejecutar(ambitoGlobal).textoConsola
+    textoSalida = getTablaErroresAsString() + textoSalida
+
+    resCompilado = {
+        "textoSalida": textoSalida,
+        "tablaErrores": getTablaErroresAsJson(),
+        "tablaSimbolos": getTablaSimbolosAsSerializable()
+    }
+
+    return resCompilado

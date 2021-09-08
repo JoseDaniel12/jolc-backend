@@ -1,3 +1,10 @@
+from src.Instruccion.Struct.StructInstance import StructInstance
+from src.Entorno.SimboloFuncion import SimboloFuncion
+from src.Entorno.SimboloStruct import SimboloStruct
+from src.Entorno.SimboloVariable import SimboloVariable
+from src.Reportes.TablaSimbolos import *
+
+
 class Ambito:
     def __init__(self, anterior, nombre):
         self.anterior = anterior
@@ -13,6 +20,15 @@ class Ambito:
         return ambitoActual
 
     def addVariable(self, id, simbolo):
+        if type(simbolo) == SimboloVariable:
+            if type(simbolo.valor) == StructInstance:
+                agregarSimboloTabla(SimboloTabla(id, simbolo.valor.tipoStruct, self.getAsString(), simbolo.linea, simbolo.columna))
+            else:
+                agregarSimboloTabla(SimboloTabla(id, simbolo.tipo.name, self.getAsString(), simbolo.linea, simbolo.columna))
+        elif type(simbolo) == SimboloFuncion:
+            agregarSimboloTabla(SimboloTabla(id, "funcion", self.getAsString(), simbolo.linea, simbolo.columna))
+        elif type(simbolo) == SimboloStruct:
+            agregarSimboloTabla(SimboloTabla(id, "struct", self.getAsString(), simbolo.linea, simbolo.columna))
         self.variables[id] = simbolo
 
     def existeSimbolo(self, id):
@@ -30,3 +46,12 @@ class Ambito:
                 return ambitoActual.variables[id]
             ambitoActual = ambitoActual.anterior
         return None
+
+    def getAsString(self):
+        listaAmbitos = []
+        ambitoActual = self
+        while ambitoActual is not None:
+            listaAmbitos.append(ambitoActual.nombre)
+            ambitoActual = ambitoActual.anterior 
+        listaAmbitos.reverse()
+        return "_".join(listaAmbitos)

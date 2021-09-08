@@ -2,8 +2,8 @@ from src.Entorno.Simbolo import *
 from src.Tipos.TipoSimbolo import *
 
 class SimboloFuncion(Simbolo):
-    def __init__(self, id, listaParams, listaIns):
-        Simbolo.__init__(self, id, TipoSimbolo.FUNCION)
+    def __init__(self, id, listaParams, listaIns, linea, columna):
+        Simbolo.__init__(self, id, TipoSimbolo.FUNCION, linea, columna)
         self.listaParams = listaParams
         self.listaIns = listaIns
 

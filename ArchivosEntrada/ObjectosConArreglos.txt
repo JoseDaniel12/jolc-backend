@@ -1,0 +1,27 @@
+mutable struct Personaje
+  nombre;
+  hijos;
+  edad;
+end;
+
+hijo5 = Personaje("Hijo5", 0, 5);
+hijo4 = Personaje("Hijo4", hijo5, 20);
+hijo3 = Personaje("Hijo3", [hijo5, hijo4], 35);
+hijo2 = Personaje("Hijo2", [hijo4], 40);
+hijo1 = Personaje("Hijo1", [hijo2, hijo3], 68);
+Papa = Personaje("Rudy", [hijo1], 88);
+Papa2 = Papa;
+
+Papa.hijos[1].hijos[1].hijos[1].hijos = [4,5,"hola"];
+println(Papa);
+
+lista = [Papa, hijo1, hijo2];
+println(lista[1].nombre);
+lista[1].nombre = "Aaron";
+println(lista[1].nombre);
+println(Papa.nombre);
+println(Papa2.hijos[1].hijos[1].hijos[1].hijos);
+a = Papa2.hijos[1].hijos[1].hijos[1].hijos;
+Papa2.hijos[1].hijos[1].hijos[1].hijos[1] = 0;
+println(a);
+println(Papa2.hijos[1].hijos[1].hijos[1].hijos);

@@ -24,7 +24,11 @@ class Parse(Expresion):
             return None
 
         if self.tipoParseo == TipoDato.ENTERO:
-            res.valor = int(float(simboloExp.valor))
+            try:
+                res.valor = int(float(simboloExp.valor))
+            except:
+                agregarError(Error(f"{simboloExp.valor} no puede ser casteado a un tipo numerico",self.linea, self.columna))
+                return None 
             res.tipo = TipoDato.ENTERO
         else:
             res.valor = float(simboloExp.valor)

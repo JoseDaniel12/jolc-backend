@@ -25,7 +25,7 @@ class For(Instruction):
 
         for i in simboloExp.valor:
             nuevoAmbito = Ambito(ambito, "For")
-            nuevoAmbito.addVariable(self.id, SimboloVariable(self.id, i.valor, i.tipo))
+            nuevoAmbito.addVariable(self.id, SimboloVariable(self.id, i.valor, i.tipo, self.linea, self.columna))
             resIns = ejectuarBloqueIns(self.listaIns, nuevoAmbito)
             res.textoConsola += resIns.textoConsola
             if resIns.breakEncontrado:

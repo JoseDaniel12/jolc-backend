@@ -5,7 +5,7 @@ from src.Errores.TablaErrores import *
 import math
 
 class Trunc(Expresion):
-    def __init__(self, exp, a, linea, columna):
+    def __init__(self, tipo, exp, linea, columna):
         Expresion.__init__(self, linea, columna)
         self.exp = exp
 

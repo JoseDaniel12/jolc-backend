@@ -16,7 +16,7 @@ class Print(Instruction):
             if simboloExp is None:
                 return res
             else:
-                texto += str(simboloExp.getPresentationMode()) + " "
+                texto += simboloExp.getPresentationMode() + " "
             if i == len(self.listaExp) - 1 and len(texto) > 0:
                 texto = texto[0:len(texto) - 1]
         if self.isEnter:

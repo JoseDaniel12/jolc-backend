@@ -15,7 +15,7 @@ class DecFuncion(Instruction):
 
     def ejecutar(self, ambito) -> ResIns:
         res = ResIns()
-        simboloFunc = SimboloFuncion(self.id, self.listaParams, self.listaIns)
+        simboloFunc = SimboloFuncion(self.id, self.listaParams, self.listaIns, self.linea, self.columna)
         simboloExistente = ambito.getVariable(self.id)
         if simboloExistente is not None and type(simboloExistente) == SimboloVariable:
             agregarError(Error(f"Redefinicion invalida de {self.id}", self.linea,self.columna))
