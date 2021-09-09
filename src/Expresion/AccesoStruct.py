@@ -1,6 +1,7 @@
 from src.Expresion.Expresion import *
 from src.Expresion.ResExp import *
 from src.Errores.TablaErrores import *
+from src.Reportes.Cst import *
 
 class AccesosStruct(Expresion):
     def __init__(self, expStruct, idProp, linea, columna):
@@ -25,4 +26,12 @@ class AccesosStruct(Expresion):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "ACCESO_STRUCT", idPadre)
+        #expStruct
+        idExpStruct = getNewId()
+        defElementCst(idExpStruct, "EXP_STRUCT", self.idSent)
+        self.expStruct.generateCst(idExpStruct)
+        #idProp
+        idProp = getNewId()
+        defElementCst(idProp, "Id", self.idSent)
+        defElementCst(getNewId(), self.idProp, idProp)

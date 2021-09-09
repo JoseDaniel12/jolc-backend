@@ -1,6 +1,7 @@
 from src.Expresion.Expresion import *
 from src.Expresion.ResExp import *
 from src.Tipos.TipoDato import *
+from src.Reportes.Cst import *
 
 class Arreglo(Expresion):
     def __init__(self, listaExps, linea, columna):
@@ -22,4 +23,7 @@ class Arreglo(Expresion):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "ARREGLO", idPadre)
+        if len(self.listaExps) > 0:
+            for exp in self.listaExps:
+                exp.generateCst(self.idSent)

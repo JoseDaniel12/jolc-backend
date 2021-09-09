@@ -1,8 +1,8 @@
 from src.Expresion.Expresion import *
 from src.Expresion.ResExp import *
 from src.Errores.TablaErrores import *
+from src.Reportes.Cst import *
 
-import math
 
 class Parse(Expresion):
     def __init__(self, tipoParseo, exp, linea, columna):
@@ -38,4 +38,4 @@ class Parse(Expresion):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "funcParse", idPadre)

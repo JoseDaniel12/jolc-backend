@@ -2,10 +2,9 @@ from src.Expresion.Expresion import Expresion
 from src.Tipos.TipoExpArtimetica import TipoExpAritmetica
 from src.Expresion.ResExp import ResExp
 from src.Tipos.TipoDato import *
-from src.Errores.Error import *
 from src.Errores.TablaErrores import *
+from src.Reportes.Cst import *
 
-from datetime import datetime
 
 class OpAritmetica(Expresion):
     def __init__(self, opIzq, opDer, tipo, linea, columna):
@@ -106,5 +105,14 @@ class OpAritmetica(Expresion):
 
 
     def generateCst(self, idPadre):
-        generar
-        pass
+        defElementCst(self.idSent, self.tipo.name, idPadre)
+        #opIzq
+        if self.opIzq is not None:
+            idOpIzq  = getNewId()
+            defElementCst(idOpIzq, "EXPRESION", self.idSent)
+            self.opIzq.generateCst(idOpIzq)
+        #opDer
+        if self.opDer is not None:
+            idOpDer  = getNewId()
+            defElementCst(idOpDer, "EXPRESION", self.idSent)
+            self.opDer.generateCst(idOpDer)

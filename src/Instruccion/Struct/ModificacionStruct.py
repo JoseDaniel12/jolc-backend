@@ -1,6 +1,7 @@
 from src.Instruccion.Instruccion import *
 from src.Errores.TablaErrores import *
 from src.Tipos.TipoDato import *
+from src.Reportes.Cst import *
 
 class ModificacionStruct(Instruction):
     def __init__(self, expStruct, idProp, expValor, linea, columna):
@@ -32,4 +33,16 @@ class ModificacionStruct(Instruction):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "MOD_STRUCT", idPadre)
+        #expStruct
+        idExpStruct = getNewId()
+        defElementCst(idExpStruct, "EXP_STRUCT", self.idSent)
+        self.expStruct.generateCst(idExpStruct)
+        #idProp
+        idProp = getNewId()
+        defElementCst(idProp, "PROPIEDAD", self.idSent)
+        defElementCst(getNewId(), self.idProp, idProp)
+        #expValro
+        idExpValor = getNewId()
+        defElementCst(idExpValor, "EXP_VALOR", self.idSent)
+        self.expValor.generateCst(idExpValor)

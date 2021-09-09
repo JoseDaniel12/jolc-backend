@@ -1,8 +1,7 @@
 from src.Expresion.Expresion import *
 from src.Expresion.ResExp import *
 from src.Errores.TablaErrores import *
-
-import math
+from src.Reportes.Cst import *
 
 class Float(Expresion):
     def __init__(self, exp, linea, columna):
@@ -26,4 +25,4 @@ class Float(Expresion):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "float", idPadre)

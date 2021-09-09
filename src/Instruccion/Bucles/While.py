@@ -2,6 +2,7 @@ from src.Instruccion.Instruccion import *
 from src.Entorno.Ambito import *
 from src.Instruccion.ejecutarBloqueIns import *
 from src.Errores.TablaErrores import *
+from src.Reportes.Cst import *
 
 class While(Instruction):
     def __init__(self, condicion, listaIns, linea, columna):
@@ -37,4 +38,13 @@ class While(Instruction):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "WHILE", idPadre)
+        #Condicion
+        idCondicion = getNewId()
+        defElementCst(idCondicion, "EXPRESION", self.idSent)
+        self.condicion.generateCst(idCondicion)
+        #listaIns
+        idListaIns = getNewId()
+        defElementCst(idListaIns, "LISTA_INS", self.idSent)
+        for ins in self.listaIns:
+            ins.generateCst(idListaIns)

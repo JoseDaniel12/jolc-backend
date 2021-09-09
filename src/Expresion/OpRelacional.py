@@ -4,6 +4,7 @@ from src.Expresion.ResExp import *
 from src.Tipos.TipoDato import *
 from src.Errores.TablaErrores import *
 from src.Errores.Error import *
+from src.Reportes.Cst import *
 
 class OpRelacional(Expresion):
     def __init__(self, opIzq, opDer, tipo, linea, columna):
@@ -38,4 +39,14 @@ class OpRelacional(Expresion):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, self.tipo.name, idPadre)
+        #opIzq
+        if self.opIzq is not None:
+            idOpIzq  = getNewId()
+            defElementCst(idOpIzq, "EXPRESION", self.idSent)
+            self.opIzq.generateCst(idOpIzq)
+        #opDer
+        if self.opDer is not None:
+            idOpDer  = getNewId()
+            defElementCst(idOpDer, "EXPRESION", self.idSent)
+            self.opDer.generateCst(idOpDer)

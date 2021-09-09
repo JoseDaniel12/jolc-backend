@@ -1,5 +1,6 @@
 from src.Instruccion.Instruccion import *
 from src.Instruccion.ResIns import *
+from src.Reportes.Cst import *
 
 class Break(Instruction):
     def __init__(self, linea, columna):
@@ -12,4 +13,4 @@ class Break(Instruction):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "break" ,idPadre)

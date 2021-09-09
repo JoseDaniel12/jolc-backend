@@ -3,6 +3,7 @@ from src.Instruccion.ResIns import *
 from src.Entorno.SimboloFuncion import *
 from src.Errores.TablaErrores import *
 from src.Entorno.SimboloVariable import *
+from src.Reportes.Cst import *
 
 class DecFuncion(Instruction):
     def __init__(self, id, listaParams, listaIns, linea, columna):
@@ -25,4 +26,20 @@ class DecFuncion(Instruction):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "DEC_FUNC", idPadre)
+        #id
+        idIdentificador = getNewId()
+        defElementCst(idIdentificador, "Id", self.idSent)
+        defElementCst(getNewId(), self.id, idIdentificador)
+        #listaParams
+        if len(self.listaParams) > 0:
+            idListaParams = getNewId()
+            defElementCst(idListaParams, "LISTA_PARAMS", self.idSent)
+            for param in self.listaParams:
+                param.generateCst(idListaParams)
+        #listaIns
+        if len(self.listaIns) > 0:
+            idListaIns = getNewId()
+            defElementCst(idListaIns, "LISTA_INS", self.idSent)
+            for ins in self.listaIns:
+                ins.generateCst(idListaIns)

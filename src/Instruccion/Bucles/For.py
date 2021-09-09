@@ -4,6 +4,7 @@ from src.Instruccion.ejecutarBloqueIns import *
 from src.Expresion.ResExp import *
 from src.Tipos.TipoDato import *
 from src.Entorno.SimboloVariable import *
+from src.Reportes.Cst import *
 
 class For(Instruction):
     def __init__(self, id, expresion, listaIns, linea, columna):
@@ -38,4 +39,17 @@ class For(Instruction):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "FOR", idPadre)
+        #id
+        idIdentificador = getNewId()
+        defElementCst(idIdentificador, "ID_VAR", self.idSent)
+        defElementCst(getNewId(), self.id, idIdentificador)
+        #expreio
+        idExpreison = getNewId()
+        defElementCst(idExpreison, "EXPRESION", self.idSent)
+        self.expresion.generateCst(idExpreison)
+        #listaIns
+        idListaIns = getNewId()
+        defElementCst(idListaIns, "LISTA_INS", self.idSent)
+        for ins in self.listaIns:
+            ins.generateCst(idListaIns)

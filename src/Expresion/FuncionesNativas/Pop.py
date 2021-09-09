@@ -1,6 +1,7 @@
 from src.Expresion.Expresion import *
 from src.Expresion.ResExp import *
 from src.Errores.TablaErrores import *
+from src.Reportes.Cst import *
 
 class Pop(Expresion):
     def __init__(self, expArreglo, linea, columna):
@@ -22,4 +23,4 @@ class Pop(Expresion):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "funcPop", idPadre)

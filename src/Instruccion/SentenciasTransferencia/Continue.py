@@ -1,4 +1,5 @@
 from src.Instruccion.Instruccion import *
+from src.Reportes.Cst import *
 
 class Continue(Instruction):
     def __init__(self, linea, columna):
@@ -11,4 +12,4 @@ class Continue(Instruction):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "continue", idPadre)

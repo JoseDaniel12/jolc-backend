@@ -6,9 +6,11 @@ from src.Expresion.ResExp import *
 from src.Entorno.SimboloFuncion import *
 from src.Entorno.SimboloStruct import *
 from src.Instruccion.Struct.StructInstance import *
+from src.Reportes.Cst import *
 
 class LlamadaFuncStruct:
     def __init__(self, id, listaExps, linea, columna):
+        self.idSent = getNewId()
         self.id = id
         self.listaExps = listaExps
         self.linea = linea
@@ -53,4 +55,14 @@ class LlamadaFuncStruct:
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "LLAMADA", idPadre)
+        #id
+        idIdentificador = getNewId()
+        defElementCst(idIdentificador, "Id", self.idSent)
+        defElementCst(getNewId(), self.id, idIdentificador)
+        #listaExps
+        if len(self.listaExps) > 0:
+            idListaExp = getNewId()
+            defElementCst(idListaExp, "EXP", self.idSent)
+            for exp in self.listaExps:
+                exp.generateCst(idListaExp)

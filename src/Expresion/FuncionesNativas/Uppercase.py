@@ -1,6 +1,7 @@
 from src.Expresion.Expresion import *
 from src.Expresion.ResExp import *
 from src.Errores.TablaErrores import *
+from src.Reportes.Cst import *
 
 class UpperCase(Expresion):
     def __init__(self, exp, linea, columna):
@@ -24,4 +25,4 @@ class UpperCase(Expresion):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "funcUppercase", idPadre)

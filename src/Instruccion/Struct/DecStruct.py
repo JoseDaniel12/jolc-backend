@@ -1,6 +1,6 @@
 from src.Instruccion.Instruccion import *
-from src.Entorno.SimboloVariable import *
 from src.Entorno.SimboloStruct import *
+from src.Reportes.Cst import *
 
 class DecStruct(Instruction):
     def __init__(self, isMutable, id, listaPropiedades,  linea, columna):
@@ -17,4 +17,19 @@ class DecStruct(Instruction):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "DEC_STRUCT", idPadre)
+        #mutabilidad
+        if self.isMutable:
+            idMutabilidad = getNewId()
+            defElementCst(idMutabilidad, "MUTABILIDAD", self.idSent)
+            defElementCst(getNewId(), "mutable", idMutabilidad)
+        #id
+        idIdentificador = getNewId()
+        defElementCst(idIdentificador, "Id", self.idSent)
+        defElementCst(getNewId(), self.id, idIdentificador)
+        #listaPropiedades
+        if len(self.listaPropiedades) > 0:
+            idProp = getNewId()
+            defElementCst(idProp, "PROPIEDAD", self.idSent)
+            for prop in self.listaPropiedades:
+                prop.generateCst(idProp)

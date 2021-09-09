@@ -1,5 +1,6 @@
 from src.Expresion.Expresion import *
 from src.Expresion.ResExp import *
+from src.Reportes.Cst import *
 
 class TypeOf(Expresion):
     def __init__(self, exp, linea, columna):
@@ -20,4 +21,4 @@ class TypeOf(Expresion):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "funcTypeOf", idPadre)

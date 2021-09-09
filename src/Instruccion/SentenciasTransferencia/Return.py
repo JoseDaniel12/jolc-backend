@@ -1,5 +1,6 @@
 from src.Instruccion.Instruccion import *
 from src.Expresion.ResExp import *
+from src.Reportes.Cst import *
 
 class Return(Instruction):
     def __init__(self, expresion, linea, columna):
@@ -22,4 +23,4 @@ class Return(Instruction):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "return", idPadre)

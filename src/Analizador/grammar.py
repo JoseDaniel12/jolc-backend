@@ -811,7 +811,7 @@ def armarCst(entrada):
     limpiarCst()
     listaIns = parser.parse(entrada)
     idPadre = uuid.uuid4()
-    defNodoCst(idPadre, "listaIns")
+    defNodoCst(idPadre, "LISTA_INS")
     for ins in listaIns:
         ins.generateCst(idPadre)
     return cst

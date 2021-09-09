@@ -1,6 +1,7 @@
 from src.Instruccion.Instruccion import *
 from src.Errores.TablaErrores import *
 from src.Tipos.TipoDato import *
+from src.Reportes.Cst import *
 
 class ModificacionArreglo(Instruction):
     def __init__(self, expArreglo, expIndice, expValor, linea, columna):
@@ -32,4 +33,16 @@ class ModificacionArreglo(Instruction):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "MOD_ARREGLO", idPadre)
+        #expArreglo
+        idExpArreglo = getNewId()
+        defElementCst(idExpArreglo, "EXP_ARREGLO", self.idSent)
+        self.expArreglo.generateCst(idExpArreglo)
+        #expIndice
+        idExpIndice = getNewId()
+        defElementCst(idExpIndice, "EXP_INDICE", self.idSent)
+        self.expIndice.generateCst(idExpIndice)
+        #expValor
+        idExpValor = getNewId()
+        defElementCst(idExpValor, "EXP_VALOR", self.idSent)
+        self.expValor.generateCst(idExpValor)

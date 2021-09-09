@@ -1,5 +1,6 @@
 from src.Expresion.Arreglo import *
 from src.Errores.TablaErrores import *
+from src.Reportes.Cst import *
 
 class AccesoArreglo(Expresion):
     def __init__(self, expArreglo: Arreglo, expAcceso,  linea, columna):
@@ -39,4 +40,12 @@ class AccesoArreglo(Expresion):
 
 
     def generateCst(self, idPadre):
-        pass
+        defElementCst(self.idSent, "ACCESO_ARREGLO", idPadre)
+        #expArreglo
+        idExpArreglo = getNewId()
+        defElementCst(idExpArreglo, "ARREGLO", self.idSent)
+        self.expArreglo.generateCst(idExpArreglo)
+        #expAcceso
+        idExpAcceso = getNewId()
+        defElementCst(idExpAcceso, "EXP_ACCESO", self.idSent)
+        self.expAcceso.generateCst(idExpAcceso)
