@@ -22,3 +22,7 @@ class LowerCase(Expresion):
 
 
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

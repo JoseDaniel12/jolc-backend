@@ -1,8 +1,6 @@
 import src.Analizador.ply.yacc as yacc
 import src.Analizador.ply.lex as lex
 
-from src.Reportes.TablaSimbolos import *
-from src.Errores.TablaErrores import *
 from src.Instruccion.Print import  *
 from src.Expresion.OpAritemtica import *
 from src.Expresion.AtomicExp import *
@@ -40,6 +38,7 @@ from src.Expresion.FuncionesNativas.Pop import *
 from src.Expresion.FuncionesNativas.Length import *
 from src.Expresion.FuncionesNativas.Uppercase import *
 from src.Expresion.FuncionesNativas.LowerCase import *
+from src.Reportes.Cst import *
 
 res = {
     "listaIns": []
@@ -250,7 +249,9 @@ precedence = (
 
 # GRAMATICA
 def p_start(p):
-    '''start : listaInstrucciones'''
+    '''
+    start   : listaInstrucciones
+    '''
     p[0] = p[1]
     p.lexer.lineno = 1
     p.lexer.pos = 1
@@ -795,20 +796,34 @@ def p_function_lower_case(p):
 
 def p_error(p):
     if p:
-        print("Syntax error at '%s'" % p.value)
+        agregarError(Error(f"Accion sintactica con problemas", p.lineno, p.lexpos))
+        print("Syntax error at '%s'" %p.value)
     else:
         print("Syntax error at EOF")
 
 
+
+
 # ________________________________________________PARSE_METHOD________________________________________________
+parser = yacc.yacc()
+
+def armarCst(entrada):
+    limpiarCst()
+    listaIns = parser.parse(entrada)
+    idPadre = uuid.uuid4()
+    defNodoCst(idPadre, "listaIns")
+    for ins in listaIns:
+        ins.generateCst(idPadre)
+    return cst
+
 
 def parse(entrada):
-
     limpiarTablaErrores()
     limpiarTablaSimbolos()
 
-    parser = yacc.yacc()
+    listaIns = []
     listaIns = parser.parse(entrada)
+
     textoSalida  = ""
     ambitoGlobal = Ambito(None, "GLOBAL")
     for ins in listaIns:
@@ -818,7 +833,7 @@ def parse(entrada):
     resCompilado = {
         "textoSalida": textoSalida,
         "tablaErrores": getTablaErroresAsJson(),
-        "tablaSimbolos": getTablaSimbolosAsSerializable()
+        "tablaSimbolos": getTablaSimbolosAsSerializable(),
     }
 
     return resCompilado

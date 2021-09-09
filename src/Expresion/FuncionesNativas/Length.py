@@ -20,3 +20,7 @@ class Length(Expresion):
         res.valor = len(simboloArreglo.valor)
         res.tipo = TipoDato.ENTERO
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

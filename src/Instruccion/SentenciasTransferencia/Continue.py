@@ -9,3 +9,6 @@ class Continue(Instruction):
         res.continueEncontrado = True
         return res
 
+
+    def generateCst(self, idPadre):
+        pass

@@ -35,3 +35,7 @@ class For(Instruction):
                 res.returnSimbolo = resIns.returnSimbolo
                 return res
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

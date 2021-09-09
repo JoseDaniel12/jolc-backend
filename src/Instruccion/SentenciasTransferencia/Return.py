@@ -19,3 +19,7 @@ class Return(Instruction):
                 res.returnEncontrado = True
                 res.returnSimbolo = simboloExp
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

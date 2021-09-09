@@ -16,3 +16,7 @@ def ejectuarBloqueIns(listaIns, ambito):
             res.returnSimbolo = respuesta.returnSimbolo
             return res
     return res
+
+
+    def generateCst(self, idPadre):
+        pass

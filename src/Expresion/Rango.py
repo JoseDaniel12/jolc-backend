@@ -8,12 +8,14 @@ class Rango(Expresion):
         self.inicio = inicio
         self.fin = fin
 
-    def ejecutar(self, ambito) -> ResExp:
+    def ejecutar(self, ambito) :
         res = ResExp(None, None)
         simboloInicio = self.inicio.ejecutar(ambito)
         simboloFin = self.fin.ejecutar(ambito)
-        if simboloInicio.tipo != TipoDato.ENTERO  or simboloFin.tipo != TipoDato.ENTERO:
-            return res
+        if simboloInicio is None or simboloFin is None:
+            return None
+        elif simboloInicio.tipo != TipoDato.ENTERO  or simboloFin.tipo != TipoDato.ENTERO:
+            return None
         else:
             valores = []
             for i in range(simboloInicio.valor, simboloFin.valor + 1):
@@ -21,3 +23,7 @@ class Rango(Expresion):
             res.valor = valores
             res.tipo = TipoDato.ARREGLO
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

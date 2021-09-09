@@ -24,7 +24,7 @@ class LlamadaFuncStruct:
                     for i in range(len(self.listaExps)):
                         simboloParam = self.listaExps[i].ejecutar(ambito)
                         if simboloParam.tipo == resSimboloLlamada.listaParams[i].tipo or resSimboloLlamada.listaParams[i].tipo is None:
-                            nuevoAmbito.addVariable(resSimboloLlamada.listaParams[i].id, simboloParam)
+                            nuevoAmbito.addVariable(resSimboloLlamada.listaParams[i].id, SimboloVariable(resSimboloLlamada.listaParams[i].id, simboloParam.valor, simboloParam.tipo, self.linea, self.columna))
                         else:
                             agregarError(Error(
                                 f"Se esperaban tipo {resSimboloLlamada.listaParams[i].tipo.name} y se obtuvo {simboloParam.tipo.name}",self.linea, self.columna))
@@ -50,3 +50,7 @@ class LlamadaFuncStruct:
         else:
             agregarError(Error(f"La funcion {self.id} no esta definida", self.linea, self.columna))
             return None
+
+
+    def generateCst(self, idPadre):
+        pass

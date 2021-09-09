@@ -1,7 +1,6 @@
 from src.Instruccion.Instruccion import *
 from src.Instruccion.ResIns import *
 from src.Entorno.SimboloFuncion import *
-from src.Entorno.Simbolo import *
 from src.Errores.TablaErrores import *
 from src.Entorno.SimboloVariable import *
 
@@ -23,3 +22,7 @@ class DecFuncion(Instruction):
         else:
             ambito.addVariable(self.id, simboloFunc)
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

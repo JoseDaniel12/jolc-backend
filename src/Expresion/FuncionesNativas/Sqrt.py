@@ -25,3 +25,7 @@ class Sqrt(Expresion):
         else:
             res.tipo = TipoDato.DECIMAL
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

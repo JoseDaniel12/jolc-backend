@@ -27,3 +27,6 @@ class IfCompleto(Instruction):
                 return res
         return ejectuarBloqueIns(self.listaInsElse, ambito)
 
+
+    def generateCst(self, idPadre):
+        pass

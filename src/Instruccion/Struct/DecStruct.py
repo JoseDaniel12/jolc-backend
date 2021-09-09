@@ -14,3 +14,7 @@ class DecStruct(Instruction):
         simboloStruct = SimboloStruct(self.isMutable, self.id, self.listaPropiedades, self.linea, self.columna)
         ambito.addVariable(self.id, simboloStruct)
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

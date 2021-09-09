@@ -35,3 +35,7 @@ class OpRelacional(Expresion):
             agregarError(Error(f"{self.tipo.name} invalido {simboloOpIzq.tipo.name} con {simboloOpDer.tipo.name}", self.linea,  self.columna))
             return None
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

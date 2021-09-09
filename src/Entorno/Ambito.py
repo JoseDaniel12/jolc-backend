@@ -1,9 +1,8 @@
 from src.Instruccion.Struct.StructInstance import StructInstance
-from src.Entorno.SimboloFuncion import SimboloFuncion
-from src.Entorno.SimboloStruct import SimboloStruct
-from src.Entorno.SimboloVariable import SimboloVariable
 from src.Reportes.TablaSimbolos import *
-
+from src.Entorno.SimboloVariable import *
+from src.Entorno.SimboloFuncion import *
+from src.Entorno.SimboloStruct import *
 
 class Ambito:
     def __init__(self, anterior, nombre):
@@ -29,6 +28,8 @@ class Ambito:
             agregarSimboloTabla(SimboloTabla(id, "funcion", self.getAsString(), simbolo.linea, simbolo.columna))
         elif type(simbolo) == SimboloStruct:
             agregarSimboloTabla(SimboloTabla(id, "struct", self.getAsString(), simbolo.linea, simbolo.columna))
+        else:
+            print("hola")
         self.variables[id] = simbolo
 
     def existeSimbolo(self, id):

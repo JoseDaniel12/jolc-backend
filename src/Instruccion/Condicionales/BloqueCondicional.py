@@ -4,3 +4,7 @@ class BloqueCondicional:
         self.listaIns = listaIns
         self.linea = linea
         self.columna = columna
+
+
+    def generateCst(self, idPadre):
+        pass

@@ -3,6 +3,7 @@ from src.Expresion.ResExp import ResExp
 from src.Tipos.TipoDato import *
 from src.Errores.TablaErrores import *
 from src.Errores.Error import *
+from src.Reportes.Cst import *
 
 class AtomicExp(Expresion):
     def __init__(self, valor, tipo, linea, columna):
@@ -19,3 +20,7 @@ class AtomicExp(Expresion):
             else:
                 return ResExp(simbolo.valor, simbolo.tipo)
         return ResExp(self.valor, self.tipo)
+
+
+    def generateCst(self, idPadre):
+        defElementCst(self.idSent, str(self.valor), idPadre)

@@ -22,3 +22,7 @@ class AccesosStruct(Expresion):
         else:
             res = simboloStruct.valor.propiedades[self.idProp]
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

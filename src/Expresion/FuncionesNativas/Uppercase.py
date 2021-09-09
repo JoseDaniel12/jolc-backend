@@ -21,3 +21,7 @@ class UpperCase(Expresion):
         res.tipo = simboloExp.tipo
 
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

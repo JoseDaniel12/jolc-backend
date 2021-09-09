@@ -34,3 +34,7 @@ class While(Instruction):
                 return resWhile
 
         return resWhile
+
+
+    def generateCst(self, idPadre):
+        pass

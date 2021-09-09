@@ -19,3 +19,7 @@ class Pop(Expresion):
 
         res = simboloArreglo.valor.pop()
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

@@ -4,3 +4,4 @@ class ResIns:
     continueEncontrado = False
     returnEncontrado = False
     returnSimbolo = None
+

@@ -4,6 +4,7 @@ from src.Expresion.ResExp import ResExp
 from src.Tipos.TipoDato import *
 from src.Errores.Error import *
 from src.Errores.TablaErrores import *
+
 from datetime import datetime
 
 class OpAritmetica(Expresion):
@@ -103,3 +104,7 @@ class OpAritmetica(Expresion):
                 res.tipo = simboloOpIzq.tipo
         return res
 
+
+    def generateCst(self, idPadre):
+        generar
+        pass

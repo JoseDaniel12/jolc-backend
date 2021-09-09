@@ -9,3 +9,7 @@ class Break(Instruction):
         res = ResIns()
         res.breakEncontrado = True;
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

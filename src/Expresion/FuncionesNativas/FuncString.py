@@ -20,3 +20,7 @@ class FuncString(Expresion):
         res.tipo = TipoDato.CADENA
 
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

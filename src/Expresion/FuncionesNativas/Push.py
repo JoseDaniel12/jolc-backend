@@ -23,3 +23,7 @@ class Push(Expresion):
         res.valor = simboloArreglo.valor
         res.tipo = TipoDato.ARREGLO
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

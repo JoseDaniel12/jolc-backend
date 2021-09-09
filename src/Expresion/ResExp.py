@@ -34,3 +34,7 @@ class ResExp:
             elif self.tipo  ==  TipoDato.CARACTER:
                 return "\'" + self.valor + "\'"
             return str(self.valor)
+
+
+    def generateCst(self, idPadre):
+        pass

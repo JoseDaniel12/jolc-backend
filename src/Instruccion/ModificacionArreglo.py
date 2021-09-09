@@ -29,3 +29,7 @@ class ModificacionArreglo(Instruction):
             return res
         simboloArreglo.valor[simboloExpIndice.valor - 1] = simboloValor
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

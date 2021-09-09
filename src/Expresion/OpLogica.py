@@ -38,3 +38,7 @@ class OpLogica(Expresion):
                 elif self.tipo == TipoExpLogica.NOT:
                     res.valor = not simboloOpIzq.valor
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

@@ -3,3 +3,7 @@ class StructInstance:
         self.tipoStruct = tipoStruct
         self.isMutable = isMutable
         self.propiedades = propiedades
+
+
+    def generateCst(self, idPadre):
+        pass

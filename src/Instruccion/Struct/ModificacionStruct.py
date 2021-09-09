@@ -29,3 +29,7 @@ class ModificacionStruct(Instruction):
         simboloPropStruct.valor = simboloValor.valor
         simboloPropStruct.tipo = simboloValor.tipo
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

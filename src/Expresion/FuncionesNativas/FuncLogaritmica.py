@@ -31,7 +31,7 @@ class FuncLogaritmica(Expresion):
 
         if simboloBase is None or simboloValor is None:
             return None
-        elif simboloBase.tipo != TipoDato.ENTERO and simboloValor.tipo != TipoDato.DECIMAL:
+        elif simboloBase.tipo != TipoDato.ENTERO and simboloBase.tipo != TipoDato.DECIMAL:
             agregarError(Error(f"{self.tipoFunc} espera una base de tipo {TipoDato.ENTERO.name} o {TipoDato.DECIMAL.name}", self.linea, self.columna))
             return None
         elif simboloValor.tipo != TipoDato.ENTERO and simboloValor.tipo != TipoDato.DECIMAL:
@@ -45,3 +45,7 @@ class FuncLogaritmica(Expresion):
             res.tipo = TipoDato.DECIMAL
 
         return res
+
+
+    def generateCst(self, idPadre):
+        pass

@@ -4,3 +4,7 @@ class Parametro:
         self.tipo = tipo
         self.linea = linea
         self.columna = columna
+
+
+    def generateCst(self, idPadre):
+        pass
