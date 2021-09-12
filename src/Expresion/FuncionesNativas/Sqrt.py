@@ -17,11 +17,11 @@ class Sqrt(Expresion):
         if simboloExp is None:
             return None
         elif simboloExp.tipo != TipoDato.ENTERO and simboloExp.tipo != TipoDato.DECIMAL:
-            agregarError(Error(f"La funcion nativa sqrt recibe como parametro un {TipoDato.ENTERO.name} o un {TipoDato.Decimal.name}",self.linea, self.columna))
+            agregarError(Error(f"La funcion nativa sqrt recibe como parametro un {TipoDato.ENTERO.value} o un {TipoDato.Decimal.value}",self.linea, self.columna))
             return None
 
         res.valor = math.sqrt(simboloExp.valor)
-        if res.valor - int(res.valor):
+        if res.valor - int(res.valor) == 0:
             res.tipo = TipoDato.ENTERO
         else:
             res.tipo = TipoDato.DECIMAL
@@ -30,3 +30,7 @@ class Sqrt(Expresion):
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "funcSqrt", idPadre)
+        #exp
+        idExp = getNewId()
+        defElementCst(idExp, "EXPRESION", self.idSent)
+        self.exp.generateCst(idExp)

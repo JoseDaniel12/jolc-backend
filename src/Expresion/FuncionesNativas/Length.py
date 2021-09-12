@@ -15,7 +15,7 @@ class Length(Expresion):
         if simboloArreglo is None:
             return None
         elif simboloArreglo.tipo  != TipoDato.ARREGLO:
-            agregarError(Error(f"Funcion length recibe un {TipoDato.ARREGLO.name}",self.linea, self.columna))
+            agregarError(Error(f"Funcion length recibe un {TipoDato.ARREGLO.value}",self.linea, self.columna))
             return None
 
         res.valor = len(simboloArreglo.valor)
@@ -25,3 +25,7 @@ class Length(Expresion):
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "funcLength", idPadre)
+        #expArreglo
+        idExpSrreglo = getNewId()
+        defElementCst(idExpSrreglo, "EXP_ARREGLO", self.idSent)
+        self.expArreglo.generateCst(idExpSrreglo)

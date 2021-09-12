@@ -20,7 +20,7 @@ class OpLogica(Expresion):
             if simboloOp is None:
                 return None
             elif simboloOp.tipo != TipoDato.BOOLEANO:
-                agregarError(Error(f"{self.tipo.name} el operador debe ser {TipoDato.BOOLEANO.name}.", self.linea, self.columna))
+                agregarError(Error(f"{self.tipo.value} el operador debe ser {TipoDato.BOOLEANO.value}.", self.linea, self.columna))
                 return None
             res.valor = not simboloOp.valor
             res.tipo = TipoDato.BOOLEANO
@@ -28,7 +28,7 @@ class OpLogica(Expresion):
             simboloOpIzq = self.opIzq.ejecutar(ambito)
             simboloOpDer = self.opDer.ejecutar(ambito)
             if simboloOpIzq.tipo != TipoDato.BOOLEANO  or simboloOpDer.tipo != TipoDato.BOOLEANO:
-                agregarError(Error(f"{self.tipo.name} fallido ambos operandos deben ser booleanos.", self.linea, self.columna))
+                agregarError(Error(f"{self.tipo.value} fallido ambos operandos deben ser booleanos.", self.linea, self.columna))
                 return None
             else:
                 res.tipo = TipoDato.BOOLEANO
@@ -42,7 +42,7 @@ class OpLogica(Expresion):
 
 
     def generateCst(self, idPadre):
-        defElementCst(self.idSent, self.tipo.name, idPadre)
+        defElementCst(self.idSent, self.tipo.value, idPadre)
         #OpIzq
         if self.opIzq is not None:
             idOpIzq = getNewId()

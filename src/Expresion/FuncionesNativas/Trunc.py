@@ -8,6 +8,7 @@ import math
 class Trunc(Expresion):
     def __init__(self, tipo, exp, linea, columna):
         Expresion.__init__(self, linea, columna)
+        self.tipo = tipo
         self.exp = exp
 
     def ejecutar(self, ambito):
@@ -16,17 +17,32 @@ class Trunc(Expresion):
         simboloExp = self.exp.ejecutar(ambito)
         if simboloExp is None:
             return None
+        elif self.tipo is not None and (self.tipo != TipoDato.ENTERO and self.tipo != TipoDato.DECIMAL):
+            agregarError(Error(f"Al truncar solo se puede retornar un {TipoDato.ENTERO.value} o un {TipoDato.DECIMAL.value}",self.linea, self.columna))
+            return None
         elif simboloExp.tipo != TipoDato.ENTERO and simboloExp.tipo != TipoDato.DECIMAL:
-            agregarError(Error(f"La funcion nativa sqrt recibe como parametro un {TipoDato.ENTERO.name} o un {TipoDato.Decimal.name}",self.linea, self.columna))
+            agregarError(Error(f"No se puede truncar un valor que no sea tipo {TipoDato.ENTERO.value} o un {TipoDato.DECIMAL.value}",self.linea, self.columna))
             return None
 
-        res.valor = math.sqrt(simboloExp.valor)
-        if res.valor - int(res.valor):
-            res.tipo = TipoDato.ENTERO
+        res.valor = math.trunc(simboloExp.valor)
+        if self.tipo is not None:
+            res.tipo = self.tipo
         else:
-            res.tipo = TipoDato.DECIMAL
+            if res.valor - int(res.valor) == 0:
+                res.tipo = TipoDato.ENTERO
+            else:
+                res.tipo = TipoDato.DECIMAL
         return res
 
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "funcTrunc", idPadre)
+        #tipo
+        if self.tipo is not None:
+            idTipo = getNewId()
+            defElementCst(idTipo, "TIPO", self.idSent)
+            defElementCst(getNewId(), self.tipo.value, idTipo)
+        #exp
+        idExp = getNewId()
+        defElementCst(idExp, "EXPRESION", self.idSent)
+        self.exp.generateCst(idExp)

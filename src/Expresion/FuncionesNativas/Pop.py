@@ -15,7 +15,7 @@ class Pop(Expresion):
         if simboloArreglo is None:
             return None
         elif simboloArreglo.tipo  != TipoDato.ARREGLO:
-            agregarError(Error(f"No se pude hacer un pop a un elemento que no es {TipoDato.ARREGLO.name}",self.linea, self.columna))
+            agregarError(Error(f"No se pude hacer un pop a un elemento que no es {TipoDato.ARREGLO.value}",self.linea, self.columna))
             return None
 
         res = simboloArreglo.valor.pop()
@@ -24,3 +24,7 @@ class Pop(Expresion):
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "funcPop", idPadre)
+        #expArreglo
+        idExpArreglo = getNewId()
+        defElementCst(idExpArreglo, "EXP_ARREGLO", self.idSent)
+        self.expArreglo.generateCst(idExpArreglo)

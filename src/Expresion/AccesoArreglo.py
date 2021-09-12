@@ -17,10 +17,10 @@ class AccesoArreglo(Expresion):
         if simboloAcceso is None or simboloArreglo is None:
             return None
         elif simboloArreglo.tipo != TipoDato.ARREGLO:
-            agregarError(Error(f"No se puede acceder a una posicion de una elemeto que no se de tipo {TipoDato.ARREGLO.name}", self.linea,self.columna))
+            agregarError(Error(f"No se puede acceder a una posicion de una elemeto que no se de tipo {TipoDato.ARREGLO.value}", self.linea,self.columna))
             return None
         elif simboloAcceso.tipo != TipoDato.ENTERO and simboloAcceso.tipo != TipoDato.ARREGLO:
-            agregarError(Error(f"El indice de acceso de un arreglo debe ser {TipoDato.ENTERO.name} o un Rango", self.linea,self.columna))
+            agregarError(Error(f"El indice de acceso de un arreglo debe ser {TipoDato.ENTERO.value} o un Rango", self.linea,self.columna))
             return None
         elif simboloAcceso.tipo != TipoDato.ARREGLO and (simboloAcceso.valor < 1 or simboloAcceso.valor > len(simboloArreglo.valor)):
             agregarError(Error(f"El indice no se encuentra en un rango aceptado", self.linea, self.columna))

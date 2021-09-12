@@ -33,6 +33,8 @@ class ResExp:
                 return "\"" + self.valor + "\""
             elif self.tipo  ==  TipoDato.CARACTER:
                 return "\'" + self.valor + "\'"
+            elif self.tipo == TipoDato.BOOLEANO:
+                return str(self.valor).lower()
             return str(self.valor)
 
 

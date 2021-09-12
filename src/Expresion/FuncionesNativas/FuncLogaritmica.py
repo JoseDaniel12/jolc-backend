@@ -50,3 +50,21 @@ class FuncLogaritmica(Expresion):
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "funcLogaritmica", idPadre)
+        #tipoFunc
+        idTipoFunc = getNewId()
+        defElementCst(idTipoFunc, "TIPO_FUNC", self.idSent)
+        defElementCst(getNewId(), self.tipoFunc, idTipoFunc)
+        if self.tipoFunc == "log10" and len(self.listaExp) == 1:
+            #base
+            idValor = getNewId()
+            defElementCst(idValor, "VALOR", self.idSent)
+            self.listaExp[0].generateCst(idValor)
+        elif self.tipoFunc == "log" and len(self.listaExp) == 2:
+            #base
+            idBase = getNewId()
+            defElementCst(idBase, "BASE", self.idSent)
+            self.listaExp[0].generateCst(idBase)
+            #base
+            idValor = getNewId()
+            defElementCst(idValor, "VALOR", self.idSent)
+            self.listaExp[1].generateCst(idValor)

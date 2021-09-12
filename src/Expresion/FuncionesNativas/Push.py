@@ -17,7 +17,7 @@ class Push(Expresion):
         if simboloArreglo is None or simboloValor is None:
             return None
         elif simboloArreglo.tipo  != TipoDato.ARREGLO:
-            agregarError(Error(f"No se pude hacer un push a un elemento que no es {TipoDato.ARREGLO.name}",self.linea, self.columna))
+            agregarError(Error(f"No se pude hacer un push a un elemento que no es {TipoDato.ARREGLO.value}",self.linea, self.columna))
             return None
 
         simboloArreglo.valor.append(simboloValor)
@@ -28,3 +28,7 @@ class Push(Expresion):
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "funcPush", idPadre)
+        #expArreglo
+        idExpArreglo = getNewId()
+        defElementCst(idExpArreglo, "EXP_ARREGLO", self.idSent)
+        self.expArreglo.generateCst(idExpArreglo)

@@ -18,7 +18,7 @@ class FuncTrigonometrica(Expresion):
         if simboloExp is None:
             return None
         elif simboloExp.tipo != TipoDato.ENTERO and simboloExp.tipo != TipoDato.DECIMAL:
-            agregarError(Error(f"El la funcion {self.tipoFunc} recibe una parmetro de {TipoDato.ENTERO.name} o un {TipoDato.DECIMAL.name}", self.linea,self.columna))
+            agregarError(Error(f"El la funcion {self.tipoFunc} recibe una parmetro de {TipoDato.ENTERO.value} o un {TipoDato.DECIMAL.value}", self.linea,self.columna))
             return None
 
         if self.tipoFunc == "sin":
@@ -31,9 +31,17 @@ class FuncTrigonometrica(Expresion):
         if res.valor - int(res.valor) == 0:
             res.tipo = TipoDato.ENTERO
         else:
-            res.valor = TipoDato.DECIMAL
+            res.tipo = TipoDato.DECIMAL
 
         return res
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "funcTrigonometrica", idPadre)
+        #tipoFunc
+        idTipoFunc = getNewId()
+        defElementCst(idTipoFunc, "TIPO_FUNC", self.idSent)
+        defElementCst(getNewId(), self.tipoFunc, idTipoFunc)
+        #exp
+        idExp = getNewId()
+        defElementCst(idExp, "EXPRESION", self.idSent)
+        self.exp.generateCst(idExp)

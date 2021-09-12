@@ -33,13 +33,13 @@ class OpRelacional(Expresion):
             elif self.tipo == TipoExpRelacional.NOIGUAL:
                 res.valor = simboloOpIzq.valor != simboloOpDer.valor
         except:
-            agregarError(Error(f"{self.tipo.name} invalido {simboloOpIzq.tipo.name} con {simboloOpDer.tipo.name}", self.linea,  self.columna))
+            agregarError(Error(f"{self.tipo.value} invalido {simboloOpIzq.tipo.value} con {simboloOpDer.tipo.value}", self.linea,  self.columna))
             return None
         return res
 
 
     def generateCst(self, idPadre):
-        defElementCst(self.idSent, self.tipo.name, idPadre)
+        defElementCst(self.idSent, self.tipo.value, idPadre)
         #opIzq
         if self.opIzq is not None:
             idOpIzq  = getNewId()

@@ -63,6 +63,6 @@ class LlamadaFuncStruct:
         #listaExps
         if len(self.listaExps) > 0:
             idListaExp = getNewId()
-            defElementCst(idListaExp, "EXP", self.idSent)
+            defElementCst(idListaExp, "LISTA_EXP", self.idSent)
             for exp in self.listaExps:
                 exp.generateCst(idListaExp)

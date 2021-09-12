@@ -14,7 +14,10 @@ class TypeOf(Expresion):
         if simboloExp is None:
             return None
 
-        res.valor = simboloExp.tipo.name
+        if simboloExp.tipo == TipoDato.STRUCT:
+            res.valor = simboloExp.valor.tipoStruct
+        else:
+            res.valor = simboloExp.tipo.value
         res.tipo = TipoDato.CADENA
 
         return res
@@ -22,3 +25,7 @@ class TypeOf(Expresion):
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "funcTypeOf", idPadre)
+        #expresion
+        idExp = getNewId()
+        defElementCst(idExp, "EXPRESION", self.idSent)
+        self.exp.generateCst(idExp)

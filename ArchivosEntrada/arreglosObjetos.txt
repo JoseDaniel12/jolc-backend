@@ -1,0 +1,27 @@
+arrx = [nothing, [1,2,[3,4]]];
+
+mutable struct Obj
+    dato;
+end;
+
+d1 = Obj(arrx);
+xy = [d1];
+
+x = 1;
+if x == 1
+    vocals = ["a","e","i",[55,66,99]];
+    lte = ["q","b","c",vocals];
+
+    println(lte);
+    arrx[1] = lte;
+    vocals[1] = "u";
+    lte[1] = "x";
+end;
+
+arrx[2][3][2] = 50;
+
+println("---------");
+println(arrx[2][3][2]);
+println(d1.dato[1]);
+println(xy[1].dato[1]);
+println(arrx);

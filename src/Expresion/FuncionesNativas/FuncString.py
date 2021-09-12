@@ -23,3 +23,4 @@ class FuncString(Expresion):
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "funcString", idPadre)
+        self.exp.generateCst(self.idSent)

@@ -1,0 +1,148 @@
+mutable struct Nodo
+    nodoHijo;
+    dato;
+end;
+
+animales = ["perro","gato","tortuga","leon"];
+padre = Nodo(nothing, "juan");
+
+println(numeros);
+println(animales);
+
+for i in 1:10
+    if i < 5
+        print(i, "<5 ");
+        continue;
+        print("aaa");
+    else
+        print(i, ">=5 ");
+        break;
+    end;
+    print("No debo salir");
+end;
+
+println("");
+
+for letra in "ooooaaaoooo!"
+    if letra == "o"
+        print(letra, "=o ");
+        continue;
+        print("aaa");
+    else
+        print(letra, "!=o ");
+        break;
+    end;
+    print("No debo salir");
+end;
+
+println("");
+cadena = "oooooaooo";
+
+for letra in cadena
+    if letra == "o"
+        print(letra, "=o ");
+        continue;
+        print("aaa");
+    else
+        print(letra, "!=o ");
+        break;
+    end;
+    print("No debo salir");
+end;
+
+println("");
+
+for dato in animales
+    if dato != "tortuga"
+        print(dato, "=aceptado ");
+        continue;
+        print("aaa");
+    else
+        print(dato, "=denegado ");
+        break;
+    end;
+    print("No debo salir");
+end;
+
+println("");
+
+for num in [9,8,7,6]
+    if num != 7
+        print(num, "=si ");
+        continue;
+        print("aaa");
+    else
+        print(num, "=no ");
+        break;
+    end;
+    print("No debo salir");
+end;
+
+println("");
+
+verdadero = true;
+cont = 4;
+while verdadero
+    cont = cont - 1;
+    print(cont, " ");
+    if cont == 0
+        break;
+    else
+        continue;
+        println("no debo salir");
+    end;
+    println("no debo salir");
+end;
+
+println("");
+
+anime = "God piece";
+carros = ["Honda", "Hyndai", "Toyota", "Lamborguini"];
+
+println("");
+println("----------Funciones--------------");
+
+function insert(obj::Nodo, arregloRef, variable)
+    variable = "Naruto";
+    obj.dato = "sancho";
+    arregloRef[1] = "Suzuki";
+
+    return obj;
+end;
+
+numX = insert(padre, carros, anime);
+
+println("---------Cambio por Ref----------");
+println(padre);
+println(carros);
+println(anime);
+println(numX.dato);
+
+
+for x in 1:3
+    print(x);
+    return x;
+end;
+
+println("");
+println("--------Primitivas-------------");
+println(uppercase("wenas"));
+println(lowercase("TARDES"));
+println(log10(10));
+println(log10(3.234));
+println(log(3.234, 4));
+println(log(5, 7));
+println(sin(65));
+println(cos(65));
+println(tan(65));
+println(sqrt(65));
+println(float(5));
+println(typeof(anime));
+println(parse(Int64, 3.432));
+println(trunc(Int64, 3));
+println(string(4.234));
+
+
+
+
+

@@ -15,7 +15,7 @@ class AccesosStruct(Expresion):
         if simboloStruct is None:
             return None
         elif simboloStruct.tipo != TipoDato.STRUCT:
-            agregarError(Error(f"No se puede acceder a un propiedad de un elemento que no sea {TipoDato.STRUCT.name}", self.linea,self.columna))
+            agregarError(Error(f"No se puede acceder a un propiedad de un elemento que no sea {TipoDato.STRUCT.value}", self.linea,self.columna))
             return None
         elif simboloStruct.valor.propiedades.get(self.idProp) is None:
             agregarError(Error(f"{simboloStruct.valor.tipoStruct} no cuentra con la propiedad {self.idProp}", self.linea, self.columna))

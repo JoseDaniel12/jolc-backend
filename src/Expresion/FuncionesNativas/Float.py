@@ -15,7 +15,7 @@ class Float(Expresion):
         if simboloExp is None:
             return None
         elif simboloExp.tipo != TipoDato.ENTERO:
-            agregarError(Error(f"La funcion float recibe como parametro un {TipoDato.ENTERO.name}",self.linea, self.columna))
+            agregarError(Error(f"La funcion float recibe como parametro un {TipoDato.ENTERO.value}",self.linea, self.columna))
             return None
 
         res.valor = float(simboloExp.valor)
@@ -26,3 +26,7 @@ class Float(Expresion):
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "float", idPadre)
+        #expresion
+        idExp = getNewId()
+        defElementCst(idExp, "EXPRESION", self.idSent)
+        self.exp.generateCst(idExp)

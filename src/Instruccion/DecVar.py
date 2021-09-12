@@ -59,4 +59,4 @@ class DecVar(Instruction):
         if self.tipo is not None:
             idTipo = getNewId()
             defElementCst(idTipo, "TIPO", self.idSent)
-            defElementCst(getNewId(), self.tipo.name, idTipo)
+            defElementCst(getNewId(), self.tipo.value, idTipo)

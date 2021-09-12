@@ -15,7 +15,7 @@ class LowerCase(Expresion):
         if simboloExp is None:
             return None
         elif simboloExp.tipo != TipoDato.CADENA and simboloExp.tipo != TipoDato.CARACTER:
-            agregarError(Error(f"Funcion uppercase recibe una {TipoDato.CADENA.name} o {TipoDato.CARACTER.name}",self.linea, self.columna))
+            agregarError(Error(f"Funcion uppercase recibe una {TipoDato.CADENA.value} o {TipoDato.CARACTER.value}",self.linea, self.columna))
             return None
 
         res.valor = simboloExp.valor.lower()
@@ -27,3 +27,7 @@ class LowerCase(Expresion):
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "funcLowerCase", idPadre)
+        #exp
+        idExp = getNewId()
+        defElementCst(idExp, "EXPRESION", self.idSent)
+        self.exp.generateCst(idExp)

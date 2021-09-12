@@ -17,7 +17,7 @@ class ModificacionStruct(Instruction):
         if simboloStruct is None or simboloValor is None:
             return res
         elif simboloStruct.tipo != TipoDato.STRUCT:
-            agregarError(Error(f"{simboloStruct.tipo.name} no cuenta con la propiedad {self.idProp}", self.linea, self.columna))
+            agregarError(Error(f"{simboloStruct.tipo.value} no cuenta con la propiedad {self.idProp}", self.linea, self.columna))
             return res
         elif simboloStruct.valor.propiedades.get(self.idProp) is None:
             agregarError(Error(f"{simboloStruct.valor.tipoStruct} no cuentra con la propiedad {self.idProp}", self.linea, self.columna))

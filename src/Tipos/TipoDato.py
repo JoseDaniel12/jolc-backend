@@ -2,9 +2,9 @@ from enum import Enum
 
 class TipoDato(Enum):
     IDENTIFICADOR = 'IDENTIFICADOR'
-    ARREGLO = "ARREGLO"
-    STRUCT  = "STRUCT"
-    NONE = 'None'
+    ARREGLO = "Arreglo"
+    STRUCT  = "Struct"
+    NONE = 'Nothing'
     ENTERO = 'Int64'
     DECIMAL = 'Float64'
     BOOLEANO = 'Bool'

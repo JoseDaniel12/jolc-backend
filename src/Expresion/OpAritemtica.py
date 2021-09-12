@@ -29,7 +29,7 @@ class OpAritmetica(Expresion):
         if self.tipo == TipoExpAritmetica.SUMA:
             if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or
                 (simboloOpDer.tipo != TipoDato.ENTERO and simboloOpDer.tipo != TipoDato.DECIMAL)):
-                agregarError(Error(f"{self.tipo.name} invalida {simboloOpIzq.tipo.name} con {simboloOpDer.tipo.name}", self.linea, self.columna))
+                agregarError(Error(f"{self.tipo.value} invalida {simboloOpIzq.tipo.value} con {simboloOpDer.tipo.value}", self.linea, self.columna))
                 return None
             elif simboloOpIzq.tipo == TipoDato.DECIMAL or simboloOpDer.tipo == TipoDato.DECIMAL:
                 res.tipo = TipoDato.DECIMAL
@@ -39,7 +39,7 @@ class OpAritmetica(Expresion):
         elif self.tipo == TipoExpAritmetica.RESTA:
             if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or
                 (simboloOpDer.tipo != TipoDato.ENTERO and simboloOpDer.tipo != TipoDato.DECIMAL)):
-                agregarError(Error(f"{self.tipo.name} invalida {simboloOpIzq.tipo.name} con {simboloOpDer.tipo.name}", self.linea, self.columna))
+                agregarError(Error(f"{self.tipo.value} invalida {simboloOpIzq.tipo.value} con {simboloOpDer.tipo.value}", self.linea, self.columna))
                 return None
             elif simboloOpIzq.tipo == TipoDato.DECIMAL or simboloOpDer.tipo == TipoDato.DECIMAL:
                 res.tipo = TipoDato.DECIMAL
@@ -53,7 +53,7 @@ class OpAritmetica(Expresion):
             else:
                 if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or
                     (simboloOpDer.tipo != TipoDato.ENTERO and simboloOpDer.tipo != TipoDato.DECIMAL)):
-                    agregarError(Error(f"{self.tipo.name} invalida {simboloOpIzq.tipo.name} con {simboloOpDer.tipo.name}", self.linea, self.columna))
+                    agregarError(Error(f"{self.tipo.value} invalida {simboloOpIzq.tipo.value} con {simboloOpDer.tipo.value}", self.linea, self.columna))
                     return None
                 elif simboloOpIzq.tipo == TipoDato.DECIMAL or simboloOpDer.tipo == TipoDato.DECIMAL:
                     res.tipo = TipoDato.DECIMAL
@@ -64,7 +64,7 @@ class OpAritmetica(Expresion):
         elif self.tipo == TipoExpAritmetica.DIVISION:
             if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or
                 (simboloOpDer.tipo != TipoDato.ENTERO and simboloOpDer.tipo != TipoDato.DECIMAL)):
-                agregarError(Error(f"{self.tipo.name} invalida {simboloOpIzq.tipo.name} con {simboloOpDer.tipo.name}",self.linea, self.columna))
+                agregarError(Error(f"{self.tipo.value} invalida {simboloOpIzq.tipo.value} con {simboloOpDer.tipo.value}",self.linea, self.columna))
                 return None
             else:
                 res.tipo = TipoDato.DECIMAL
@@ -74,10 +74,11 @@ class OpAritmetica(Expresion):
                 res.valor = ""
                 for i in range(simboloOpDer.valor):
                     res.valor += simboloOpIzq.valor
+                res.tipo = TipoDato.CADENA
             else:
                 if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or
                     (simboloOpDer.tipo != TipoDato.ENTERO and simboloOpDer.tipo != TipoDato.DECIMAL)):
-                    agregarError(Error(f"{self.tipo.name} invalida {simboloOpIzq.tipo.name} con {simboloOpDer.tipo.name}", self.linea, self.columna))
+                    agregarError(Error(f"{self.tipo.value} invalida {simboloOpIzq.tipo.value} con {simboloOpDer.tipo.value}", self.linea, self.columna))
                     return None
                 elif simboloOpIzq.tipo == TipoDato.DECIMAL or simboloOpDer.tipo == TipoDato.DECIMAL:
                     res.tipo = TipoDato.DECIMAL
@@ -87,7 +88,7 @@ class OpAritmetica(Expresion):
         elif self.tipo == TipoExpAritmetica.MODULO:
             if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or
                 (simboloOpDer.tipo != TipoDato.ENTERO and simboloOpDer.tipo != TipoDato.DECIMAL)):
-                agregarError(Error(f"{self.tipo.name} invalido {simboloOpIzq.tipo.name} con {simboloOpDer.tipo.name}", self.linea, self.columna))
+                agregarError(Error(f"{self.tipo.value} invalido {simboloOpIzq.tipo.value} con {simboloOpDer.tipo.value}", self.linea, self.columna))
                 return None
             elif simboloOpIzq.tipo == TipoDato.DECIMAL or simboloOpDer.tipo == TipoDato.DECIMAL:
                 res.tipo = TipoDato.DECIMAL
@@ -96,7 +97,7 @@ class OpAritmetica(Expresion):
             res.valor = simboloOpIzq.valor % simboloOpDer.valor
         elif self.tipo == TipoExpAritmetica.UMENOS:
             if simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL:
-                agregarError(Error(f"{self.tipo.name} invalido con tipo {simboloOpIzq.tipo.name}", self.linea, self.columna))
+                agregarError(Error(f"{self.tipo.value} invalido con tipo {simboloOpIzq.tipo.value}", self.linea, self.columna))
                 return None
             else:
                 res.valor = -1 * simboloOpIzq.valor
@@ -105,7 +106,7 @@ class OpAritmetica(Expresion):
 
 
     def generateCst(self, idPadre):
-        defElementCst(self.idSent, self.tipo.name, idPadre)
+        defElementCst(self.idSent, self.tipo.value, idPadre)
         #opIzq
         if self.opIzq is not None:
             idOpIzq  = getNewId()

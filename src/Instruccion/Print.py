@@ -21,9 +21,7 @@ class Print(Instruction):
                 valorImpreison = simboloExp.getPresentationMode()
                 if simboloExp.tipo == TipoDato.CADENA or simboloExp.tipo == TipoDato.CARACTER:
                     valorImpreison = valorImpreison[1:len(valorImpreison)-1]
-                texto += valorImpreison + " "
-            if i == len(self.listaExp) - 1 and len(texto) > 0:
-                texto = texto[0:len(texto) - 1]
+                texto += valorImpreison
         if self.isEnter:
             texto += "\n"
         res.textoConsola += texto

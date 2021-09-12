@@ -17,10 +17,10 @@ class ModificacionArreglo(Instruction):
         if simboloArreglo is None or simboloExpIndice is None:
             return res
         elif simboloArreglo.tipo != TipoDato.ARREGLO:
-            agregarError(Error(f"No se puede acceder a una posicion de una elemeto que no se de tipo {TipoDato.ARREGLO.name}", self.linea,self.columna))
+            agregarError(Error(f"No se puede acceder a una posicion de una elemeto que no se de tipo {TipoDato.ARREGLO.value}", self.linea,self.columna))
             return res
         elif simboloExpIndice.tipo != TipoDato.ENTERO:
-            agregarError(Error(f"El indice de acceso de un arreglo debe ser {TipoDato.ENTERO.name}", self.linea,self.columna))
+            agregarError(Error(f"El indice de acceso de un arreglo debe ser {TipoDato.ENTERO.value}", self.linea,self.columna))
             return res
         elif simboloExpIndice.valor < 1 or simboloExpIndice.valor > len(simboloArreglo.valor):
             agregarError(Error(f"El indice no se encuentra en un rango aceptado", self.linea, self.columna))

@@ -40,6 +40,6 @@ class DecFuncion(Instruction):
         #listaIns
         if len(self.listaIns) > 0:
             idListaIns = getNewId()
-            defElementCst(idListaIns, "LISTA_INS", self.idSent)
+            defElementCst(idListaIns, "INS_FUNC", self.idSent)
             for ins in self.listaIns:
                 ins.generateCst(idListaIns)
