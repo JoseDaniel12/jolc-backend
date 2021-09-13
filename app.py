@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import sys
 from src.Analizador.grammar import *
 
+sys.setrecursionlimit(10000)
 app = Flask(__name__)
 CORS(app)
 

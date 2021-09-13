@@ -3,15 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="94d84502-f529-411c-92b4-ef30851d05e2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Analizador/entrada.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analizador/entrada.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Analizador/grammar.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analizador/grammar.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analizador/parser.out" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analizador/parser.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Analizador/parsetab.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analizador/parsetab.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/AccesoArreglo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/AccesoArreglo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/FuncLogaritmica.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/FuncLogaritmica.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/FuncString.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/FuncString.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/OpLogica.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/OpLogica.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/ResExp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/ResExp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SentenciaHibrida/LlamadaFuncStruct.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/SentenciaHibrida/LlamadaFuncStruct.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +98,7 @@
       <workItem from="1631333180757" duration="382000" />
       <workItem from="1631382360542" duration="1351000" />
       <workItem from="1631459896340" duration="17310000" />
-      <workItem from="1631492133458" duration="11241000" />
+      <workItem from="1631492133458" duration="17692000" />
     </task>
     <servers />
   </component>
@@ -123,6 +118,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/jolc_backend$jolc_backend.coverage" NAME="jolc-backend Coverage Results" MODIFIED="1631504525267" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/jolc_backend$jolc_backend.coverage" NAME="jolc-backend Coverage Results" MODIFIED="1631553264272" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

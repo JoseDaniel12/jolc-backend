@@ -38,6 +38,7 @@ from src.Expresion.FuncionesNativas.Pop import *
 from src.Expresion.FuncionesNativas.Length import *
 from src.Expresion.FuncionesNativas.Uppercase import *
 from src.Expresion.FuncionesNativas.LowerCase import *
+from src.SentenciaHibrida.LlamadaFuncStruct import *
 from src.Reportes.Cst import *
 
 res = {
@@ -896,6 +897,7 @@ def armarCst(entrada):
 
 def parse(entrada):
     global miEntrada
+    resetMemo()
     miEntrada = entrada
     limpiarTablaErrores()
     limpiarTablaSimbolos()

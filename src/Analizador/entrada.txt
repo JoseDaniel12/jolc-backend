@@ -1,7 +1,10 @@
-val1  = 100
-al1 = val1 + 41 - 123 * 4 / (2 + 2 * 2) - (10 + (125 % 5)) * 2 ^ 2;
-val2 = 11 * (11 % (12 + -10)) + 22 / 2;
-val3 = 2 ^ (5 * 12 ^ 2) + 25 / 5#= COMENTARIO
-MULTILINEA =#;
-println("Probando asignación de variables y aritmeticas");
-println(val1, " ", val2, " ", val3);
+function ackerman(m::Int64, n::Int64)
+    if m == 0
+        return n + 1;
+    elseif m > 0 && n == 0
+        return ackerman(m - 1, 1)
+    else
+        return ackerman(m - 1, ackerman(m, n - 1));
+    end;
+end;
+println("Resultado: ", ackerman(3, 1));
