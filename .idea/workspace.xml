@@ -2,41 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="94d84502-f529-411c-92b4-ef30851d05e2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ArchivosEntrada/variado.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Analizador/entrada.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analizador/entrada.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Analizador/grammar.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analizador/grammar.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Analizador/parser.out" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analizador/parser.out" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Analizador/parsetab.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Analizador/parsetab.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Errores/Error.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Errores/Error.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Expresion/AccesoArreglo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/AccesoArreglo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/AccesoStruct.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/AccesoStruct.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Float.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Float.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/FuncLogaritmica.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/FuncLogaritmica.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/FuncString.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/FuncString.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/FuncTrigonometrica.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/FuncTrigonometrica.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/FuncTypeOf.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/FuncTypeOf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Length.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Length.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/LowerCase.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/LowerCase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Parse.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Parse.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Pop.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Pop.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Push.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Push.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Sqrt.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Sqrt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Trunc.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Trunc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Uppercase.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Uppercase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/OpAritemtica.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/OpAritemtica.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Expresion/OpLogica.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/OpLogica.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Expresion/OpRelacional.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/OpRelacional.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Expresion/ResExp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/ResExp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instruccion/DecVar.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instruccion/DecVar.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instruccion/Funcion/DecFuncion.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instruccion/Funcion/DecFuncion.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instruccion/Funcion/Parametro.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instruccion/Funcion/Parametro.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instruccion/ModificacionArreglo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instruccion/ModificacionArreglo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instruccion/Print.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instruccion/Print.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instruccion/Struct/ModificacionStruct.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instruccion/Struct/ModificacionStruct.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instruccion/ejecutarBloqueIns.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instruccion/ejecutarBloqueIns.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SentenciaHibrida/LlamadaFuncStruct.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/SentenciaHibrida/LlamadaFuncStruct.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Tipos/TipoDato.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Tipos/TipoDato.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +102,8 @@
       <workItem from="1631321298595" duration="3606000" />
       <workItem from="1631333180757" duration="382000" />
       <workItem from="1631382360542" duration="1351000" />
-      <workItem from="1631459896340" duration="16483000" />
+      <workItem from="1631459896340" duration="17310000" />
+      <workItem from="1631492133458" duration="11241000" />
     </task>
     <servers />
   </component>
@@ -147,6 +123,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/jolc_backend$jolc_backend.coverage" NAME="jolc-backend Coverage Results" MODIFIED="1631477444086" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/jolc_backend$jolc_backend.coverage" NAME="jolc-backend Coverage Results" MODIFIED="1631504525267" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -252,7 +252,6 @@ precedence = (
     ('left', 'CORCHETE_A', 'CORCHETE_C'),
     ('left', 'PARENTESIS_A', 'PARENTESIS_C'),
     ('left', 'PUNTO'),
-
 )
 
 
@@ -298,6 +297,8 @@ def p_instrucion(p):
                 | modificacion_arreglo
                 | declaracion_struct
                 | modificacion_struct
+                | funcion_push
+                | funcion_pop
     '''
     p[0] = p[1]
 
@@ -499,16 +500,24 @@ def p_modificacion_arreglo(p):
 def p_delcarar_Var(p):
     '''
     declarar_var    : referencia_ambito IDENTIFICADOR IGUAL expresion DOBLE_DOS_PTS tipo
+                    | referencia_ambito IDENTIFICADOR DOBLE_DOS_PTS tipo IGUAL expresion
                     | referencia_ambito IDENTIFICADOR IGUAL expresion
                     | IDENTIFICADOR IGUAL expresion DOBLE_DOS_PTS tipo
+                    | IDENTIFICADOR DOBLE_DOS_PTS tipo IGUAL expresion
                     | IDENTIFICADOR IGUAL expresion
     '''
     if len(p) == 7:
-        p[0] = DecVar(p[1], p[2], p[4], p[6], p.lineno(1), getColumna(p.lexpos(1)))
+        if p.slice[3].type == 'IGUAL':
+            p[0] = DecVar(p[1], p[2], p[4], p[6], p.lineno(1), getColumna(p.lexpos(1)))
+        else:
+            p[0] = DecVar(p[1], p[2], p[6], p[4], p.lineno(1), getColumna(p.lexpos(1)))
     elif len(p) == 5:
         p[0] = DecVar(p[1], p[2], p[4], None, p.lineno(1), getColumna(p.lexpos(1)))
     elif len(p) == 6:
-        p[0] = DecVar("local", p[1], p[3], p[5], p.lineno(1), getColumna(p.lexpos(1)))
+        if p.slice[2].type == 'IGUAL':
+            p[0] = DecVar("local", p[1], p[3], p[5], p.lineno(1), getColumna(p.lexpos(1)))
+        else:
+            p[0] = DecVar("local", p[1], p[5], p[3], p.lineno(1), getColumna(p.lexpos(1)))
     elif len(p) == 4:
         p[0] = DecVar("local", p[1], p[3], None, p.lineno(1), getColumna(p.lexpos(1)))
 

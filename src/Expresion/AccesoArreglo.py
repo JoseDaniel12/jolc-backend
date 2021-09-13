@@ -3,7 +3,7 @@ from src.Errores.TablaErrores import *
 from src.Reportes.Cst import *
 
 class AccesoArreglo(Expresion):
-    def __init__(self, expArreglo: Arreglo, expAcceso,  linea, columna):
+    def __init__(self, expArreglo: Arreglo, expAcceso, linea, columna):
         Expresion.__init__(self, linea, columna)
         self.expArreglo = expArreglo
         self.expAcceso = expAcceso
@@ -23,7 +23,7 @@ class AccesoArreglo(Expresion):
             agregarError(Error(f"El indice de acceso de un arreglo debe ser {TipoDato.ENTERO.value} o un Rango", self.linea,self.columna))
             return None
         elif simboloAcceso.tipo != TipoDato.ARREGLO and (simboloAcceso.valor < 1 or simboloAcceso.valor > len(simboloArreglo.valor)):
-            agregarError(Error(f"El indice no se encuentra en un rango aceptado", self.linea, self.columna))
+            agregarError(Error(f"El indice {simboloAcceso.valor} no se encuentra en un rango aceptado", self.linea, self.columna))
             return None
 
         if simboloArreglo.tipo != TipoDato.ARREGLO:

@@ -39,7 +39,11 @@ class FuncLogaritmica(Expresion):
             agregarError(Error(f"{self.tipoFunc} espera un valor de tipo {TipoDato.ENTERO.name} o {TipoDato.DECIMAL.name}", self.linea, self.columna))
             return None
 
-        res.valor = math.log(simboloValor.valor, simboloBase.valor)
+        if simboloBase.valor == 10:
+            res.valor = math.log10(simboloValor.valor)
+        else:
+            res.valor = math.log(simboloValor.valor, simboloBase.valor)
+
         if res.valor - int(res.valor) == 0:
             res.tipo = TipoDato.ENTERO
         else:

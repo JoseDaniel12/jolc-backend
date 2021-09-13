@@ -6,6 +6,7 @@ class ResExp:
         self.breakEncontrado = ""
         self.continueEncontrado = ""
         self.returnEncontrado = ""
+        self.returnSimbolo = None
         self.valor = valor
         self.tipo = tipo
 

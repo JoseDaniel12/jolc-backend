@@ -26,8 +26,16 @@ class OpLogica(Expresion):
             res.tipo = TipoDato.BOOLEANO
         else:
             simboloOpIzq = self.opIzq.ejecutar(ambito)
+            if simboloOpIzq is not None:
+                if simboloOpIzq.valor == False and self.tipo == TipoExpLogica.AND:
+                    return ResExp(False, TipoDato.BOOLEANO)
+                elif simboloOpIzq.valor == True and self.tipo == TipoExpLogica.OR:
+                    return ResExp(True, TipoDato.BOOLEANO)
             simboloOpDer = self.opDer.ejecutar(ambito)
-            if simboloOpIzq.tipo != TipoDato.BOOLEANO  or simboloOpDer.tipo != TipoDato.BOOLEANO:
+
+            if simboloOpIzq is None or simboloOpDer is None:
+                return None
+            elif simboloOpIzq.tipo != TipoDato.BOOLEANO  or simboloOpDer.tipo != TipoDato.BOOLEANO:
                 agregarError(Error(f"{self.tipo.value} fallido ambos operandos deben ser booleanos.", self.linea, self.columna))
                 return None
             else:

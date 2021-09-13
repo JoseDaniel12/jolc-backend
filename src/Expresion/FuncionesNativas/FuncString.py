@@ -16,6 +16,8 @@ class FuncString(Expresion):
             return None
 
         res.valor = simboloExp.getPresentationMode()
+        if simboloExp.tipo == TipoDato.CADENA or simboloExp.tipo == TipoDato.CARACTER:
+            res.valor = res.valor[1:len(res.valor)-1]
         res.tipo = TipoDato.CADENA
 
         return res
