@@ -3,7 +3,7 @@ from flask_cors import CORS
 import sys
 from src.Analizador.grammar import *
 
-sys.setrecursionlimit(10000)
+sys.setrecursionlimit(10000000)
 app = Flask(__name__)
 CORS(app)
 

@@ -3,6 +3,20 @@ from src.Instruccion.ResIns import ResIns
 from src.Tipos.TipoDato import *
 from src.Reportes.Cst import *
 
+textoConsola = ""
+
+def clearTextoConsola():
+    global textoConsola
+    textoConsola = ""
+
+def addTextoConsola(texto):
+    global textoConsola
+    textoConsola += texto
+
+def getTextoConsola():
+    global textoConsola
+    return textoConsola
+
 class Print(Instruction):
     def __init__(self, listaExp, linea, columna, isEnter = False):
         Instruction.__init__(self, linea, columna)
@@ -25,6 +39,8 @@ class Print(Instruction):
         if self.isEnter:
             texto += "\n"
         res.textoConsola += texto
+        global textoConsola
+        addTextoConsola(texto)
         return res
 
 

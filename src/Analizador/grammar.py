@@ -16,7 +16,6 @@ from src.Instruccion.Bucles.For import *
 from src.Instruccion.Funcion.Parametro import *
 from src.Instruccion.Funcion.DecFuncion import *
 from src.Expresion.AccesoArreglo import *
-from src.SentenciaHibrida.LlamadaFuncStruct import *
 from src.Expresion.OpLogica import *
 from src.Instruccion.SentenciasTransferencia.Return import *
 from src.Instruccion.SentenciasTransferencia.Break import *
@@ -898,6 +897,7 @@ def armarCst(entrada):
 def parse(entrada):
     global miEntrada
     resetMemo()
+    clearTextoConsola()
     miEntrada = entrada
     limpiarTablaErrores()
     limpiarTablaSimbolos()
@@ -908,8 +908,8 @@ def parse(entrada):
     textoSalida = ""
     ambitoGlobal = Ambito(None, "GLOBAL")
     for ins in listaIns:
-        textoSalida += ins.ejecutar(ambitoGlobal).textoConsola
-    textoSalida = getTablaErroresAsString() + textoSalida
+        ins.ejecutar(ambitoGlobal)
+    textoSalida = getTablaErroresAsString() + getTextoConsola()
 
     resCompilado = {
         "textoSalida": textoSalida,
