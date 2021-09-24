@@ -31,7 +31,7 @@ class For(Instruction):
             res.textoConsola += resIns.textoConsola
             if resIns.breakEncontrado:
                 return res
-            elif res.returnSimbolo:
+            elif resIns.returnEncontrado:
                 res.returnEncontrado = True
                 res.returnSimbolo = resIns.returnSimbolo
                 return res
