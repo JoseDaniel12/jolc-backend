@@ -22,6 +22,9 @@ class Arreglo(Expresion):
         return res
 
 
+    def compilar(self, ambito):
+        pass
+
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "ARREGLO", idPadre)
         if len(self.listaExps) > 0:

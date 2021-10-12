@@ -8,9 +8,11 @@ class Ambito:
     def __init__(self, anterior, nombre):
         self.anterior = anterior
         self.nombre = nombre
+        self.size = 0
         self.variables = {}
         self.funciones = {}
         self.estructuras = {}
+        self.temporales = []
 
     def getAmbitoGlobal(self):
         ambitoActual = self
@@ -24,13 +26,15 @@ class Ambito:
                 agregarSimboloTabla(SimboloTabla(id, simbolo.valor.tipoStruct, self.getAsString(), simbolo.linea, simbolo.columna))
             else:
                 agregarSimboloTabla(SimboloTabla(id, simbolo.tipo.name, self.getAsString(), simbolo.linea, simbolo.columna))
+            self.size += 1
         elif type(simbolo) == SimboloFuncion:
             agregarSimboloTabla(SimboloTabla(id, "funcion", self.getAsString(), simbolo.linea, simbolo.columna))
         elif type(simbolo) == SimboloStruct:
             agregarSimboloTabla(SimboloTabla(id, "struct", self.getAsString(), simbolo.linea, simbolo.columna))
-        else:
-            print("hola")
+
+        simbolo.posAmbito = self.size - 1
         self.variables[id] = simbolo
+        return simbolo.posAmbito
 
     def existeSimbolo(self, id):
         ambitoActual = self
@@ -47,6 +51,22 @@ class Ambito:
                 return ambitoActual.variables[id]
             ambitoActual = ambitoActual.anterior
         return None
+
+    def getAmbitoSimbolo(self, id):
+        ambitoActual = self
+        while ambitoActual is not None:
+            if id in ambitoActual.variables:
+                return ambitoActual
+            ambitoActual = ambitoActual.anterior
+        return None
+
+    def getProfundida(self):
+        profundiad = 0
+        ambitoActual = self
+        while ambitoActual is not None:
+            profundiad += ambitoActual.size
+            ambitoActual = ambitoActual.anterior
+        return profundiad
 
     def getAsString(self):
         listaAmbitos = []

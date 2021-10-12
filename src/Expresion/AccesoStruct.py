@@ -25,6 +25,10 @@ class AccesosStruct(Expresion):
         return res
 
 
+    def compilar(self, ambito):
+        pass
+
+
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "ACCESO_STRUCT", idPadre)
         #expStruct

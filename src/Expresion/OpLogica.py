@@ -1,17 +1,16 @@
-from src.Expresion.Expresion import *
 from src.Tipos.TipoExpLogica import *
-from src.Expresion.ResExp import *
-from src.Tipos.TipoDato import *
-from src.Errores.TablaErrores import *
-from src.Errores.Error import *
-from src.Reportes.Cst import *
+from src.Expresion.AtomicExp import *
+from src.Compilacion.GenCod3d import *
 
 class OpLogica(Expresion):
-    def __init__(self,opIzq, opDer, tipo, fila, columna):
+    def __init__(self, opIzq, opDer, tipo, fila, columna):
         Expresion.__init__(self, fila, columna)
         self.opIzq = opIzq
-        self.opDer= opDer
+        self.opDer = opDer
         self.tipo = tipo
+        self.lbl_true = ''
+        self.lbl_false = ''
+        self.lbl_intermedio = ''
 
     def ejecutar(self, ambito):
         res = ResExp(None, None)
@@ -20,32 +19,53 @@ class OpLogica(Expresion):
             if simboloOp is None:
                 return None
             elif simboloOp.tipo != TipoDato.BOOLEANO:
-                agregarError(Error(f"{self.tipo.value} el operador debe ser {TipoDato.BOOLEANO.value}.", self.linea, self.columna))
+                agregarError(Error(f"{self.tipo.name} el operador debe ser {TipoDato.BOOLEANO.name}.", self.linea, self.columna))
                 return None
             res.valor = not simboloOp.valor
             res.tipo = TipoDato.BOOLEANO
         else:
             simboloOpIzq = self.opIzq.ejecutar(ambito)
-            if simboloOpIzq is not None:
-                if simboloOpIzq.valor == False and self.tipo == TipoExpLogica.AND:
-                    return ResExp(False, TipoDato.BOOLEANO)
-                elif simboloOpIzq.valor == True and self.tipo == TipoExpLogica.OR:
-                    return ResExp(True, TipoDato.BOOLEANO)
             simboloOpDer = self.opDer.ejecutar(ambito)
+            if simboloOpIzq.tipo != TipoDato.BOOLEANO  or simboloOpDer.tipo != TipoDato.BOOLEANO:
+                agregarError(Error(f"{self.tipo.name} fallido ambos operandos deben ser booleanos.", self.linea, self.columna))
+                return None
+            res.tipo = TipoDato.BOOLEANO
+            if self.tipo == TipoExpLogica.OR:
+                res.valor = simboloOpIzq.valor or simboloOpDer.valor
+            elif self.tipo == TipoExpLogica.AND:
+                res.valor = simboloOpIzq.valor and simboloOpDer.valor
+            elif self.tipo == TipoExpLogica.NOT:
+                res.valor = not simboloOpIzq.valor
+        return res
 
-            if simboloOpIzq is None or simboloOpDer is None:
-                return None
-            elif simboloOpIzq.tipo != TipoDato.BOOLEANO  or simboloOpDer.tipo != TipoDato.BOOLEANO:
-                agregarError(Error(f"{self.tipo.value} fallido ambos operandos deben ser booleanos.", self.linea, self.columna))
-                return None
-            else:
-                res.tipo = TipoDato.BOOLEANO
-                if self.tipo == TipoExpLogica.OR:
-                    res.valor = simboloOpIzq.valor or simboloOpDer.valor
-                elif self.tipo == TipoExpLogica.AND:
-                    res.valor = simboloOpIzq.valor and simboloOpDer.valor
-                elif self.tipo == TipoExpLogica.NOT:
-                    res.valor = not simboloOpIzq.valor
+
+    def compilar(self, ambito, sectionCodigo3d):
+        lbl_intermedio = GenCod3d.addLabel()
+        if self.lbl_true == '':
+            self.lbl_true = GenCod3d.addLabel()
+        if self.lbl_false == '':
+            self.lbl_false = GenCod3d.addLabel()
+        res = ResExp(None, TipoDato.BOOLEANO)
+        res.lbl_true = self.lbl_true
+        res.lbl_false = self.lbl_false
+
+        if self.tipo == TipoExpLogica.NOT:
+            self.opIzq.lbl_true = self.lbl_false
+            self.opIzq.lbl_false = self.lbl_true
+            self.opIzq.compilar(ambito, sectionCodigo3d)
+        else:
+            if self.tipo == TipoExpLogica.AND:
+                self.opIzq.lbl_false = self.opDer.lbl_false = self.lbl_false
+                self.opDer.lbl_true = self.lbl_true
+                self.opIzq.lbl_true = lbl_intermedio
+            elif self.tipo == TipoExpLogica.OR:
+                self.opIzq.lbl_true = self.opDer.lbl_true = self.lbl_true
+                self.opDer.lbl_false = self.lbl_false
+                self.opIzq.lbl_false = lbl_intermedio
+            self.opIzq.compilar(ambito, sectionCodigo3d)
+            GenCod3d.addCodigo3d(f'{lbl_intermedio}: \n', sectionCodigo3d)
+            self.opDer.compilar(ambito, sectionCodigo3d)
+
         return res
 
 

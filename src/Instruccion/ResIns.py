@@ -4,4 +4,8 @@ class ResIns:
     continueEncontrado = False
     returnEncontrado = False
     returnSimbolo = None
-
+    lbl_true = ""
+    lbl_false = ""
+    lbl_break = ""
+    lbl_continue = ""
+    lebl_return = ""

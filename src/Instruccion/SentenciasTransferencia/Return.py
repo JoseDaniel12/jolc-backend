@@ -22,5 +22,13 @@ class Return(Instruction):
         return res
 
 
+    def compilar(self, ambito, sectionCode3d):
+        res = ResIns()
+        if self.expresion is not None:
+            simboloExp = self.expresion.compilar(ambito, sectionCode3d)
+            GenCod3d.addCodigo3d(f'stack[int(sp)] = {simboloExp.valor}; \n', sectionCode3d)
+        GenCod3d.addCodigo3d(f'goto {self.lbl_return}; \n\n', sectionCode3d)
+        return res
+
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "return", idPadre)

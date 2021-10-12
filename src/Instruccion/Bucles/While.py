@@ -1,8 +1,8 @@
 from src.Instruccion.Instruccion import *
 from src.Entorno.Ambito import *
 from src.Instruccion.ejecutarBloqueIns import *
-from src.Errores.TablaErrores import *
 from src.Reportes.Cst import *
+from src.Compilacion.GenCod3d import *
 
 class While(Instruction):
     def __init__(self, condicion, listaIns, linea, columna):
@@ -35,6 +35,35 @@ class While(Instruction):
                 return resWhile
 
         return resWhile
+
+
+    def compilar(self, ambito, sectionCode3d):
+        resWhile = ResIns()
+
+        nuevoAmbito = Ambito(ambito, "While")
+        lbl_inicioWhile = GenCod3d.addLabel()
+        lbl_instruccionesWhile = GenCod3d.addLabel()
+        lbl_finWhile = GenCod3d.addLabel()
+
+        self.condicion.lbl_true = lbl_instruccionesWhile
+        self.condicion.lbl_false = lbl_finWhile
+
+        GenCod3d.addCodigo3d(f'{lbl_inicioWhile}: \n', sectionCode3d)
+        self.condicion.compilar(ambito, sectionCode3d)
+        GenCod3d.addCodigo3d(f'{lbl_instruccionesWhile}: \n', sectionCode3d)
+        #compilo mis instrucciones
+        nuevoAmbito = Ambito(ambito, "While")
+        for ins in self.listaIns:
+            ins.lbl_destino = lbl_inicioWhile
+            ins.compilar(nuevoAmbito, sectionCode3d)
+
+
+        GenCod3d.addCodigo3d(f'goto {lbl_inicioWhile}; \n', sectionCode3d)
+        GenCod3d.addCodigo3d(f'{lbl_finWhile}: \n', sectionCode3d)
+
+
+
+
 
 
     def generateCst(self, idPadre):

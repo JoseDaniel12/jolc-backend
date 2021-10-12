@@ -1,9 +1,8 @@
 from src.Instruccion.Instruccion import *
 from src.Instruccion.ResIns import *
-from src.Entorno.SimboloFuncion import *
-from src.Errores.TablaErrores import *
-from src.Entorno.SimboloVariable import *
 from src.Reportes.Cst import *
+from src.Entorno.Ambito import *
+from src.Compilacion.GenCod3d import *
 
 class DecFuncion(Instruction):
     def __init__(self, id, listaParams, listaIns, linea, columna):
@@ -22,6 +21,34 @@ class DecFuncion(Instruction):
             return res
         else:
             ambito.addVariable(self.id, simboloFunc)
+        return res
+
+
+    def compilar(self, ambito, sectionCodigo3d):
+        res = ResIns()
+        simboloFunc = SimboloFuncion(self.id, self.listaParams, self.listaIns, self.linea, self.columna)
+        simboloExistente = ambito.getVariable(self.id)
+        if simboloExistente is not None and type(simboloExistente) == SimboloVariable:
+            agregarError(Error(f"Redefinicion invalida de {self.id}", self.linea,self.columna))
+            return res
+        ambito.addVariable(self.id, simboloFunc)
+        lbl_finFuncion = GenCod3d.addLabel()
+
+        sectionCodigo3d = "funciones"
+        GenCod3d.funciones3d += f'func {self.id}()  {{ \n'
+        nuevoAmbito = Ambito(ambito, self.id)
+
+        #parametros
+        for i, param in enumerate(self.listaParams):
+            nuevoAmbito.addVariable(param.id,SimboloVariable(param.id, "", param.tipo, param.linea, param.columna))
+        #instrucciones
+        for ins in self.listaIns:
+            ins.lbl_return = lbl_finFuncion
+            ins.compilar(nuevoAmbito, sectionCodigo3d)
+
+        GenCod3d.addCodigo3d(f'{lbl_finFuncion}: \n', sectionCodigo3d)
+        GenCod3d.addCodigo3d(f'return; \n', sectionCodigo3d)
+        GenCod3d.funciones3d +='} \n'
         return res
 
 

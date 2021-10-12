@@ -38,6 +38,15 @@ class For(Instruction):
         return res
 
 
+    def compilar(self, ambito, sectionCod3d):
+        res = ResIns()
+        simboloExp = self.expresion.compilar(ambito, sectionCod3d)
+        if simboloExp is  None:
+            return res
+
+        return res
+
+
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "FOR", idPadre)
         #id

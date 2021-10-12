@@ -1,14 +1,17 @@
 from src.Tipos.TipoDato import *
+from src.Compilacion.GenCod3d import *
 
 class ResExp:
     def __init__(self, valor, tipo):
-        self.textoConsola = "" #eliminar al poner global los prints
+        self.textoConsola = ""
         self.breakEncontrado = ""
         self.continueEncontrado = ""
         self.returnEncontrado = ""
         self.returnSimbolo = None
         self.valor = valor
         self.tipo = tipo
+        self.lbl_true = ''
+        self.lbl_false = ''
 
     def getPresentationMode(self):
         if self.tipo == TipoDato.ARREGLO:
@@ -38,6 +41,8 @@ class ResExp:
                 return str(self.valor).lower()
             return str(self.valor)
 
-
-    def generateCst(self, idPadre):
-        pass
+    def getCompilationMode(self):
+        if self.tipo == TipoDato.Arreglo:
+            pass
+        elif self.tipo == TipoDato.STRUCT:
+            pass

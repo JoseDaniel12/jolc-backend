@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sys
+
 from src.Analizador.grammar import *
 
 sys.setrecursionlimit(10000000)
@@ -29,6 +30,11 @@ def getErrores():
 def getCst():
     texto = request.json['entrada']
     return jsonify(armarCst(texto))
+
+@app.route("/compilar3d", methods=['POST'])
+def compilar3d():
+    texto = request.json['entrada']
+    return jsonify(generarCodigo3d(texto))
 
 @app.route("/")
 def pruebas():

@@ -1,4 +1,4 @@
-#!/home/jose/Desktop/jolc-backend/venv/bin/python
+#!/home/jose/Desktop/jolc/jolc-backend/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

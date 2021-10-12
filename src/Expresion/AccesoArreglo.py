@@ -39,6 +39,10 @@ class AccesoArreglo(Expresion):
         return res
 
 
+    def compilar(self, ambito):
+        pass
+
+
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "ACCESO_ARREGLO", idPadre)
         #expArreglo

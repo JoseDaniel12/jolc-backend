@@ -23,7 +23,3 @@ class Rango(Expresion):
             res.valor = valores
             res.tipo = TipoDato.ARREGLO
         return res
-
-
-    def generateCst(self, idPadre):
-        pass

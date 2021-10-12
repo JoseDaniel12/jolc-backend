@@ -4,11 +4,9 @@ class Parametro:
     def __init__(self, id, tipo, linea, columna):
         self.idSent = getNewId()
         self.id = id
-        self.id = id
         self.tipo = tipo
         self.linea = linea
         self.columna = columna
-
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "PARAMETRO", idPadre)

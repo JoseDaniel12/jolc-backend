@@ -6,3 +6,5 @@ class Simbolo(ABC):
         self.tipoSimbolo = tipoSimbolo
         self.linea = linea
         self.columna = columna
+        self.lbl_true = ''
+        self.lbl_false = ''

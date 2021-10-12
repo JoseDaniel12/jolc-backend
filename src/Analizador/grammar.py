@@ -3,7 +3,6 @@ import src.Analizador.ply.lex as lex
 
 from src.Instruccion.Print import *
 from src.Expresion.OpAritemtica import *
-from src.Expresion.AtomicExp import *
 from src.Tipos.TipoExpArtimetica import *
 from src.Expresion.OpRelacional import *
 from src.Tipos.TipoExpRelacional import *
@@ -39,6 +38,7 @@ from src.Expresion.FuncionesNativas.Uppercase import *
 from src.Expresion.FuncionesNativas.LowerCase import *
 from src.SentenciaHibrida.LlamadaFuncStruct import *
 from src.Reportes.Cst import *
+from src.Compilacion.GenCod3d import *
 
 res = {
     "listaIns": []
@@ -656,7 +656,7 @@ def p_for(p):
     if len(p) == 7:
         p[0] = For(p[2], p[4], p[5], p.lineno(1), getColumna(p.lexpos(1)))
     elif len(p) == 6:
-        pass
+        p[0] = For(p[2], p[4], [], p.lineno(1), getColumna(p.lexpos(1)))
 
 
 def p_dec_funcion(p):
@@ -876,6 +876,27 @@ def p_error(p):
 # ________________________________________________PARSE_METHOD________________________________________________
 parser = yacc.yacc()
 
+def parse(entrada):
+    global miEntrada
+    resetMemo()
+    clearTextoConsola()
+    miEntrada = entrada
+    limpiarTablaErrores()
+    limpiarTablaSimbolos()
+
+    listaIns = parser.parse(entrada)
+    ambitoGlobal = Ambito(None, "GLOBAL")
+    for ins in listaIns:
+        ins.ejecutar(ambitoGlobal)
+    textoSalida = getTablaErroresAsString() + getTextoConsola()
+
+    resCompilado = {
+        "textoSalida": textoSalida,
+        "tablaErrores": getTablaErroresAsJson(),
+        "tablaSimbolos": getTablaSimbolosAsSerializable(),
+    }
+
+    return resCompilado
 
 def armarCst(entrada):
     limpiarCst()
@@ -893,28 +914,12 @@ def armarCst(entrada):
 
     return cst
 
-
-def parse(entrada):
-    global miEntrada
-    resetMemo()
-    clearTextoConsola()
-    miEntrada = entrada
+def generarCodigo3d(entrada):
+    GenCod3d.resetCompileData()
     limpiarTablaErrores()
     limpiarTablaSimbolos()
-
-    listaIns = []
-    listaIns = parser.parse(entrada)
-
-    textoSalida = ""
     ambitoGlobal = Ambito(None, "GLOBAL")
+    listaIns = parser.parse(entrada)
     for ins in listaIns:
-        ins.ejecutar(ambitoGlobal)
-    textoSalida = getTablaErroresAsString() + getTextoConsola()
-
-    resCompilado = {
-        "textoSalida": textoSalida,
-        "tablaErrores": getTablaErroresAsJson(),
-        "tablaSimbolos": getTablaSimbolosAsSerializable(),
-    }
-
-    return resCompilado
+        ins.compilar(ambitoGlobal, "main")
+    return GenCod3d.getCodigo3d()
