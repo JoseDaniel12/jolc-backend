@@ -25,6 +25,7 @@ class AtomicExp(Expresion):
 
     def compilar(self, ambito, sectionCode3d):
         res = ResExp("", "")
+
         if self.tipo == TipoDato.IDENTIFICADOR:
             simbolo = ambito.getVariable(self.valor)
             if simbolo is None:
@@ -37,13 +38,19 @@ class AtomicExp(Expresion):
                 accesoStack = f'stack[int({tmp_varPosStack})]'
             tempString = GenCod3d.addTemporal()
             GenCod3d.addCodigo3d(f'{tempString} = {accesoStack}; \n', sectionCode3d)
+
             if simbolo.tipo == TipoDato.BOOLEANO:
                 simbolo.lbl_true = GenCod3d.addLabel()
                 simbolo.lbl_false = GenCod3d.addLabel()
                 GenCod3d.addCodigo3d(f'if ({tempString} == 1) {{ goto {simbolo.lbl_true}; }} \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'goto {simbolo.lbl_false}; \n', sectionCode3d)
-            simbolo.valor = tempString
-            return simbolo
+            res.valor = tempString
+            res.tipo = simbolo.tipo
+
+            if sectionCode3d == "funciones":
+                GenCod3d.temporales_funcion.append(tempString)
+            return res
+
         if self.tipo == TipoDato.NONE:
             self.valor = "NULL"
         elif self.tipo == TipoDato.BOOLEANO:

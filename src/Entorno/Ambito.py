@@ -26,13 +26,14 @@ class Ambito:
                 agregarSimboloTabla(SimboloTabla(id, simbolo.valor.tipoStruct, self.getAsString(), simbolo.linea, simbolo.columna))
             else:
                 agregarSimboloTabla(SimboloTabla(id, simbolo.tipo.name, self.getAsString(), simbolo.linea, simbolo.columna))
-            self.size += 1
+                self.size += 1
+                simbolo.posAmbito = self.size - 1
         elif type(simbolo) == SimboloFuncion:
             agregarSimboloTabla(SimboloTabla(id, "funcion", self.getAsString(), simbolo.linea, simbolo.columna))
+            simbolo.posAmbito = -1
         elif type(simbolo) == SimboloStruct:
             agregarSimboloTabla(SimboloTabla(id, "struct", self.getAsString(), simbolo.linea, simbolo.columna))
 
-        simbolo.posAmbito = self.size - 1
         self.variables[id] = simbolo
         return simbolo.posAmbito
 

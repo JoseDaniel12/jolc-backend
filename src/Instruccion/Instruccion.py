@@ -10,7 +10,6 @@ class Instruction(ABC):
         self.lbl_break = ''
         self.lbl_continue = ''
         self.lbl_return = ''
-        self.is_in_function = False
 
     @abstractmethod
     def ejecutar(self, ambito) -> ResIns:

@@ -85,27 +85,62 @@ class LlamadaFuncStruct:
             if len(self.listaExps) != len(resSimboloLlamada.listaParams):
                 agregarError(Error(f"Se esperaban {len(resSimboloLlamada.listaParams)} parametros y se obtuvieron {len(self.listaExps)}",self.linea, self.columna))
                 return res
+
+            GenCod3d.addCodigo3d('\n\t/* Inicio de llamada de funcion */ \n', sectionCodigo3d)
+
+            # guardado de temporales
+            if len(GenCod3d.temporales_funcion) > 0:
+                GenCod3d.addCodigo3d('\n\t/* Inicio de guardado de temporales */ \n', sectionCodigo3d)
+                tmp_tempPosStack = GenCod3d.addTemporal()
+                for i, temporal in enumerate(GenCod3d.temporales_funcion):
+                    GenCod3d.addCodigo3d(f'{tmp_tempPosStack} = sp + {ambito.size + i + 1}; \n', sectionCodigo3d)
+                    GenCod3d.addCodigo3d(f'stack[int({tmp_tempPosStack})] = {temporal}; \n', sectionCodigo3d)
+                GenCod3d.addCodigo3d('/* Fin de guarado de temporales */ \n\n', sectionCodigo3d)
+
+            #paso de parametros
+            temps_params = []
+            GenCod3d.addCodigo3d('\n\t/* Inicio de paso de parametros */ \n', sectionCodigo3d)
             tmp_paramPosStack = GenCod3d.addTemporal()
             for i in range(len(self.listaExps)):
                 simboloParam = self.listaExps[i].compilar(ambito, sectionCodigo3d)
                 if simboloParam.tipo != resSimboloLlamada.listaParams[i].tipo and resSimboloLlamada.listaParams[i].tipo is not None:
                     agregarError(Error(f"Se esperaban tipo {resSimboloLlamada.listaParams[i].tipo.name} y se obtuvo {simboloParam.tipo.name}",self.linea, self.columna))
                     return res
-                avance = ambito.getProfundida() + i + 1
-                if ambito.nombre != "GLOBAL":
-                    avance += 1
-                GenCod3d.addCodigo3d(f'{tmp_paramPosStack} = sp + {avance}; \n', sectionCodigo3d)
-                GenCod3d.addCodigo3d(f'stack[int({tmp_paramPosStack})] = {simboloParam.valor}; \n', sectionCodigo3d)
+                temps_params.append(simboloParam.valor)
+            for i, p in enumerate(temps_params):
+                GenCod3d.addCodigo3d('/* Parametro:  */ \n', sectionCodigo3d)
+                GenCod3d.addCodigo3d(f'{tmp_paramPosStack} = sp + {ambito.size + len(GenCod3d.temporales_funcion)+ i + 1}; \n', sectionCodigo3d)
+                GenCod3d.addCodigo3d(f'stack[int({tmp_paramPosStack})] = {p}; \n', sectionCodigo3d)
+            GenCod3d.addCodigo3d('/* Fin de paso de parametros */ \n\n', sectionCodigo3d)
 
-            avance = ambito.getProfundida()
-            if ambito.nombre != "GLOBAL":
-                avance += 1
-            tmp_retrunValue = GenCod3d.addTemporal()
+            # cambio de ambito
+            avance = ambito.size + len(GenCod3d.temporales_funcion)
             GenCod3d.addCodigo3d(f'sp = sp + {avance}; \n', sectionCodigo3d)
+
+            # llamada funcion
+            tmp_retrunValue = GenCod3d.addTemporal()
             GenCod3d.addCodigo3d(f'{resSimboloLlamada.id}(); \n', sectionCodigo3d)
             GenCod3d.addCodigo3d(f'{tmp_retrunValue} = stack[int(sp)]; \n', sectionCodigo3d)
-            GenCod3d.addCodigo3d(f'sp = sp - {avance}; \n\n', sectionCodigo3d)
             res.valor = tmp_retrunValue
+
+            # regreso de ambito
+            GenCod3d.addCodigo3d(f'sp = sp - {avance}; \n', sectionCodigo3d)
+            GenCod3d.addCodigo3d('/* Fin de llamada de funcion */ \n\n', sectionCodigo3d)
+
+            # se marcan como usados los temporles de la funcion luego de usarse
+            for temp in temps_params:
+                GenCod3d.limpiar_temps_usados(temp)
+
+            # recuperado de temporales de funcion recursiva
+            if len(GenCod3d.temporales_funcion) > 0:
+                GenCod3d.addCodigo3d('\n\t/* Inicio de recuperacion de temporales */ \n', sectionCodigo3d)
+                tmp_tempPosStack = GenCod3d.addTemporal()
+                for i, temporal in enumerate(GenCod3d.temporales_funcion):
+                    GenCod3d.addCodigo3d(f'{tmp_tempPosStack} = sp + {ambito.size + i + 1}; \n', sectionCodigo3d)
+                    GenCod3d.addCodigo3d(f'{temporal} = stack[int({tmp_tempPosStack})]; \n', sectionCodigo3d)
+                GenCod3d.addCodigo3d('/* Fin de recuperacion de temporales */ \n\n', sectionCodigo3d)
+
+
             res.tipo = TipoDato.ENTERO
 
         elif type(resSimboloLlamada) == SimboloStruct:
@@ -114,6 +149,9 @@ class LlamadaFuncStruct:
                 simboloExp = self.listaExps[i].ejecutar(ambito)
                 valoresPropsInstacia[resSimboloLlamada.propiedades[i].id] = simboloExp
             return ResExp(StructInstance(self.id, resSimboloLlamada.isMutable,valoresPropsInstacia), TipoDato.STRUCT)
+
+        if sectionCodigo3d == "funciones":
+            GenCod3d.temporales_funcion.append(res.valor)
         return res
 
 

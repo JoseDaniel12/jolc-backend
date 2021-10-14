@@ -77,14 +77,14 @@ class OpRelacional(Expresion):
                 GenCod3d.addCodigo3d(f'{tmp_retorno} = stack[int(sp)]; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'sp = sp - {ambito.size}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'if ({tmp_retorno} == 1) {{ goto {self.lbl_true} }} \n', sectionCode3d)
-                if self.is_in_function:
-                    ambito.append(tmp_retorno)
             else:
                 GenCod3d.addCodigo3d(f'if ({simboloOpIzq.valor} == {simboloOpDer.valor}) {{ goto {self.lbl_true}; }} \n', sectionCode3d)
         elif self.tipo == TipoExpRelacional.NOIGUAL:
             GenCod3d.addCodigo3d(f'if ({simboloOpIzq.valor} != {simboloOpDer.valor}) {{ goto {self.lbl_true}; }} \n', sectionCode3d)
 
         GenCod3d.addCodigo3d(f'goto {self.lbl_false}; \n', sectionCode3d)
+        GenCod3d.limpiar_temps_usados(simboloOpIzq.valor)
+        GenCod3d.limpiar_temps_usados(simboloOpDer.valor)
         return res
 
 

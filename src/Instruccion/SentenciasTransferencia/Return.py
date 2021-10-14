@@ -27,6 +27,7 @@ class Return(Instruction):
         if self.expresion is not None:
             simboloExp = self.expresion.compilar(ambito, sectionCode3d)
             GenCod3d.addCodigo3d(f'stack[int(sp)] = {simboloExp.valor}; \n', sectionCode3d)
+            GenCod3d.limpiar_temps_usados(simboloExp.valor)
         GenCod3d.addCodigo3d(f'goto {self.lbl_return}; \n\n', sectionCode3d)
         return res
 

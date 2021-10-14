@@ -10,6 +10,16 @@ class GenCod3d(object):
     funciones3d = ""
     funcNativas3d = ""
     nativasAgregadas = []
+    temporales_funcion = []
+    etiquetas_retorno = {}
+
+    @staticmethod
+    def limpiar_temps_usados(temporal):
+        if temporal in GenCod3d.temporales_funcion:
+            GenCod3d.temporales_funcion.reverse()
+            GenCod3d.temporales_funcion.remove(temporal)
+            GenCod3d.temporales_funcion.reverse()
+
 
     @staticmethod
     def getCodigo3d():
@@ -47,6 +57,7 @@ class GenCod3d(object):
         GenCod3d.funciones3d = ""
         GenCod3d.funcNativas3d  = ""
         GenCod3d.nativasAgregadas.clear()
+        GenCod3d.temporales_funcion.clear()
 
     @staticmethod
     def addComentario(self, comentario):
@@ -66,10 +77,10 @@ class GenCod3d(object):
         return temp
 
     @staticmethod
-    def addCodigo3d(codigo, option = "main"):
-        if option == "main":
+    def addCodigo3d(codigo, sectionCode3d = "main"):
+        if sectionCode3d == "main":
             GenCod3d.codigo3d += f'\t{codigo}'
-        elif option == "funciones":
+        elif sectionCode3d == "funciones":
             GenCod3d.funciones3d += f'\t{codigo}'
 
     @staticmethod

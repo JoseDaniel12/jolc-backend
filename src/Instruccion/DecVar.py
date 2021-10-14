@@ -41,6 +41,7 @@ class DecVar(Instruction):
         res = ResIns()
         if self.conValor:
             simboloExp = self.expresion.compilar(ambito, sectionCode3d)
+            GenCod3d.limpiar_temps_usados(simboloExp.valor)
             if simboloExp is None:
                 return res
             elif simboloExp.tipo != self.tipo and self.tipo is not None:

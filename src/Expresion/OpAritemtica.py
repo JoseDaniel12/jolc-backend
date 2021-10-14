@@ -246,8 +246,12 @@ class OpAritmetica(Expresion):
             GenCod3d.addCodigo3d(f'{tempDestino} = 0 - {simboloOpIzq.valor}; \n', sectionCode3d)
             res.valor = tempDestino
 
-        if self.is_in_function:
-            ambito.append(res.valor)
+        if sectionCode3d == "funciones":
+            GenCod3d.temporales_funcion.append(res.valor)
+            if simboloOpIzq is not None:
+                GenCod3d.limpiar_temps_usados(simboloOpIzq.valor)
+            if simboloOpDer is not None:
+                GenCod3d.limpiar_temps_usados(simboloOpDer.valor)
         return res
 
 
