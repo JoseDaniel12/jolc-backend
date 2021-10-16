@@ -10,3 +10,4 @@ class Simbolo(ABC):
         self.lbl_false = ''
         self.is_param = False
         self.ambito_id = -1
+        self.mapeo_tipos_arreglo = []

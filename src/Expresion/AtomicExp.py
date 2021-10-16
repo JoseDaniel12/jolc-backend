@@ -46,9 +46,13 @@ class AtomicExp(Expresion):
                 simbolo.lbl_false = GenCod3d.addLabel()
                 GenCod3d.addCodigo3d(f'if ({tempString} == 1) {{ goto {simbolo.lbl_true}; }} \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'goto {simbolo.lbl_false}; \n', sectionCode3d)
+
+            if simbolo.tipo == TipoDato.ARREGLO:
+                res.mapeo_tipos_arreglo = simbolo.mapeo_tipos_arreglo
+
             res.valor = tempString
             res.tipo = simbolo.tipo
-
+            res.posAmbito = simbolo.posAmbito
             if sectionCode3d == "funciones":
                 GenCod3d.temporales_funcion.append(tempString)
             return res
@@ -87,6 +91,7 @@ class AtomicExp(Expresion):
         else:
             res.valor = self.valor
             res.tipo = self.tipo
+
 
         return res
 

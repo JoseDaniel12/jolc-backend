@@ -7,6 +7,8 @@ class Arreglo(Expresion):
     def __init__(self, listaExps, linea, columna):
         Expresion.__init__(self, linea, columna)
         self.listaExps = listaExps
+        self.arreglo_padre = None
+        self.mapeo_tipos_arreglo = []
 
     def ejecutar(self, ambito):
         res = ResExp(None, None)
@@ -19,29 +21,39 @@ class Arreglo(Expresion):
                 return None
         res.valor = valores
         res.tipo = TipoDato.ARREGLO
+        res.es_elemento_arreglo = False
         return res
 
 
     def compilar(self, ambito, sectionCodigo3d):
         res = ResExp(None, None)
-        valores = []
         tmp_posVectorHeap = GenCod3d.addTemporal()
         tmp_posElementoHeap = GenCod3d.addTemporal()
-        GenCod3d.addCodigo3d(f'{tmp_posVectorHeap} = hp; \n')
-        GenCod3d.addCodigo3d(f'{tmp_posElementoHeap} = {tmp_posVectorHeap} + 1; \n')
-        GenCod3d.addCodigo3d(f'heap[int({tmp_posElementoHeap})] = {len(self.listaExps)}; \n')
-        GenCod3d.addCodigo3d(f'hp = hp + {len(self.listaExps) + 1}; \n\n')
+        GenCod3d.addCodigo3d(f'{tmp_posVectorHeap} = hp; \n', sectionCodigo3d)
+        GenCod3d.addCodigo3d(f'heap[int(hp)] = {len(self.listaExps)}; // En la primera posicion se pone el tamño del vector  \n', sectionCodigo3d)
+        GenCod3d.addCodigo3d(f'hp = hp + {len(self.listaExps) + 1}; // Se reserva el espacio del vector y su tamño \n', sectionCodigo3d)
+        GenCod3d.addCodigo3d(f'{tmp_posElementoHeap} = {tmp_posVectorHeap} + 1; // Se establece la posicion del primer elemento \n\n', sectionCodigo3d)
 
-        for exp in self.listaExps:
+        tipo_de_elementos = TipoDato.NONE
+        for i, exp in enumerate(self.listaExps):
+            exp.arreglo_padre = self
             simboloExp = exp.compilar(ambito, sectionCodigo3d)
             if simboloExp is None:
                 return None
-            GenCod3d.addCodigo3d(f'heap[int({tmp_posElementoHeap})] = {simboloExp.valor}; \n')
-            GenCod3d.addCodigo3d(f'{tmp_posElementoHeap} = {tmp_posVectorHeap} + 1; \n')
-            valores.append(simboloExp)
 
+            # define de que tipo son los elementos del arreglo
+            if i == len(self.listaExps) - 1:
+                self.mapeo_tipos_arreglo +=  simboloExp.mapeo_tipos_arreglo
+
+            GenCod3d.addCodigo3d(f'heap[int({tmp_posElementoHeap})] = {simboloExp.valor}; \n', sectionCodigo3d)
+            GenCod3d.addCodigo3d(f'{tmp_posElementoHeap} = {tmp_posElementoHeap} + 1; \n', sectionCodigo3d)
+            tipo_de_elementos = simboloExp.tipo
+
+        self.mapeo_tipos_arreglo.append(tipo_de_elementos)
+        GenCod3d.addCodigo3d('\n', sectionCodigo3d)
         res.valor = tmp_posVectorHeap
         res.tipo = TipoDato.ARREGLO
+        res.mapeo_tipos_arreglo = self.mapeo_tipos_arreglo
         return res
 
     def generateCst(self, idPadre):

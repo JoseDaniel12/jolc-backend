@@ -147,14 +147,15 @@ class OpAritmetica(Expresion):
                 tempStack = GenCod3d.addTemporal()
                 tempHeap = GenCod3d.addTemporal()
                 tempRetorno = GenCod3d.addTemporal()
+                avanceAmbito = ambito.size + len(GenCod3d.temporales_funcion)
                 GenCod3d.addCodigo3d(f'{tempStack} = sp + {ambito.size + 1}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'stack[int({tempStack})] = {simboloOpIzq.valor}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'{tempStack} = {tempStack} + 1; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'stack[int({tempStack})] = {simboloOpDer.valor}; \n', sectionCode3d)
-                GenCod3d.addCodigo3d(f'sp = sp + {ambito.size}; \n', sectionCode3d)
+                GenCod3d.addCodigo3d(f'sp = sp + {avanceAmbito}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'concatString(); \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'{tempRetorno} = stack[int(sp)]; \n', sectionCode3d)
-                GenCod3d.addCodigo3d(f'sp = sp - {ambito.size}; \n', sectionCode3d)
+                GenCod3d.addCodigo3d(f'sp = sp - {avanceAmbito}; \n', sectionCode3d)
                 res.valor = tempRetorno
             else:
                 if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or

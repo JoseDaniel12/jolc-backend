@@ -49,10 +49,11 @@ class Print(Instruction):
         texto = ""
         for i in range(len(self.listaExp)):
             simboloExp = self.listaExp[i].compilar(ambito, sectionCode3d)
-            GenCod3d.limpiar_temps_usados(simboloExp.valor)
             if simboloExp is None:
                 return res
-            elif simboloExp.tipo == TipoDato.ENTERO or simboloExp.tipo == TipoDato.DECIMAL:
+
+            GenCod3d.limpiar_temps_usados(simboloExp.valor)
+            if simboloExp.tipo == TipoDato.ENTERO or simboloExp.tipo == TipoDato.DECIMAL:
                 GenCod3d.addCodigo3d(f'fmt.Print({simboloExp.valor}); \n', sectionCode3d)
             elif simboloExp.tipo == TipoDato.NONE:
                 GenCod3d.addCodigo3d('fmt.Printf("%c", 110); \n', sectionCode3d)
@@ -69,15 +70,19 @@ class Print(Instruction):
                 GenCod3d.addCodigo3d(f'{lbl_finalizar}: \n')
             elif simboloExp.tipo == TipoDato.CADENA:
                 GenCod3d.addPrintString()
+                GenCod3d.addCodigo3d(f'\n\t/* Inicio paso de parametros */ \n', sectionCode3d)
                 tmp_paramPosStack = GenCod3d.addTemporal()
                 posParamStack = ambito.size + len(GenCod3d.temporales_funcion)
                 GenCod3d.addCodigo3d(f'{tmp_paramPosStack} = sp + {posParamStack + 1}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'stack[int({tmp_paramPosStack})] = {simboloExp.valor}; \n', sectionCode3d)
+                GenCod3d.addCodigo3d(f'/* Fin paso de parametros */ \n', sectionCode3d)
 
                 avanceAmbito = ambito.size + len(GenCod3d.temporales_funcion)
+                GenCod3d.addCodigo3d(f'\n\t/* Inicio llamda a nativa de impresion */ \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'sp = sp + {avanceAmbito}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'printString(); \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'sp = sp - {avanceAmbito}; \n', sectionCode3d)
+                GenCod3d.addCodigo3d(f'/* Fin llamda a nativa de impresion */ \n\n', sectionCode3d)
 
         if self.isEnter:
             GenCod3d.addCodigo3d(f'fmt.Printf("%c", 10); \n', sectionCode3d)

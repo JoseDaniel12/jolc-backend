@@ -41,13 +41,14 @@ class DecVar(Instruction):
         res = ResIns()
         if self.conValor:
             simboloExp = self.expresion.compilar(ambito, sectionCode3d)
-            GenCod3d.limpiar_temps_usados(simboloExp.valor)
 
             if simboloExp is None:
                 return res
             elif simboloExp.tipo != self.tipo and self.tipo is not None:
                 agregarError(Error(f"Se esperaba {self.tipo} y se obtuvo {simboloExp.tipo}", self.linea, self.columna))
                 return  res
+
+            GenCod3d.limpiar_temps_usados(simboloExp.valor)
 
             if self.refAmbito == "global":
                 posSimboloAmbito = ambito.getAmbitoGlobal().addVariable(self.id, SimboloVariable(self.id, simboloExp.valor, simboloExp.tipo, self.linea, self.columna))
@@ -60,6 +61,8 @@ class DecVar(Instruction):
                     GenCod3d.addCodigo3d(f'stack[{existente.posAmbito}] = {simboloExp.valor}; \n\n', sectionCode3d)
                 else:
                     simbolo = SimboloVariable(self.id, simboloExp.valor, simboloExp.tipo, self.linea, self.columna)
+                    simbolo.mapeo_tipos_arreglo = simboloExp.mapeo_tipos_arreglo
+                    res.mapeo_tipos_arreglo =  simboloExp.mapeo_tipos_arreglo
                     posSimboloAmbito = ambito.addVariable(self.id, simbolo)
 
                     if simboloExp.tipo == TipoDato.BOOLEANO:

@@ -13,7 +13,6 @@ class Ambito:
         self.variables = {}
         self.funciones = {}
         self.estructuras = {}
-        self.temporales = []
 
     def getAmbitoGlobal(self):
         ambitoActual = self
