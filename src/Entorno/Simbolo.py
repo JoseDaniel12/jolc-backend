@@ -8,3 +8,5 @@ class Simbolo(ABC):
         self.columna = columna
         self.lbl_true = ''
         self.lbl_false = ''
+        self.is_param = False
+        self.ambito_id = -1

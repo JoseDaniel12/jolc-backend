@@ -920,11 +920,13 @@ def generarCodigo3d(entrada):
     limpiarTablaSimbolos()
     ambitoGlobal = Ambito(None, "GLOBAL")
     listaIns = parser.parse(entrada)
+    # for ins in listaIns:
+    #     if type(ins) == DecFuncion:
+    #         ins.compilar(ambitoGlobal, "main")
+    # GenCod3d.temporales_funcion.clear()
+    # for ins in listaIns:
+    #     if type(ins) != DecFuncion:
+    #         ins.compilar(ambitoGlobal, "main")
     for ins in listaIns:
-        if type(ins) == DecFuncion:
-            ins.compilar(ambitoGlobal, "main")
-    GenCod3d.temporales_funcion.clear()
-    for ins in listaIns:
-        if type(ins) != DecFuncion:
-            ins.compilar(ambitoGlobal, "main")
+        ins.compilar(ambitoGlobal, "main")
     return GenCod3d.getCodigo3d()

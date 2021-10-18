@@ -8,4 +8,4 @@ function ack(m::Int64,n::Int64)
     end;
 end;
 
-println(ack(1,2));
+println(ack(3,1));

@@ -96,7 +96,7 @@ class GenCod3d(object):
         temp_posHeap = GenCod3d.addTemporal()
         temp_Caracter = GenCod3d.addTemporal()
         codigo = "func printString() { \n"
-        codigo += f'\t{temp_parametro} = sp; \n'
+        codigo += f'\t{temp_parametro} = sp + 1; \n'
         codigo += f'\t{temp_posHeap} = stack[int({temp_parametro})]; \n'
         codigo += f'\t{lbl_impChar}: \n'
         codigo += f'\t{temp_Caracter} = heap[int({temp_posHeap})]; \n'

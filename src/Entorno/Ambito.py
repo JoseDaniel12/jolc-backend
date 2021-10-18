@@ -6,6 +6,7 @@ from src.Entorno.SimboloStruct import *
 
 class Ambito:
     def __init__(self, anterior, nombre):
+        self.id = uuid.uuid4()
         self.anterior = anterior
         self.nombre = nombre
         self.size = 0
@@ -21,6 +22,7 @@ class Ambito:
         return ambitoActual
 
     def addVariable(self, id, simbolo):
+        simbolo.ambito_id = self.id
         if type(simbolo) == SimboloVariable:
             if type(simbolo.valor) == StructInstance:
                 agregarSimboloTabla(SimboloTabla(id, simbolo.valor.tipoStruct, self.getAsString(), simbolo.linea, simbolo.columna))

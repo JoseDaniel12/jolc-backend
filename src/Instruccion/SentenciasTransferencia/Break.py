@@ -1,6 +1,7 @@
 from src.Instruccion.Instruccion import *
 from src.Instruccion.ResIns import *
 from src.Reportes.Cst import *
+from src.Compilacion.GenCod3d import *
 
 class Break(Instruction):
     def __init__(self, linea, columna):
@@ -8,8 +9,12 @@ class Break(Instruction):
 
     def ejecutar(self, ambito):
         res = ResIns()
-        res.breakEncontrado = True;
+        res.breakEncontrado = True
         return res
+
+
+    def compilar(self, ambito, sectionCode3d):
+        GenCod3d.addCodigo3d(f'goto {self.lbl_break}; \n')
 
 
     def generateCst(self, idPadre):

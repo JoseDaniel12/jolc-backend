@@ -28,15 +28,17 @@ class AtomicExp(Expresion):
 
         if self.tipo == TipoDato.IDENTIFICADOR:
             simbolo = ambito.getVariable(self.valor)
+
             if simbolo is None:
                 agregarError(Error(f"La variable {self.valor} no esta definida", self.linea, self.columna))
                 return None
+
+            tempString = GenCod3d.addTemporal()
             accesoStack = f'stack[{simbolo.posAmbito}]'
-            if ambito.nombre != "GLOBAL":
+            if simbolo.ambito_id == ambito.id and ambito.nombre != 'GLOBAL':
                 tmp_varPosStack = GenCod3d.addTemporal()
                 GenCod3d.addCodigo3d(f'{tmp_varPosStack} = sp + {simbolo.posAmbito + 1}; \n', sectionCode3d)
                 accesoStack = f'stack[int({tmp_varPosStack})]'
-            tempString = GenCod3d.addTemporal()
             GenCod3d.addCodigo3d(f'{tempString} = {accesoStack}; \n', sectionCode3d)
 
             if simbolo.tipo == TipoDato.BOOLEANO:
@@ -53,6 +55,7 @@ class AtomicExp(Expresion):
 
         if self.tipo == TipoDato.NONE:
             self.valor = "NULL"
+
         elif self.tipo == TipoDato.BOOLEANO:
             if self.lbl_true == '':
                 self.lbl_true = GenCod3d.addLabel()
@@ -68,6 +71,7 @@ class AtomicExp(Expresion):
             res.lbl_true = self.lbl_true
             res.lbl_false = self.lbl_false
             return res
+
         elif self.tipo == TipoDato.CADENA or self.tipo == TipoDato.CARACTER:
             tempHeap = GenCod3d.addTemporal()
             GenCod3d.addCodigo3d(f'{tempHeap} = hp; \n', sectionCode3d)
@@ -79,9 +83,11 @@ class AtomicExp(Expresion):
             self.valor = tempHeap
             res.valor  = self.valor
             res.tipo = self.tipo
+
         else:
             res.valor = self.valor
             res.tipo = self.tipo
+
         return res
 
 

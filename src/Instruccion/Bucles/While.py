@@ -54,14 +54,16 @@ class While(Instruction):
         #compilo mis instrucciones
         nuevoAmbito = Ambito(ambito, "While")
         for ins in self.listaIns:
-            ins.lbl_destino = lbl_inicioWhile
+            ins.lbl_return = self.lbl_return
+            ins.lbl_continue = lbl_inicioWhile
+            ins.lbl_break = lbl_finWhile
             ins.compilar(nuevoAmbito, sectionCode3d)
 
 
         GenCod3d.addCodigo3d(f'goto {lbl_inicioWhile}; \n', sectionCode3d)
         GenCod3d.addCodigo3d(f'{lbl_finWhile}: \n', sectionCode3d)
 
-
+        return resWhile
 
 
 

@@ -40,12 +40,15 @@ class DecFuncion(Instruction):
 
         #parametros
         for i, param in enumerate(self.listaParams):
-            nuevoAmbito.addVariable(param.id,SimboloVariable(param.id, "", param.tipo, param.linea, param.columna))
+            simboloParam = SimboloVariable(param.id, "", param.tipo, param.linea, param.columna)
+            simboloParam.is_param = True
+            nuevoAmbito.addVariable(param.id, simboloParam)
         #instrucciones
         for ins in self.listaIns:
             ins.lbl_return = lbl_finFuncion
             ins.compilar(nuevoAmbito, sectionCodigo3d)
 
+        GenCod3d.addCodigo3d(f'goto {lbl_finFuncion}; \n', sectionCodigo3d)
         GenCod3d.addCodigo3d(f'{lbl_finFuncion}: \n', sectionCodigo3d)
         GenCod3d.addCodigo3d(f'return; \n', sectionCodigo3d)
         GenCod3d.funciones3d +='} \n'

@@ -12,6 +12,8 @@ class ResExp:
         self.tipo = tipo
         self.lbl_true = ''
         self.lbl_false = ''
+        self.is_param = False
+        self.ambito_id = -1
 
     def getPresentationMode(self):
         if self.tipo == TipoDato.ARREGLO:
