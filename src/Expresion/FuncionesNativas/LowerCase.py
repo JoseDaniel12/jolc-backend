@@ -20,8 +20,42 @@ class LowerCase(Expresion):
 
         res.valor = simboloExp.valor.lower()
         res.tipo = simboloExp.tipo
+        return res
 
 
+    def compilar(self, ambito, sectionCode3d):
+        res  = ResExp(None, None)
+        simboloExp = self.exp.compilar(ambito, sectionCode3d)
+
+        # se veirifica si hay errores
+        if simboloExp is None:
+            return None
+        elif simboloExp.tipo != TipoDato.CADENA and simboloExp.tipo != TipoDato.CARACTER:
+            agregarError(Error(f"Funcion uppercase recibe una {TipoDato.CADENA.value} o {TipoDato.CARACTER.value}",self.linea, self.columna))
+            return None
+
+        GenCod3d.addLowerCase()
+        tempStack = GenCod3d.addTemporal()
+        tempRetorno = GenCod3d.addTemporal()
+
+        # se convierte a mayusculas
+        GenCod3d.addCodigo3d('\n\t/* Inicio de llamada de funcion */ \n', sectionCode3d)
+
+        # paso de parametros
+        GenCod3d.addCodigo3d('/* Inicio de paso de parametros */ \n', sectionCode3d)
+        GenCod3d.addCodigo3d(f'{tempStack} = sp + {ambito.size + 1}; \n', sectionCode3d)
+        GenCod3d.addCodigo3d(f'stack[int({tempStack})] = {simboloExp.valor}; \n', sectionCode3d)
+        GenCod3d.addCodigo3d('/* Fin de paso de parametros */ \n\n', sectionCode3d)
+        # llamada de funcion nativa
+        GenCod3d.addCodigo3d(f'sp = sp + {ambito.size}; \n', sectionCode3d)
+        GenCod3d.addCodigo3d(f'lowercase(); \n', sectionCode3d)
+        GenCod3d.addCodigo3d(f'{tempRetorno} = stack[int(sp)]; \n', sectionCode3d)
+        GenCod3d.addCodigo3d(f'sp = sp - {ambito.size}; \n', sectionCode3d)
+
+        GenCod3d.addCodigo3d('/* Fin de paso de parametros */ \n\n', sectionCode3d)
+
+        res.valor = tempRetorno
+        res.tipo = simboloExp.tipo
         return res
 
 

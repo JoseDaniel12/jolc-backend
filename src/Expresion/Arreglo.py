@@ -30,9 +30,9 @@ class Arreglo(Expresion):
         tmp_posVectorHeap = GenCod3d.addTemporal()
         tmp_posElementoHeap = GenCod3d.addTemporal()
         GenCod3d.addCodigo3d(f'{tmp_posVectorHeap} = hp; \n', sectionCodigo3d)
+        GenCod3d.addCodigo3d(f'{tmp_posElementoHeap} = {tmp_posVectorHeap} + 1; // Se establece la posicion del primer elemento \n', sectionCodigo3d)
         GenCod3d.addCodigo3d(f'heap[int(hp)] = {len(self.listaExps)}; // En la primera posicion se pone el tamño del vector  \n', sectionCodigo3d)
-        GenCod3d.addCodigo3d(f'hp = hp + {len(self.listaExps) + 1}; // Se reserva el espacio del vector y su tamño \n', sectionCodigo3d)
-        GenCod3d.addCodigo3d(f'{tmp_posElementoHeap} = {tmp_posVectorHeap} + 1; // Se establece la posicion del primer elemento \n\n', sectionCodigo3d)
+        GenCod3d.addCodigo3d(f'hp = hp + {len(self.listaExps) + 1}; // Se reserva el espacio del vector y su tamño \n\n', sectionCodigo3d)
 
         tipo_de_elementos = TipoDato.NONE
         for i, exp in enumerate(self.listaExps):
@@ -40,12 +40,22 @@ class Arreglo(Expresion):
             simboloExp = exp.compilar(ambito, sectionCodigo3d)
             if simboloExp is None:
                 return None
-
             # define de que tipo son los elementos del arreglo
             if i == len(self.listaExps) - 1:
                 self.mapeo_tipos_arreglo +=  simboloExp.mapeo_tipos_arreglo
-
-            GenCod3d.addCodigo3d(f'heap[int({tmp_posElementoHeap})] = {simboloExp.valor}; \n', sectionCodigo3d)
+            # se guarda el valor del elemento del arreglo en el heap
+            if simboloExp.tipo == TipoDato.BOOLEANO:
+                lbl_continuar = GenCod3d.addLabel()
+                GenCod3d.addCodigo3d(f'{simboloExp.lbl_true}: \n', sectionCodigo3d)
+                GenCod3d.addCodigo3d(f'heap[int({tmp_posElementoHeap})] = 1; \n', sectionCodigo3d)
+                GenCod3d.addCodigo3d(f'goto {lbl_continuar}; \n', sectionCodigo3d)
+                GenCod3d.addCodigo3d(f'{simboloExp.lbl_false}: \n', sectionCodigo3d)
+                GenCod3d.addCodigo3d(f'heap[int({tmp_posElementoHeap})] = 0; \n', sectionCodigo3d)
+                GenCod3d.addCodigo3d(f'{lbl_continuar}: \n', sectionCodigo3d)
+                res.lbl_true = GenCod3d.addTemporal()
+                res.lbl_false = GenCod3d.addTemporal()
+            else:
+                GenCod3d.addCodigo3d(f'heap[int({tmp_posElementoHeap})] = {simboloExp.valor}; \n', sectionCodigo3d)
             GenCod3d.addCodigo3d(f'{tmp_posElementoHeap} = {tmp_posElementoHeap} + 1; \n', sectionCodigo3d)
             tipo_de_elementos = simboloExp.tipo
 

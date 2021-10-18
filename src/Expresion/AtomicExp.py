@@ -35,7 +35,7 @@ class AtomicExp(Expresion):
 
             tempString = GenCod3d.addTemporal()
             accesoStack = f'stack[{simbolo.posAmbito}]'
-            if simbolo.ambito_id == ambito.id and ambito.nombre != 'GLOBAL':
+            if sectionCode3d == "funciones":
                 tmp_varPosStack = GenCod3d.addTemporal()
                 GenCod3d.addCodigo3d(f'{tmp_varPosStack} = sp + {simbolo.posAmbito + 1}; \n', sectionCode3d)
                 accesoStack = f'stack[int({tmp_varPosStack})]'
@@ -47,18 +47,25 @@ class AtomicExp(Expresion):
                 GenCod3d.addCodigo3d(f'if ({tempString} == 1) {{ goto {simbolo.lbl_true}; }} \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'goto {simbolo.lbl_false}; \n', sectionCode3d)
 
+            # se guarda valores adiciones petencientes a un arrelgo
             if simbolo.tipo == TipoDato.ARREGLO:
                 res.mapeo_tipos_arreglo = simbolo.mapeo_tipos_arreglo
+
+            # se agegan valores adicionales de una variable que es booleana
+            res.lbl_true = simbolo.lbl_true
+            res.lbl_false = simbolo.lbl_false
+
+            # se agrega el temporal de la variable asingada como no utilizado
+            if sectionCode3d == "funciones":
+                GenCod3d.temporales_funcion.append(tempString)
 
             res.valor = tempString
             res.tipo = simbolo.tipo
             res.posAmbito = simbolo.posAmbito
-            if sectionCode3d == "funciones":
-                GenCod3d.temporales_funcion.append(tempString)
-            return res
 
-        if self.tipo == TipoDato.NONE:
-            self.valor = "NULL"
+        elif self.tipo == TipoDato.NONE:
+            res.valor =  "-1"
+            res.tipo = self.tipo
 
         elif self.tipo == TipoDato.BOOLEANO:
             if self.lbl_true == '':
@@ -91,7 +98,6 @@ class AtomicExp(Expresion):
         else:
             res.valor = self.valor
             res.tipo = self.tipo
-
 
         return res
 

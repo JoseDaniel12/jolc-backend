@@ -16,15 +16,19 @@ class OpAritmetica(Expresion):
     def ejecutar(self, ambito):
         res = ResExp("", "")
 
+        # se compila el simbolo izquierdo eld derecho se deja en nulo en caso de ser expresion unaria
         simboloOpIzq = self.opIzq.ejecutar(ambito)
         simboloOpDer = None
 
+        # se consigue el operando derecho si no es expresion unaria
         if self.tipo != TipoExpAritmetica.UMENOS:
             simboloOpDer = self.opDer.ejecutar(ambito)
 
-
+        # se verifica que no haya errores
         if simboloOpIzq is None or (simboloOpDer is None and self.tipo != TipoExpAritmetica.UMENOS):
             return None
+
+        # se realiza la operacion segun su tipo
 
         if self.tipo == TipoExpAritmetica.SUMA:
             if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or
@@ -36,6 +40,7 @@ class OpAritmetica(Expresion):
             else:
                 res.tipo = TipoDato.ENTERO
             res.valor = simboloOpIzq.valor + simboloOpDer.valor
+
         elif self.tipo == TipoExpAritmetica.RESTA:
             if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or
                 (simboloOpDer.tipo != TipoDato.ENTERO and simboloOpDer.tipo != TipoDato.DECIMAL)):
@@ -46,6 +51,7 @@ class OpAritmetica(Expresion):
             else:
                 res.tipo = TipoDato.ENTERO
             res.valor = simboloOpIzq.valor - simboloOpDer.valor
+
         elif self.tipo == TipoExpAritmetica.MULTIPLICACION:
             if simboloOpIzq.tipo == TipoDato.CADENA and simboloOpDer.tipo == TipoDato.CADENA:
                 res.tipo = TipoDato.CADENA
@@ -61,6 +67,7 @@ class OpAritmetica(Expresion):
                 else:
                     res.tipo = TipoDato.ENTERO
                     res.valor = simboloOpIzq.valor * simboloOpDer.valor
+
         elif self.tipo == TipoExpAritmetica.DIVISION:
             if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or
                 (simboloOpDer.tipo != TipoDato.ENTERO and simboloOpDer.tipo != TipoDato.DECIMAL)):
@@ -85,6 +92,7 @@ class OpAritmetica(Expresion):
                 else:
                     res.tipo = TipoDato.ENTERO
                 res.valor = simboloOpIzq.valor ** simboloOpDer.valor
+
         elif self.tipo == TipoExpAritmetica.MODULO:
             if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or
                 (simboloOpDer.tipo != TipoDato.ENTERO and simboloOpDer.tipo != TipoDato.DECIMAL)):
@@ -95,6 +103,7 @@ class OpAritmetica(Expresion):
             else:
                 res.tipo = TipoDato.ENTERO
             res.valor = simboloOpIzq.valor % simboloOpDer.valor
+
         elif self.tipo == TipoExpAritmetica.UMENOS:
             if simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL:
                 agregarError(Error(f"{self.tipo.value} invalido con tipo {simboloOpIzq.tipo.value}", self.linea, self.columna))
@@ -102,19 +111,27 @@ class OpAritmetica(Expresion):
             else:
                 res.valor = -1 * simboloOpIzq.valor
                 res.tipo = simboloOpIzq.tipo
+
         return res
 
+    # _________________________________________ COMPILACION _________________________________________
 
     def compilar(self, ambito, sectionCode3d):
         res = ResExp("", "")
+
+        # se compila el simbolo izquierdo eld derecho se deja en nulo en caso de ser expresion unaria
         simboloOpIzq = self.opIzq.compilar(ambito, sectionCode3d)
         simboloOpDer = None
 
+        # se consigue el operando derecho si no es expresion unaria
         if self.tipo != TipoExpAritmetica.UMENOS:
             simboloOpDer = self.opDer.compilar(ambito, sectionCode3d)
 
+        # se verifica que no haya errores
         if simboloOpIzq is None or (simboloOpDer is None and self.tipo != TipoExpAritmetica.UMENOS):
             return None
+
+        # se realiza la operacion segun su tipo
 
         if self.tipo == TipoExpAritmetica.SUMA:
             if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or
@@ -128,6 +145,7 @@ class OpAritmetica(Expresion):
             tempDestino = GenCod3d.addTemporal()
             GenCod3d.addCodigo3d(f'{tempDestino} = {simboloOpIzq.valor} + {simboloOpDer.valor}; \n', sectionCode3d)
             res.valor = tempDestino
+
         elif self.tipo == TipoExpAritmetica.RESTA:
             if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or
                 (simboloOpDer.tipo != TipoDato.ENTERO and simboloOpDer.tipo != TipoDato.DECIMAL)):
@@ -140,6 +158,7 @@ class OpAritmetica(Expresion):
             tempDestino = GenCod3d.addTemporal()
             GenCod3d.addCodigo3d(f'{tempDestino} = {simboloOpIzq.valor} - {simboloOpDer.valor}; \n', sectionCode3d)
             res.valor = tempDestino
+
         elif self.tipo == TipoExpAritmetica.MULTIPLICACION:
             if simboloOpIzq.tipo == TipoDato.CADENA and simboloOpDer.tipo == TipoDato.CADENA:
                 res.tipo = TipoDato.CADENA
@@ -169,6 +188,7 @@ class OpAritmetica(Expresion):
                 tempDestino = GenCod3d.addTemporal()
                 GenCod3d.addCodigo3d(f'{tempDestino} = {simboloOpIzq.valor} * {simboloOpDer.valor}; \n', sectionCode3d)
                 res.valor = tempDestino
+
         elif self.tipo == TipoExpAritmetica.DIVISION:
             if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or
                 (simboloOpDer.tipo != TipoDato.ENTERO and simboloOpDer.tipo != TipoDato.DECIMAL)):
@@ -190,20 +210,28 @@ class OpAritmetica(Expresion):
             list(map(lambda c: GenCod3d.addCodigo3d(f'fmt.Printf("%c", {ord(c)}); \n', sectionCode3d), "Math error\n"))
             GenCod3d.addCodigo3d(f'{lbl_finalizaer}: \n', sectionCode3d)
             res.valor = tempDestino
+
         elif self.tipo == TipoExpAritmetica.POTENCIA:
             if simboloOpIzq.tipo == TipoDato.CADENA and simboloOpDer.tipo == TipoDato.ENTERO:
                 res.tipo = TipoDato.CADENA
                 GenCod3d.addPowString(ambito)
                 tempStack = GenCod3d.addTemporal()
                 tempRetorno = GenCod3d.addTemporal()
+                GenCod3d.addCodigo3d('\n\t/* Inicio de paso de parametros */ \n', sectionCode3d)
+
+                GenCod3d.addCodigo3d('\n\t/* Inicio de paso de parametros */ \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'{tempStack} = sp + {ambito.size + 1}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'stack[int({tempStack})] = {simboloOpIzq.valor}; \n', sectionCode3d)
-                GenCod3d.addCodigo3d(f'{tempStack} = sp + 2; \n', sectionCode3d)
+                GenCod3d.addCodigo3d(f'{tempStack} = sp + {ambito.size + 2}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'stack[int({tempStack})] = {simboloOpDer.valor}; \n', sectionCode3d)
+                GenCod3d.addCodigo3d('/* Fin de paso de parametros */ \n\n', sectionCode3d)
+
                 GenCod3d.addCodigo3d(f'sp = sp + {ambito.size}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'powString(); \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'{tempRetorno} = stack[int(sp)]; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'sp = sp - {ambito.size}; \n', sectionCode3d)
+
+                GenCod3d.addCodigo3d('/* Fin de llamada de funcion */ \n\n', sectionCode3d)
                 res.valor = tempRetorno
             else:
                 if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or
@@ -214,18 +242,27 @@ class OpAritmetica(Expresion):
                     res.tipo = TipoDato.DECIMAL
                 else:
                     res.tipo = TipoDato.ENTERO
-                GenCod3d.addPotencia()
+                GenCod3d.addPotencia(ambito)
                 tempStack = GenCod3d.addTemporal()
                 tempRetorno = GenCod3d.addTemporal()
+                GenCod3d.addCodigo3d('\n\t/* Inicio de llamada de funcion */ \n', sectionCode3d)
+
+                # paso de parametros
+                GenCod3d.addCodigo3d('/* Inicio de paso de parametros */ \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'{tempStack} = sp + {ambito.size + 1}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'stack[int({tempStack})] = {simboloOpIzq.valor}; \n', sectionCode3d)
-                GenCod3d.addCodigo3d(f'{tempStack} = sp + 2; \n', sectionCode3d)
+                GenCod3d.addCodigo3d(f'{tempStack} = sp + {ambito.size + 2}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'stack[int({tempStack})] = {simboloOpDer.valor}; \n', sectionCode3d)
+                GenCod3d.addCodigo3d('/* Fin de paso de parametros */ \n\n', sectionCode3d)
+                # llamada de funcion nativa
                 GenCod3d.addCodigo3d(f'sp = sp + {ambito.size}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'potencia(); \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'{tempRetorno} = stack[int(sp)]; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'sp = sp - {ambito.size}; \n', sectionCode3d)
+
+                GenCod3d.addCodigo3d('/* Fin de llamada de funcion */ \n\n', sectionCode3d)
                 res.valor = tempRetorno
+
         elif self.tipo == TipoExpAritmetica.MODULO:
             if ((simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL) or
                 (simboloOpDer.tipo != TipoDato.ENTERO and simboloOpDer.tipo != TipoDato.DECIMAL)):
@@ -235,9 +272,12 @@ class OpAritmetica(Expresion):
                 res.tipo = TipoDato.DECIMAL
             else:
                 res.tipo = TipoDato.ENTERO
+            if "math" not in GenCod3d.imports:
+                GenCod3d.imports += "\t\"math\" \n"
             tempDestino = GenCod3d.addTemporal()
-            GenCod3d.addCodigo3d(f'{tempDestino} = {simboloOpIzq.valor} % {simboloOpDer.valor}; \n', sectionCode3d)
+            GenCod3d.addCodigo3d(f'{tempDestino} = math.Mod({simboloOpIzq.valor}, {simboloOpDer.valor}); \n', sectionCode3d)
             res.valor = tempDestino
+
         elif self.tipo == TipoExpAritmetica.UMENOS:
             if simboloOpIzq.tipo != TipoDato.ENTERO and simboloOpIzq.tipo != TipoDato.DECIMAL:
                 agregarError(Error(f"{self.tipo.value} invalido con tipo {simboloOpIzq.tipo.value}", self.linea, self.columna))
@@ -247,6 +287,7 @@ class OpAritmetica(Expresion):
             GenCod3d.addCodigo3d(f'{tempDestino} = 0 - {simboloOpIzq.valor}; \n', sectionCode3d)
             res.valor = tempDestino
 
+        # se guarda temporal no utilizado y se limpian los utilizados
         if sectionCode3d == "funciones":
             GenCod3d.temporales_funcion.append(res.valor)
             if simboloOpIzq is not None:
@@ -255,6 +296,8 @@ class OpAritmetica(Expresion):
                 GenCod3d.limpiar_temps_usados(simboloOpDer.valor)
         return res
 
+
+    # _________________________________________ Arbol CST _________________________________________
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, self.tipo.value, idPadre)

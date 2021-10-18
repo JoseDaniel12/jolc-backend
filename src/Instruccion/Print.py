@@ -52,14 +52,15 @@ class Print(Instruction):
             if simboloExp is None:
                 return res
 
+            #marco el temporal de la expresion a imprimir como utilizado
             GenCod3d.limpiar_temps_usados(simboloExp.valor)
-            if simboloExp.tipo == TipoDato.ENTERO or simboloExp.tipo == TipoDato.DECIMAL:
-                GenCod3d.addCodigo3d(f'fmt.Print({simboloExp.valor}); \n', sectionCode3d)
+
+            if simboloExp.tipo == TipoDato.ENTERO:
+                GenCod3d.addCodigo3d(f'fmt.Printf("%d", int({simboloExp.valor})); \n', sectionCode3d)
+            elif simboloExp.tipo == TipoDato.DECIMAL:
+                GenCod3d.addCodigo3d(f'fmt.Printf("%f", {simboloExp.valor}); \n', sectionCode3d)
             elif simboloExp.tipo == TipoDato.NONE:
-                GenCod3d.addCodigo3d('fmt.Printf("%c", 110); \n', sectionCode3d)
-                GenCod3d.addCodigo3d('fmt.Printf("%c", 117); \n', sectionCode3d)
-                GenCod3d.addCodigo3d('fmt.Printf("%c", 108); \n', sectionCode3d)
-                GenCod3d.addCodigo3d('fmt.Printf("%c", 108); \n', sectionCode3d)
+                list(map(lambda c: GenCod3d.addCodigo3d(f'fmt.Printf("%c", {ord(c)}); \n', sectionCode3d), "nothing"))
             elif simboloExp.tipo == TipoDato.BOOLEANO:
                 lbl_finalizar = GenCod3d.addLabel()
                 GenCod3d.addCodigo3d(f'{simboloExp.lbl_true}: \n', sectionCode3d)
@@ -68,7 +69,7 @@ class Print(Instruction):
                 GenCod3d.addCodigo3d(f'{simboloExp.lbl_false}: \n', sectionCode3d)
                 list(map(lambda c: GenCod3d.addCodigo3d(f'fmt.Printf("%c", {ord(c)}); \n', sectionCode3d), "false"))
                 GenCod3d.addCodigo3d(f'{lbl_finalizar}: \n')
-            elif simboloExp.tipo == TipoDato.CADENA:
+            elif simboloExp.tipo == TipoDato.CADENA or simboloExp.tipo == TipoDato.CARACTER:
                 GenCod3d.addPrintString()
                 GenCod3d.addCodigo3d(f'\n\t/* Inicio paso de parametros */ \n', sectionCode3d)
                 tmp_paramPosStack = GenCod3d.addTemporal()
@@ -76,7 +77,7 @@ class Print(Instruction):
                 GenCod3d.addCodigo3d(f'{tmp_paramPosStack} = sp + {posParamStack + 1}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'stack[int({tmp_paramPosStack})] = {simboloExp.valor}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'/* Fin paso de parametros */ \n', sectionCode3d)
-
+                # llamada de funcion nativa
                 avanceAmbito = ambito.size + len(GenCod3d.temporales_funcion)
                 GenCod3d.addCodigo3d(f'\n\t/* Inicio llamda a nativa de impresion */ \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'sp = sp + {avanceAmbito}; \n', sectionCode3d)
@@ -86,8 +87,8 @@ class Print(Instruction):
 
         if self.isEnter:
             GenCod3d.addCodigo3d(f'fmt.Printf("%c", 10); \n', sectionCode3d)
-        GenCod3d.addCodigo3d('\n', sectionCode3d)
 
+        GenCod3d.addCodigo3d('\n', sectionCode3d)
         return res
 
     def generateCst(self, idPadre):

@@ -1,5 +1,4 @@
 from src.Expresion.Expresion import *
-from src.Tipos.TipoDato import *
 from src.Expresion.ResExp import *
 
 class Rango(Expresion):
@@ -8,7 +7,7 @@ class Rango(Expresion):
         self.inicio = inicio
         self.fin = fin
 
-    def ejecutar(self, ambito) :
+    def ejecutar(self, ambito):
         res = ResExp(None, None)
         simboloInicio = self.inicio.ejecutar(ambito)
         simboloFin = self.fin.ejecutar(ambito)
@@ -23,3 +22,10 @@ class Rango(Expresion):
             res.valor = valores
             res.tipo = TipoDato.ARREGLO
         return res
+
+
+    def compilar(self, ambito, sectionCode3d):
+        pass
+
+    def generateCst(self, idPadre):
+        pass

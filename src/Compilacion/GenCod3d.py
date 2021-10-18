@@ -1,4 +1,5 @@
 from src.Errores.TablaErrores import *
+from src.Entorno.Ambito import *
 
 class GenCod3d(object):
     numTemporales = -1
@@ -6,6 +7,7 @@ class GenCod3d(object):
     sp = 0
     hp = 0
     temporales = []
+    imports = ""
     codigo3d = ""
     funciones3d = ""
     funcNativas3d = ""
@@ -27,6 +29,7 @@ class GenCod3d(object):
         codigo += "package main \n"
         codigo += "import ( \n"
         codigo += " \t\"fmt\"\n"
+        codigo += GenCod3d.imports
         codigo += ") \n\n"
         codigo += "var stack[1000000]float64; \n"
         codigo += "var heap[1000000]float64; \n"
@@ -53,6 +56,7 @@ class GenCod3d(object):
         GenCod3d.sp = 0
         GenCod3d.hp = 0
         GenCod3d.temporales.clear()
+        imports = ""
         GenCod3d.codigo3d = ""
         GenCod3d.funciones3d = ""
         GenCod3d.funcNativas3d  = ""
@@ -146,7 +150,7 @@ class GenCod3d(object):
         codigo += '\t' + f'{tmp_posHeapCharCadenaDos} = {tmp_posHeapCharCadenaDos} + 1; \n'
         codigo += '\t' +f'goto {lbl_concatCadenaDos}; \n'
 
-        #finalizar
+        # finalizar
         codigo += '\t' + f'{lbl_finalizar}:  \n'
         codigo += '\t' + f'heap[int(hp)] = -1;   \n'
         codigo += '\t' + f'hp = hp + 1; \n'
@@ -158,7 +162,8 @@ class GenCod3d(object):
             GenCod3d.funcNativas3d += codigo
 
     @staticmethod
-    def addPotencia():
+    def addPotencia(ambito):
+        nuevoAmbito = Ambito(ambito, "potencia")
         lbl_potenciar = GenCod3d.addLabel()
         lbl_guardarRetrono = GenCod3d.addLabel()
         lbl_setResAsUno = GenCod3d.addLabel()
@@ -178,29 +183,29 @@ class GenCod3d(object):
         codigo += '\t' + f'if ({tmp_paramDos} == 0) {{ goto {lbl_setResAsUno}; }} \n'
         codigo += '\t' + f'if ({tmp_paramDos} > 0) {{ goto {lbl_potenciar}; }} \n'
 
-        #invertir base
+        # invertir base
         codigo += '\t' + f'{tmp_paramUno} = 1 / {tmp_paramUno}; \n'
         codigo += '\t' + f'{tmp_copiaBase} = {tmp_paramUno}; \n'
         codigo += '\t' + f'{temp_menosUno} = -1; \n'
         codigo += '\t' + f'{tmp_paramDos} = {temp_menosUno} * {tmp_paramDos}; \n'
 
-        #potenciar
+        # potenciar
         codigo += '\t' + f'{lbl_potenciar}: \n'
         codigo += '\t' + f'if ({tmp_paramDos} == 1) {{ goto {lbl_guardarRetrono}; }} \n'
         codigo += '\t' + f'{tmp_paramUno} = {tmp_paramUno} * {tmp_copiaBase}; \n'
         codigo += '\t' + f'{tmp_paramDos} = {tmp_paramDos} - 1; \n'
         codigo += '\t' + f'goto {lbl_potenciar}; \n'
 
-        #guardar resultado
+        # guardar resultado
         codigo += '\t' + f'{lbl_guardarRetrono}: \n'
         codigo += '\t' + f'stack[int(sp)] = {tmp_paramUno}; \n'
         codigo += '\t' + f'goto {lbl_finalizar}; \n'
 
-        #colocar respuesta como uno
+        # colocar respuesta como uno
         codigo += '\t' + f'{lbl_setResAsUno}: \n'
         codigo += '\t' + 'stack[int(sp)] = 1; \n'
 
-        #terminar
+        # terminar
         codigo += '\t' + f'{lbl_finalizar}: \n'
         codigo += '} \n'
 
@@ -210,6 +215,7 @@ class GenCod3d(object):
 
     @staticmethod
     def addPowString(ambito):
+        nuevoAmbito = Ambito(ambito, "powString")
         GenCod3d.addConcatString()
         lbl_concatenar = GenCod3d.addLabel()
         tmp_posStackParam = GenCod3d.addTemporal()
@@ -223,26 +229,26 @@ class GenCod3d(object):
         codigo += '\t' + f'{tmp_posHeapCadena} = stack[int({tmp_posStackParam})]; \n'
         codigo += '\t' + f'{tmp_posStackParam} = sp + 2; \n'
         codigo += '\t' + f'{tmp_potencia} = stack[int({tmp_posStackParam})]; \n'
-        #concater caracter por caracter
+        # concater caracter por caracter
         tmp_posCadenaPotenciada = GenCod3d.addTemporal()
         codigo += '\t' + f'{tmp_posCadenaPotenciada} = {tmp_posHeapCadena}; \n'
 
-        #concatenar
+        # concatenar
         codigo += '\t' + f'{lbl_concatenar}: \n'
-        #llmada funcion nativa
+        # llmada funcion nativa
         tempStack = GenCod3d.addTemporal()
         tempRetorno = GenCod3d.addTemporal()
         #seteo los parametros
-        codigo += '\t' + f'{tempStack} = sp + {ambito.size + 1}; \n'
+        codigo += '\t' + f'{tempStack} = sp + {nuevoAmbito.size + 1}; \n'
         codigo += '\t' + f'stack[int({tempStack})] = {tmp_posHeapCadena}; \n'
-        codigo += '\t' + f'{tempStack} = {tempStack} + 1; \n'
+        codigo += '\t' + f'{tempStack} = sp + {nuevoAmbito.size + 2}; \n'
         codigo += '\t' + f'stack[int({tempStack})] = {tmp_posCadenaPotenciada}; \n'
-        #pongo el stack en su posicion ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR
-        codigo += '\t' + f'sp = sp + {ambito.size}; \n'
+        # pongo el stack en su posicion
+        codigo += '\t' + f'sp = sp + {nuevoAmbito.size}; \n'
         codigo += '\t' + f'concatString(); \n'
         codigo += '\t' + f'{tempRetorno} = stack[int(sp)]; \n'
-        codigo += '\t' + f'sp = sp - {ambito.size}; \n'
-        #guardo el reorno
+        codigo += '\t' + f'sp = sp - {nuevoAmbito.size}; \n'
+        # guardo el reorno
         codigo += '\t' + f'{tmp_posCadenaPotenciada} = {tempRetorno}; \n'
         codigo += '\t' + f'{tmp_potencia} = {tmp_potencia} - 1; \n'
         codigo += '\t' + f'if ({tmp_potencia} > 1) {{ goto {lbl_concatenar}; }} \n'
@@ -271,7 +277,7 @@ class GenCod3d(object):
         codigo += '\t' + f'{tmp_posStackParam} = sp + 2; \n'
         codigo += '\t' + f'{tmp_posHeapCharDos} = stack[int({tmp_posStackParam})]; \n'
 
-        #comparacion
+        # comparacion
         codigo += '\t' + f'{lbl_repetir}: \n'
         codigo += '\t' + f'{tmp_charUno} = heap[int({tmp_posHeapCharUno})]; \n'
         codigo += '\t' + f'{tmp_charDos} = heap[int({tmp_posHeapCharDos})]; \n'
@@ -281,18 +287,117 @@ class GenCod3d(object):
         codigo += '\t' + f'{tmp_posHeapCharDos} = {tmp_posHeapCharDos} + 1; \n'
         codigo += '\t' + f'goto {lbl_repetir}; \n'
 
-        #validar
+        # validar
         codigo += '\t' + f'{lbl_validarIgualdad}: \n'
         codigo += '\t' + f'stack[int(sp)] = 1; \n'
         codigo += '\t' + f'goto {lbl_finzalidzar}; \n'
-        #denegaar
+        # denegaar
         codigo += '\t' + f'{lbl_dengarIgualdad}: \n'
         codigo += '\t' + f'stack[int(sp)] = 0; \n'
 
-        #finalidzar
+        # finalidzar
         codigo += '\t' + f'{lbl_finzalidzar}: \n'
         codigo += '} \n'
 
         if "compareStrings" not in GenCod3d.nativasAgregadas:
             GenCod3d.nativasAgregadas.append("compareStrings")
             GenCod3d.funcNativas3d += codigo
+
+
+    @staticmethod
+    def addUpperCase():
+        lbl_finzalidzar = GenCod3d.addLabel()
+        lbl_upperCaracter = GenCod3d.addLabel()
+        lbl_saveChar = GenCod3d.addLabel()
+        tmp_newStrHeapPointer = GenCod3d.addTemporal()
+        tmp_posStackParam = GenCod3d.addTemporal()
+        tmp_posHeapChar = GenCod3d.addTemporal()
+        tmp_caracter = GenCod3d.addTemporal()
+
+
+        codigo = '\n' + "func uppercase() { \n"
+        codigo += '\t' + f'{tmp_posStackParam} = sp + 1; \n'
+        codigo += '\t' + f'{tmp_posHeapChar} = stack[int({tmp_posStackParam})]; \n'
+        codigo += '\t' + f'{tmp_newStrHeapPointer} = hp; \n'
+
+        # upper caracter
+        codigo += '\t' + f'{lbl_upperCaracter}: \n'
+        codigo += '\t' + f'{tmp_caracter} = heap[int({tmp_posHeapChar})]; \n'
+        codigo += '\t' + f'if ({tmp_caracter} == -1) {{ goto {lbl_finzalidzar}; }} \n'
+        codigo += '\t' + f'if ({tmp_caracter} < 97) {{ goto {lbl_saveChar}; }} \n'
+        codigo += '\t' + f'if ({tmp_caracter} > 122) {{ goto {lbl_saveChar}; }} \n'
+        codigo += '\t' + f'{tmp_caracter} = {tmp_caracter} - 32; \n'
+
+        # guardado de caracter en mayuscula
+        codigo += '\t' + f'{lbl_saveChar}: \n'
+        codigo += '\t' + f'heap[int(hp)] = {tmp_caracter}; \n'
+        codigo += '\t' + f'hp = hp + 1; \n'
+
+        # avanzar en caracter
+        codigo += '\t' + f'{tmp_posHeapChar} = {tmp_posHeapChar} + 1; \n'
+        codigo += '\t' + f'goto {lbl_upperCaracter}; \n'
+
+        #finalidzar
+        codigo += '\t' + f'goto {lbl_finzalidzar}; \n'
+        codigo += '\t' + f'{lbl_finzalidzar}: \n'
+        codigo += '\t' + f'heap[int(hp)] = -1; \n'
+        codigo += '\t' + f'hp = hp + 1; \n'
+        codigo += '\t' + f'stack[int(sp)] = {tmp_newStrHeapPointer}; \n'
+        codigo += '\t' + f'return; \n'
+        codigo += '} \n'
+
+        if "uppercase" not in GenCod3d.nativasAgregadas:
+            GenCod3d.nativasAgregadas.append("uppercase")
+            GenCod3d.funcNativas3d += codigo
+
+        return tmp_newStrHeapPointer
+
+
+
+    @staticmethod
+    def addLowerCase():
+        lbl_finzalidzar = GenCod3d.addLabel()
+        lbl_lowerCase = GenCod3d.addLabel()
+        lbl_saveChar = GenCod3d.addLabel()
+        tmp_newStrHeapPointer = GenCod3d.addTemporal()
+        tmp_posStackParam = GenCod3d.addTemporal()
+        tmp_posHeapChar = GenCod3d.addTemporal()
+        tmp_caracter = GenCod3d.addTemporal()
+
+
+        codigo = '\n' + "func lowercase() { \n"
+        codigo += '\t' + f'{tmp_posStackParam} = sp + 1; \n'
+        codigo += '\t' + f'{tmp_posHeapChar} = stack[int({tmp_posStackParam})]; \n'
+        codigo += '\t' + f'{tmp_newStrHeapPointer} = hp; \n'
+
+        # upper caracter
+        codigo += '\t' + f'{lbl_lowerCase}: \n'
+        codigo += '\t' + f'{tmp_caracter} = heap[int({tmp_posHeapChar})]; \n'
+        codigo += '\t' + f'if ({tmp_caracter} == -1) {{ goto {lbl_finzalidzar}; }} \n'
+        codigo += '\t' + f'if ({tmp_caracter} < 65) {{ goto {lbl_saveChar}; }} \n'
+        codigo += '\t' + f'if ({tmp_caracter} > 90) {{ goto {lbl_saveChar}; }} \n'
+        codigo += '\t' + f'{tmp_caracter} = {tmp_caracter} + 32; \n'
+
+        # guardado de caracter en minuscula
+        codigo += '\t' + f'{lbl_saveChar}: \n'
+        codigo += '\t' + f'heap[int(hp)] = {tmp_caracter}; \n'
+        codigo += '\t' + f'hp = hp + 1; \n'
+
+        # avanzar en caracter
+        codigo += '\t' + f'{tmp_posHeapChar} = {tmp_posHeapChar} + 1; \n'
+        codigo += '\t' + f'goto {lbl_lowerCase}; \n'
+
+        #finalidzar
+        codigo += '\t' + f'goto {lbl_finzalidzar}; \n'
+        codigo += '\t' + f'{lbl_finzalidzar}: \n'
+        codigo += '\t' + f'heap[int(hp)] = -1; \n'
+        codigo += '\t' + f'hp = hp + 1; \n'
+        codigo += '\t' + f'stack[int(sp)] = {tmp_newStrHeapPointer}; \n'
+        codigo += '\t' + f'return; \n'
+        codigo += '} \n'
+
+        if "lowercase" not in GenCod3d.nativasAgregadas:
+            GenCod3d.nativasAgregadas.append("lowercase")
+            GenCod3d.funcNativas3d += codigo
+
+        return tmp_newStrHeapPointer

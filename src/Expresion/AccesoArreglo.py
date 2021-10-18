@@ -57,17 +57,24 @@ class AccesoArreglo(Expresion):
         if simboloArreglo.tipo != TipoDato.ARREGLO or simboloAcceso.tipo != TipoDato.ENTERO:
             return None
 
+        nuevo_mapeo = simboloArreglo.mapeo_tipos_arreglo[:]
+        res.tipo = nuevo_mapeo.pop()
+        if simboloArreglo.tipo == TipoDato.ARREGLO:
+            res.mapeo_tipos_arreglo = nuevo_mapeo
+
         tmp_posHeapInicioArreglo = GenCod3d.addTemporal()
         tmp_posElementoArreglo = GenCod3d.addTemporal()
         tmp_elemento = GenCod3d.addTemporal()
         GenCod3d.addCodigo3d(f'{tmp_posHeapInicioArreglo} = {simboloArreglo.valor} // Se obtiene indice de inicio del arreglo en el heap \n', sectionCode3d)
         GenCod3d.addCodigo3d(f'{tmp_posElementoArreglo} = {tmp_posHeapInicioArreglo} + {simboloAcceso.valor}; // Se obtiene el indice del elemento deseado del arreglo en el heap \n', sectionCode3d)
-        GenCod3d.addCodigo3d(f'{tmp_elemento} = heap[int({tmp_posElementoArreglo})]; // Se obtiene el elemento deseado \n', sectionCode3d)
+        GenCod3d.addCodigo3d( f'{tmp_elemento} = heap[int({tmp_posElementoArreglo})]; // Se obtiene el elemento deseado \n', sectionCode3d)
+        if res.tipo == TipoDato.BOOLEANO:
+            res.lbl_true = GenCod3d.addLabel()
+            res.lbl_false = GenCod3d.addLabel()
+            GenCod3d.addCodigo3d(f'if ({tmp_elemento} == 1) {{ goto {res.lbl_true}; }} \n', sectionCode3d)
+            GenCod3d.addCodigo3d(f'goto {res.lbl_false}; \n', sectionCode3d)
+
         res.valor = tmp_elemento
-        nuevo_mapeo = simboloArreglo.mapeo_tipos_arreglo[:]
-        res.tipo = nuevo_mapeo.pop()
-        if simboloArreglo.tipo == TipoDato.ARREGLO:
-            res.mapeo_tipos_arreglo = nuevo_mapeo
         return res
 
 

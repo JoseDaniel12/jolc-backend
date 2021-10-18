@@ -1,7 +1,7 @@
 from src.Instruccion.Instruccion import *
-from src.Errores.TablaErrores import *
 from src.Tipos.TipoDato import *
 from src.Reportes.Cst import *
+from src.Compilacion.GenCod3d import *
 
 class ModificacionArreglo(Instruction):
     def __init__(self, expArreglo, expIndice, expValor, linea, columna):
@@ -29,6 +29,18 @@ class ModificacionArreglo(Instruction):
         if simboloValor is None:
             return res
         simboloArreglo.valor[simboloExpIndice.valor - 1] = simboloValor
+        return res
+
+
+    def compilar(self, ambito, sectionCode3d):
+        res = ResIns()
+        tmp_posElemntoArreglo = GenCod3d.addTemporal()
+        simboloArreglo = self.expArreglo.compilar(ambito, sectionCode3d)
+        simboloExpIndice = self.expIndice.compilar(ambito, sectionCode3d)
+        simboloValor = self.expValor.compilar(ambito, sectionCode3d)
+
+        GenCod3d.addCodigo3d(f'{tmp_posElemntoArreglo} = {simboloArreglo.valor} + {simboloExpIndice.valor}; // posicion de elemento accedido \n', sectionCode3d)
+        GenCod3d.addCodigo3d(f'heap[int({tmp_posElemntoArreglo})] = {simboloValor.valor}; // cambito de valor \n', sectionCode3d)
         return res
 
 
