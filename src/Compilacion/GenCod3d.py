@@ -14,6 +14,7 @@ class GenCod3d(object):
     nativasAgregadas = []
     temporales_funcion = []
     etiquetas_retorno = {}
+    tipo_struct = None
 
     @staticmethod
     def limpiar_temps_usados(temporal):
@@ -56,7 +57,7 @@ class GenCod3d(object):
         GenCod3d.sp = 0
         GenCod3d.hp = 0
         GenCod3d.temporales.clear()
-        imports = ""
+        GenCod3d.imports = ""
         GenCod3d.codigo3d = ""
         GenCod3d.funciones3d = ""
         GenCod3d.funcNativas3d  = ""

@@ -1,8 +1,8 @@
 from src.Instruccion.Instruccion import Instruction
 from src.Instruccion.ResIns import ResIns
-from src.Tipos.TipoDato import *
 from src.Reportes.Cst import *
 from src.Compilacion.GenCod3d import *
+from src.Tipos.TipoDato import *
 
 textoConsola = ""
 
@@ -71,14 +71,15 @@ class Print(Instruction):
                 GenCod3d.addCodigo3d(f'{lbl_finalizar}: \n')
             elif simboloExp.tipo == TipoDato.CADENA or simboloExp.tipo == TipoDato.CARACTER:
                 GenCod3d.addPrintString()
+                # paso de parametros a la funcion nativa
                 GenCod3d.addCodigo3d(f'\n\t/* Inicio paso de parametros */ \n', sectionCode3d)
                 tmp_paramPosStack = GenCod3d.addTemporal()
-                posParamStack = ambito.size + len(GenCod3d.temporales_funcion)
+                posParamStack = ambito.size
                 GenCod3d.addCodigo3d(f'{tmp_paramPosStack} = sp + {posParamStack + 1}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'stack[int({tmp_paramPosStack})] = {simboloExp.valor}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'/* Fin paso de parametros */ \n', sectionCode3d)
                 # llamada de funcion nativa
-                avanceAmbito = ambito.size + len(GenCod3d.temporales_funcion)
+                avanceAmbito = ambito.size
                 GenCod3d.addCodigo3d(f'\n\t/* Inicio llamda a nativa de impresion */ \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'sp = sp + {avanceAmbito}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'printString(); \n', sectionCode3d)

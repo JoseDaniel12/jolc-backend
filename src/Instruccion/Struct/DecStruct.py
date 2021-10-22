@@ -9,12 +9,16 @@ class DecStruct(Instruction):
         self.id = id
         self.listaPropiedades = listaPropiedades
 
-    def ejecutar(self, ambito) -> ResIns:
+    def ejecutar(self, ambito):
         res = ResIns()
         simboloStruct = SimboloStruct(self.isMutable, self.id, self.listaPropiedades, self.linea, self.columna)
         ambito.addVariable(self.id, simboloStruct)
         return res
 
+
+    def compilar(self, ambito, sectionCode3d):
+        simboloStruct = SimboloStruct(self.isMutable, self.id, self.listaPropiedades, self.linea, self.columna)
+        ambito.addVariable(self.id, simboloStruct)
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "DEC_STRUCT", idPadre)

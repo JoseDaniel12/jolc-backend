@@ -2,7 +2,7 @@ from enum import Enum
 
 class TipoDato(Enum):
     IDENTIFICADOR = 'IDENTIFICADOR'
-    ARREGLO = "Arreglo"
+    ARREGLO = "Array"
     STRUCT  = "Struct"
     NONE = 'Nothing'
     ENTERO = 'Int64'

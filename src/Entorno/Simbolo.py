@@ -11,3 +11,4 @@ class Simbolo(ABC):
         self.is_param = False
         self.ambito_id = -1
         self.mapeo_tipos_arreglo = []
+        self.molde = None

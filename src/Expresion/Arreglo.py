@@ -43,6 +43,7 @@ class Arreglo(Expresion):
             # define de que tipo son los elementos del arreglo
             if i == len(self.listaExps) - 1:
                 self.mapeo_tipos_arreglo +=  simboloExp.mapeo_tipos_arreglo
+
             # se guarda el valor del elemento del arreglo en el heap
             if simboloExp.tipo == TipoDato.BOOLEANO:
                 lbl_continuar = GenCod3d.addLabel()

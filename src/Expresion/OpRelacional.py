@@ -66,17 +66,26 @@ class OpRelacional(Expresion):
                 GenCod3d.addCompareStrings()
                 tmp_paramPosStack = GenCod3d.addTemporal()
                 tmp_retorno = GenCod3d.addTemporal()
+
+                GenCod3d.addCodigo3d('\n\t/* Inicio de llamada fucnion nativa compareStrings */ \n', sectionCode3d)
+
                 #establecer parametros
-                GenCod3d.addCodigo3d(f'{tmp_paramPosStack} = sp + 1; \n', sectionCode3d)
+                GenCod3d.addCodigo3d('\n\t/* Inicio de paso de parametros */ \n', sectionCode3d)
+                GenCod3d.addCodigo3d(f'{tmp_paramPosStack} = sp + {ambito.size + len(GenCod3d.temporales_funcion) + 1}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'stack[int({tmp_paramPosStack})] = {simboloOpIzq.valor}; \n', sectionCode3d)
-                GenCod3d.addCodigo3d(f'{tmp_paramPosStack} = sp + 2; \n')
+                GenCod3d.addCodigo3d(f'{tmp_paramPosStack} = sp + {ambito.size + len(GenCod3d.temporales_funcion) + 2}; \n')
                 GenCod3d.addCodigo3d(f'stack[int({tmp_paramPosStack})] = {simboloOpDer.valor}; \n', sectionCode3d)
+                GenCod3d.addCodigo3d('/* Fin de paso de parametros */ \n\n', sectionCode3d)
+
                 #llamar funcion
-                GenCod3d.addCodigo3d(f'sp = sp + {ambito.size}; \n', sectionCode3d)
+                avanceAmbito = ambito.size + len(GenCod3d.temporales_funcion)
+                GenCod3d.addCodigo3d(f'sp = sp + {avanceAmbito}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'compareStrings() ; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'{tmp_retorno} = stack[int(sp)]; \n', sectionCode3d)
-                GenCod3d.addCodigo3d(f'sp = sp - {ambito.size}; \n', sectionCode3d)
+                GenCod3d.addCodigo3d(f'sp = sp - {avanceAmbito}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'if ({tmp_retorno} == 1) {{ goto {self.lbl_true} }} \n', sectionCode3d)
+
+                GenCod3d.addCodigo3d('/* Fin de llamada de funcion nativa compareStrings */ \n\n', sectionCode3d)
             else:
                 GenCod3d.addCodigo3d(f'if ({simboloOpIzq.valor} == {simboloOpDer.valor}) {{ goto {self.lbl_true}; }} \n', sectionCode3d)
         elif self.tipo == TipoExpRelacional.NOIGUAL:

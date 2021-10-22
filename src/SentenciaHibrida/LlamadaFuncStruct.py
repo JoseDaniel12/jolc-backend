@@ -1,9 +1,5 @@
-from src.Entorno.Ambito import *
 from src.Instruccion.ejecutarBloqueIns import  *
 from src.Expresion.ResExp import *
-from src.Entorno.SimboloFuncion import *
-from src.Entorno.SimboloStruct import *
-from src.Instruccion.Struct.StructInstance import *
 from src.Reportes.Cst import *
 from src.Compilacion.GenCod3d import *
 
@@ -73,6 +69,7 @@ class LlamadaFuncStruct:
             return None
 
 
+    # _________________________________________ COMPILACION _________________________________________
 
     def compilar(self, ambito, sectionCodigo3d):
         res = ResExp(None, None)
@@ -80,6 +77,9 @@ class LlamadaFuncStruct:
         if resSimboloLlamada is None:
             agregarError(Error(f"La funcion {self.id} no esta definida", self.linea, self.columna))
             return None
+
+        # _________________________________________ FUNCION  _________________________________________
+
         if type(resSimboloLlamada) == SimboloFuncion:
             nuevoAmbito = Ambito(ambito, self.id)
             if len(self.listaExps) != len(resSimboloLlamada.listaParams):
@@ -108,7 +108,7 @@ class LlamadaFuncStruct:
                     return res
                 temps_params.append(simboloParam.valor)
             for i, p in enumerate(temps_params):
-                GenCod3d.addCodigo3d('/* Parametro:  */ \n', sectionCodigo3d)
+                GenCod3d.addCodigo3d('// Parametro: \n', sectionCodigo3d)
                 GenCod3d.addCodigo3d(f'{tmp_paramPosStack} = sp + {ambito.size + len(GenCod3d.temporales_funcion)+ i + 1}; \n', sectionCodigo3d)
                 GenCod3d.addCodigo3d(f'stack[int({tmp_paramPosStack})] = {p}; \n', sectionCodigo3d)
             GenCod3d.addCodigo3d('/* Fin de paso de parametros */ \n\n', sectionCodigo3d)
@@ -140,20 +140,64 @@ class LlamadaFuncStruct:
                     GenCod3d.addCodigo3d(f'{temporal} = stack[int({tmp_tempPosStack})]; \n', sectionCodigo3d)
                 GenCod3d.addCodigo3d('/* Fin de recuperacion de temporales */ \n\n', sectionCodigo3d)
 
+            res.tipo = resSimboloLlamada.tipoRetorno
+            if res.tipo == TipoDato.BOOLEANO:
+                res.lbl_true = GenCod3d.addLabel()
+                res.lbl_false = GenCod3d.addLabel()
+                GenCod3d.addCodigo3d(f'if ({res.valor} == 1) {{ goto {res.lbl_true}; }} \n', sectionCodigo3d)
+                GenCod3d.addCodigo3d(f'goto {res.lbl_false}; \n', sectionCodigo3d)
+            if res.tipo == TipoDato.STRUCT:
+                res.molde = GenCod3d.tipo_struct
 
-            res.tipo = TipoDato.ENTERO
+
+        # _________________________________________ STRUCT _________________________________________
 
         elif type(resSimboloLlamada) == SimboloStruct:
-            valoresPropsInstacia = {}
-            for i in range(len(self.listaExps)):
-                simboloExp = self.listaExps[i].ejecutar(ambito)
-                valoresPropsInstacia[resSimboloLlamada.propiedades[i].id] = simboloExp
-            return ResExp(StructInstance(self.id, resSimboloLlamada.isMutable,valoresPropsInstacia), TipoDato.STRUCT)
+            tmp_posStructHeap = GenCod3d.addTemporal()
+            tmp_posPropiedadHeap = GenCod3d.addTemporal()
 
+            # se preparan los datos para empezar a definir el struct
+            GenCod3d.addCodigo3d(f'{tmp_posStructHeap} = hp; \n', sectionCodigo3d)
+            GenCod3d.addCodigo3d(f'{tmp_posPropiedadHeap} = {tmp_posStructHeap} + 1; // Se establece la posicion inicial de la primer propiedad \n', sectionCodigo3d)
+            GenCod3d.addCodigo3d(f'heap[int(hp)] = {len(self.listaExps)}; // En la primera posicion se pone el numero de propiedades  \n', sectionCodigo3d)
+            GenCod3d.addCodigo3d(f'hp = hp + {len(self.listaExps) + 1}; // Se reserva el espacio del struct y su tamño \n\n', sectionCodigo3d)
+
+            # se empizan a definir la propiedades del struct
+            for i, exp in enumerate(self.listaExps):
+                simboloExp = exp.compilar(ambito, sectionCodigo3d)
+
+                # se verifica si hay errores en la propiedad
+                if simboloExp is None:
+                    print("F")
+                    return None
+
+                # se guarda el elemento en el heap, en caso de ser booleano se la su tratamiento
+                if simboloExp.tipo == TipoDato.BOOLEANO:
+                    lbl_continuar = GenCod3d.addLabel()
+                    GenCod3d.addCodigo3d(f'{simboloExp.lbl_true}: \n', sectionCodigo3d)
+                    GenCod3d.addCodigo3d(f'heap[int({tmp_posPropiedadHeap})] = 1; \n', sectionCodigo3d)
+                    GenCod3d.addCodigo3d(f'goto {lbl_continuar}; \n', sectionCodigo3d)
+                    GenCod3d.addCodigo3d(f'{simboloExp.lbl_false}: \n', sectionCodigo3d)
+                    GenCod3d.addCodigo3d(f'heap[int({tmp_posPropiedadHeap})] = 0; \n', sectionCodigo3d)
+                    GenCod3d.addCodigo3d(f'{lbl_continuar}: \n', sectionCodigo3d)
+                    res.lbl_true = GenCod3d.addTemporal()
+                    res.lbl_false = GenCod3d.addTemporal()
+                else:
+                    GenCod3d.addCodigo3d(f'heap[int({tmp_posPropiedadHeap})] = {simboloExp.valor}; \n', sectionCodigo3d)
+                GenCod3d.addCodigo3d(f'{tmp_posPropiedadHeap} = {tmp_posPropiedadHeap} + 1; \n', sectionCodigo3d)
+
+            res.valor = tmp_posStructHeap
+            res.tipo = TipoDato.STRUCT
+            res.molde = resSimboloLlamada
+
+
+        # se el temporal de llamada como no utilizada
         if sectionCodigo3d == "funciones":
             GenCod3d.temporales_funcion.append(res.valor)
         return res
 
+
+    # _________________________________________ Arbol CST _________________________________________
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "LLAMADA", idPadre)

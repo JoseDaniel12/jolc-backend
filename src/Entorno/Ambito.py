@@ -25,15 +25,20 @@ class Ambito:
         if type(simbolo) == SimboloVariable:
             if type(simbolo.valor) == StructInstance:
                 agregarSimboloTabla(SimboloTabla(id, simbolo.valor.tipoStruct, self.getAsString(), simbolo.linea, simbolo.columna))
+                simbolo.posAmbito = self.size
+                simbolo.profundidad = self.getProfundidad() + simbolo.posAmbito
+                self.size += 1
             else:
                 agregarSimboloTabla(SimboloTabla(id, simbolo.tipo.name, self.getAsString(), simbolo.linea, simbolo.columna))
+                simbolo.posAmbito = self.size
+                simbolo.profundidad = self.getProfundidad() + simbolo.posAmbito
                 self.size += 1
-                simbolo.posAmbito = self.size - 1
         elif type(simbolo) == SimboloFuncion:
             agregarSimboloTabla(SimboloTabla(id, "funcion", self.getAsString(), simbolo.linea, simbolo.columna))
             simbolo.posAmbito = -1
         elif type(simbolo) == SimboloStruct:
             agregarSimboloTabla(SimboloTabla(id, "struct", self.getAsString(), simbolo.linea, simbolo.columna))
+            simbolo.posAmbito = -1
 
         self.variables[id] = simbolo
         return simbolo.posAmbito
@@ -62,7 +67,7 @@ class Ambito:
             ambitoActual = ambitoActual.anterior
         return None
 
-    def getProfundida(self):
+    def getProfundidad(self):
         profundiad = 0
         ambitoActual = self
         while ambitoActual is not None:

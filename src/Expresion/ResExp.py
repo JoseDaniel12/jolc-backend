@@ -14,6 +14,7 @@ class ResExp:
         self.lbl_false = ''
         self.ambito_id = -1
         self.mapeo_tipos_arreglo = []
+        self.molde = None
 
     def getPresentationMode(self):
         if self.tipo == TipoDato.ARREGLO:

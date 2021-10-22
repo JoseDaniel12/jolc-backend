@@ -1,20 +1,21 @@
 from src.Instruccion.Instruccion import *
 from src.Instruccion.ResIns import *
 from src.Reportes.Cst import *
-from src.Entorno.Ambito import *
 from src.Compilacion.GenCod3d import *
+from src.Tipos.TipoDato import *
 
 class DecFuncion(Instruction):
-    def __init__(self, id, listaParams, listaIns, linea, columna):
+    def __init__(self, id, listaParams, listaIns, linea, columna, tipoRetorno = TipoDato.NONE):
         Instruction.__init__(self, linea, columna)
         self.id = id
         self.listaParams = listaParams
         self.listaIns = listaIns
+        self.tipoRetorno = tipoRetorno
 
 
-    def ejecutar(self, ambito) -> ResIns:
+    def ejecutar(self, ambito):
         res = ResIns()
-        simboloFunc = SimboloFuncion(self.id, self.listaParams, self.listaIns, self.linea, self.columna)
+        simboloFunc = SimboloFuncion(self.id, self.listaParams, self.listaIns, self.linea, self.columna, self.tipoRetorno)
         simboloExistente = ambito.getVariable(self.id)
         if simboloExistente is not None and type(simboloExistente) == SimboloVariable:
             agregarError(Error(f"Redefinicion invalida de {self.id}", self.linea,self.columna))
@@ -26,7 +27,7 @@ class DecFuncion(Instruction):
 
     def compilar(self, ambito, sectionCodigo3d):
         res = ResIns()
-        simboloFunc = SimboloFuncion(self.id, self.listaParams, self.listaIns, self.linea, self.columna)
+        simboloFunc = SimboloFuncion(self.id, self.listaParams, self.listaIns, self.linea, self.columna, self.tipoRetorno)
         simboloExistente = ambito.getVariable(self.id)
         if simboloExistente is not None and type(simboloExistente) == SimboloVariable:
             agregarError(Error(f"Redefinicion invalida de {self.id}", self.linea,self.columna))
@@ -34,15 +35,17 @@ class DecFuncion(Instruction):
         ambito.addVariable(self.id, simboloFunc)
         lbl_finFuncion = GenCod3d.addLabel()
 
+        nuevoAmbito = Ambito(ambito, self.id)
         sectionCodigo3d = "funciones"
         GenCod3d.funciones3d += f'func {self.id}()  {{ \n'
-        nuevoAmbito = Ambito(ambito, self.id)
 
         #parametros
         for i, param in enumerate(self.listaParams):
             simboloParam = SimboloVariable(param.id, "", param.tipo, param.linea, param.columna)
             simboloParam.is_param = True
+            simboloParam.molde = ambito.getVariable(param.tipoStruct)
             nuevoAmbito.addVariable(param.id, simboloParam)
+
         #instrucciones
         for ins in self.listaIns:
             ins.lbl_return = lbl_finFuncion

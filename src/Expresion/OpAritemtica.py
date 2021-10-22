@@ -77,7 +77,7 @@ class OpAritmetica(Expresion):
                 res.tipo = TipoDato.DECIMAL
             res.valor = simboloOpIzq.valor / simboloOpDer.valor
         elif self.tipo == TipoExpAritmetica.POTENCIA:
-            if simboloOpIzq.tipo == TipoDato.CADENA and simboloOpDer.tipo == TipoDato.ENTERO:
+            if (simboloOpIzq.tipo == TipoDato.CADENA or simboloOpIzq.tipo == TipoDato.CARACTER) and simboloOpDer.tipo == TipoDato.ENTERO:
                 res.valor = ""
                 for i in range(simboloOpDer.valor):
                     res.valor += simboloOpIzq.valor
@@ -166,11 +166,13 @@ class OpAritmetica(Expresion):
                 tempStack = GenCod3d.addTemporal()
                 tempHeap = GenCod3d.addTemporal()
                 tempRetorno = GenCod3d.addTemporal()
-                avanceAmbito = ambito.size + len(GenCod3d.temporales_funcion)
-                GenCod3d.addCodigo3d(f'{tempStack} = sp + {ambito.size + 1}; \n', sectionCode3d)
+                # paso de parametros a la funcion nartiva
+                GenCod3d.addCodigo3d(f'{tempStack} = sp + {ambito.size + len(GenCod3d.temporales_funcion) + 1}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'stack[int({tempStack})] = {simboloOpIzq.valor}; \n', sectionCode3d)
-                GenCod3d.addCodigo3d(f'{tempStack} = {tempStack} + 1; \n', sectionCode3d)
+                GenCod3d.addCodigo3d(f'{tempStack} = sp + {ambito.size + len(GenCod3d.temporales_funcion) + 2}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'stack[int({tempStack})] = {simboloOpDer.valor}; \n', sectionCode3d)
+                # llamada de funcion nariva
+                avanceAmbito = ambito.size + len(GenCod3d.temporales_funcion)
                 GenCod3d.addCodigo3d(f'sp = sp + {avanceAmbito}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'concatString(); \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'{tempRetorno} = stack[int(sp)]; \n', sectionCode3d)
@@ -199,25 +201,28 @@ class OpAritmetica(Expresion):
             lbl_error = GenCod3d.addLabel()
             lbl_finalizaer = GenCod3d.addLabel()
             tmp_numerador = GenCod3d.addTemporal()
+            tmp_denominador = GenCod3d.addTemporal()
             tempDestino = GenCod3d.addTemporal()
             GenCod3d.addCodigo3d(f'if ({simboloOpDer.valor} != 0) {{ goto {lbl_dividir}; }} \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'goto {lbl_error}; \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'{lbl_dividir}: \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'{tmp_numerador} = {simboloOpIzq.valor}; \n', sectionCode3d)
-            GenCod3d.addCodigo3d(f'{tempDestino} = {tmp_numerador} / {simboloOpDer.valor}; \n', sectionCode3d)
+            GenCod3d.addCodigo3d(f'{tmp_denominador} = {simboloOpDer.valor}; \n', sectionCode3d)
+            GenCod3d.addCodigo3d(f'{tempDestino} = {tmp_numerador} / {tmp_denominador}; \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'goto {lbl_finalizaer}; \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'{lbl_error}: \n', sectionCode3d)
             list(map(lambda c: GenCod3d.addCodigo3d(f'fmt.Printf("%c", {ord(c)}); \n', sectionCode3d), "Math error\n"))
+            GenCod3d.addCodigo3d(f'{tempDestino} = 0; \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'{lbl_finalizaer}: \n', sectionCode3d)
             res.valor = tempDestino
 
         elif self.tipo == TipoExpAritmetica.POTENCIA:
-            if simboloOpIzq.tipo == TipoDato.CADENA and simboloOpDer.tipo == TipoDato.ENTERO:
+            if (simboloOpIzq.tipo == TipoDato.CADENA or simboloOpIzq.tipo == TipoDato.CARACTER) and simboloOpDer.tipo == TipoDato.ENTERO:
                 res.tipo = TipoDato.CADENA
                 GenCod3d.addPowString(ambito)
                 tempStack = GenCod3d.addTemporal()
                 tempRetorno = GenCod3d.addTemporal()
-                GenCod3d.addCodigo3d('\n\t/* Inicio de paso de parametros */ \n', sectionCode3d)
+                GenCod3d.addCodigo3d('\n\t/* Inicio de llamada fucnion */ \n', sectionCode3d)
 
                 GenCod3d.addCodigo3d('\n\t/* Inicio de paso de parametros */ \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'{tempStack} = sp + {ambito.size + 1}; \n', sectionCode3d)

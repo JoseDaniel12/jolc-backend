@@ -7,6 +7,7 @@ class Parametro:
         self.tipo = tipo
         self.linea = linea
         self.columna = columna
+        self.tipoStruct = ""
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "PARAMETRO", idPadre)

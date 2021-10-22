@@ -1,4 +1,4 @@
-function ack(m::Int64,n::Int64)
+function ack(m::Int64,n::Int64)::Int64
     if m == 0
         return n + 1;
     elseif n == 0

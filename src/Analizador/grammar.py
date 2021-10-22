@@ -10,7 +10,6 @@ from src.Instruccion.DecVar import *
 from src.Instruccion.Condicionales.IfCompleto import *
 from src.Instruccion.Condicionales.BloqueCondicional import *
 from src.Instruccion.Bucles.While import *
-from src.Expresion.Rango import *
 from src.Instruccion.Bucles.For import *
 from src.Instruccion.Funcion.Parametro import *
 from src.Instruccion.Funcion.DecFuncion import *
@@ -49,7 +48,8 @@ miEntrada  = ""
 def getColumna(n):
     inicio = miEntrada.rfind('\n', 0, n) +1
     return n - inicio + 1
-    
+
+tipoStruct = ""
 
 # ________________________________________________SACANNER________________________________________________
 
@@ -76,6 +76,7 @@ rw = {
     'Bool': 'Bool',
     'Char': 'Char',
     'String': 'String',
+    'Array': 'Array',
 
     'global': 'GLOBAL',
     'local': 'LOCAL',
@@ -556,6 +557,7 @@ def p_tipo(p):
             | Char
             | String
             | IDENTIFICADOR
+            | Array
     '''
     if p[1] == 'None':
         p[0] = TipoDato.NONE
@@ -569,9 +571,12 @@ def p_tipo(p):
         p[0] = TipoDato.CARACTER
     elif p[1] == 'String':
         p[0] = TipoDato.CADENA
-    elif p[1] == 'IDENTIFICADOR':
-        p[0] = None
-
+    elif p[1] == 'Array':
+        p[0] = TipoDato.ARREGLO
+    else:
+        p[0] = TipoDato.STRUCT
+        global tipoStruct
+        tipoStruct = p[1]
 
 def p_instruccion_if(p):
     '''
@@ -659,6 +664,22 @@ def p_for(p):
         p[0] = For(p[2], p[4], [], p.lineno(1), getColumna(p.lexpos(1)))
 
 
+def p_dec_funcion_con_tipo_retorno(p):
+    '''
+    dec_funcion : FUNCTION IDENTIFICADOR PARENTESIS_A listaParametros PARENTESIS_C DOBLE_DOS_PTS tipo listaInstrucciones END
+                | FUNCTION IDENTIFICADOR PARENTESIS_A PARENTESIS_C DOBLE_DOS_PTS tipo listaInstrucciones END
+                | FUNCTION IDENTIFICADOR PARENTESIS_A listaParametros PARENTESIS_C DOBLE_DOS_PTS tipo END
+                | FUNCTION IDENTIFICADOR PARENTESIS_A PARENTESIS_C DOBLE_DOS_PTS tipo END
+    '''
+    if len(p) == 10:
+        p[0] = DecFuncion(p[2], p[4], p[8], p.lineno(1), getColumna(p.lexpos(1)), p[7])
+    elif len(p) == 9 and p.slice[4].type == 'PARENTESIS_C':
+        p[0] = DecFuncion(p[2], [], p[7], p.lineno(1), getColumna(p.lexpos(1)), p[6])
+    elif len(p) == 9:
+        p[0] = DecFuncion(p[2], p[4], [], p.lineno(1), getColumna(p.lexpos(1)), p[7])
+    elif len(p) == 8:
+        p[0] = DecFuncion(p[2], [], [], p.lineno(1), getColumna(p.lexpos(1)), p[6])
+
 def p_dec_funcion(p):
     '''
     dec_funcion : FUNCTION IDENTIFICADOR PARENTESIS_A listaParametros PARENTESIS_C listaInstrucciones END
@@ -674,7 +695,6 @@ def p_dec_funcion(p):
         p[0] = DecFuncion(p[2], p[4], [], p.lineno(1), getColumna(p.lexpos(1)))
     elif len(p) == 6:
         p[0] = DecFuncion(p[2], [], [], p.lineno(1), getColumna(p.lexpos(1)))
-
 
 def p_lista_parametros(p):
     '''
@@ -693,11 +713,14 @@ def p_parametro(p):
     parametro   : IDENTIFICADOR DOBLE_DOS_PTS tipo
                 | IDENTIFICADOR
     '''
+    global tipoStruct
     if len(p) == 4:
-        p[0] = Parametro(p[1], p[3], p.lineno(1), getColumna(p.lexpos(1)))
+        miParametro = Parametro(p[1], p[3], p.lineno(1), getColumna(p.lexpos(1)))
+        if p[3] == TipoDato.STRUCT:
+            miParametro.tipoStruct = tipoStruct
+        p[0] = miParametro
     elif len(p) == 2:
         p[0] = Parametro(p[1], None, p.lineno(1), getColumna(p.lexpos(1)))
-
 
 def p_llamda_funcion(p):
     '''
@@ -719,7 +742,6 @@ def p_declaracion_struct(p):
         p[0] = DecStruct(False, p[2], p[3], p.lineno(1), getColumna(p.lexpos(1)))
     elif len(p) == 6:
         p[0] = DecStruct(True, p[3], p[4], p.lineno(1), getColumna(p.lexpos(1)))
-
 
 def p_lista_propiedades_struct(p):
     '''

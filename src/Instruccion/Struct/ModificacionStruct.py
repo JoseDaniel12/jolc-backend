@@ -1,7 +1,6 @@
 from src.Instruccion.Instruccion import *
-from src.Errores.TablaErrores import *
-from src.Tipos.TipoDato import *
 from src.Reportes.Cst import *
+from src.Compilacion.GenCod3d import *
 
 class ModificacionStruct(Instruction):
     def __init__(self, expStruct, idProp, expValor, linea, columna):
@@ -29,6 +28,26 @@ class ModificacionStruct(Instruction):
         simboloPropStruct = simboloStruct.valor.propiedades[self.idProp]
         simboloPropStruct.valor = simboloValor.valor
         simboloPropStruct.tipo = simboloValor.tipo
+        return res
+
+
+    def compilar(self, ambito, sectionCode3d):
+        res = ResIns()
+        tmp_posPropStruct = GenCod3d.addTemporal()
+        simboloStruct = self.expStruct.compilar(ambito, sectionCode3d)
+        structMole = ambito.getVariable(simboloStruct.molde.id)
+        simboloValor = self.expValor.compilar(ambito, sectionCode3d)
+
+        indice_prop_desada = -1
+        for i, prop in enumerate(structMole.propiedades):
+            if prop.id == self.idProp:
+                indice_prop_desada = i + 1
+                res.tipo = prop.tipo
+                break
+
+
+        GenCod3d.addCodigo3d(f'{tmp_posPropStruct} = {simboloStruct.valor} + {indice_prop_desada}; // posicion de elemento accedido \n', sectionCode3d)
+        GenCod3d.addCodigo3d(f'heap[int({tmp_posPropStruct})] = {simboloValor.valor}; // cambito de valor \n', sectionCode3d)
         return res
 
 

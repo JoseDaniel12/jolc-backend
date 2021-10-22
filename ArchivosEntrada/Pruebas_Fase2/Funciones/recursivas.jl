@@ -1,4 +1,4 @@
-function ackerman(m::Int64, n::Int64)
+function ackerman(m::Int64, n::Int64)::Int64
     if m == 0
         return n + 1;
     elseif m > 0 && n == 0
@@ -8,7 +8,7 @@ function ackerman(m::Int64, n::Int64)
     end;
 end;
 
-function hanoi(discos::Int64, origen::Int64, auxiliar::Int64, destino::Int64)
+function hanoi(discos::Int64, origen::Int64, auxiliar::Int64, destino::Int64)::Int64
     if discos == 1
         println("Mover de ", origen, " a ", destino);
     else
@@ -18,7 +18,7 @@ function hanoi(discos::Int64, origen::Int64, auxiliar::Int64, destino::Int64)
     end;
 end;
 
-function factorial(num::Int64)
+function factorial(num::Int64)::Int64
     if num == 1
         return 1;
     else

@@ -1,7 +1,5 @@
 from src.Instruccion.Instruccion import *
 from src.Instruccion.ResIns import *
-from src.Entorno.Ambito import *
-from src.Entorno.SimboloVariable import *
 from src.Reportes.Cst import *
 from src.Compilacion.GenCod3d import *
 from src.Tipos.TipoDato import *
@@ -63,13 +61,23 @@ class DecVar(Instruction):
                     existente = ambito.getVariable(self.id)
                     existente.valor = simboloExp.valor
                     existente.tipo  = simboloExp.tipo
-                    GenCod3d.addCodigo3d(f'stack[{existente.posAmbito}] = {simboloExp.valor}; \n\n', sectionCode3d)
+                    ambitoVariable = ambito.getAmbitoSimbolo(self.id)
+                    if ambitoVariable.nombre == 'GLOBAL':
+                        GenCod3d.addCodigo3d(f'stack[{existente.posAmbito}] = {simboloExp.valor}; \n\n', sectionCode3d)
+                    else:
+                        tmp_varPosStack = GenCod3d.addTemporal()
+                        GenCod3d.addCodigo3d(f'{tmp_varPosStack} = sp + {existente.posAmbito + 1}; \n', sectionCode3d)
+                        GenCod3d.addCodigo3d(f'stack[int({tmp_varPosStack})] = {simboloExp.valor}; \n\n', sectionCode3d)
                 else:
                     simbolo = SimboloVariable(self.id, simboloExp.valor, simboloExp.tipo, self.linea, self.columna)
 
-                    # se guardan propiedades adicionales de un arreglo
+                    # se guarda propiedades adicionales en caso de ser arreglo
                     simbolo.mapeo_tipos_arreglo = simboloExp.mapeo_tipos_arreglo
                     res.mapeo_tipos_arreglo = simboloExp.mapeo_tipos_arreglo
+                    # se guarda porpiedad adicional en caso de ser un struct
+                    simbolo.molde = simboloExp.molde
+                    res.molde = simboloExp.molde
+                    # leugo de agregar todas las propiedades adicionales se insereta al ambito
                     posSimboloAmbito = ambito.addVariable(self.id, simbolo)
 
                     # si es booleano se realiza paso adicional para su asignacion por el uso de etiquetas
