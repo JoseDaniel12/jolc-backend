@@ -35,10 +35,9 @@ class AtomicExp(Expresion):
 
             tempString = GenCod3d.addTemporal()
             accesoStack = f'stack[{simbolo.posAmbito}]'
-            ambitoSimbolo = ambito.getAmbitoSimbolo(simbolo.id)
-            if ambitoSimbolo.nombre != "GLOBAL":
+            if simbolo.ambito.nombre != "GLOBAL":
                 tmp_varPosStack = GenCod3d.addTemporal()
-                GenCod3d.addCodigo3d(f'{tmp_varPosStack} = sp + {simbolo.posAmbito + 1}; \n', sectionCode3d)
+                GenCod3d.addCodigo3d(f'{tmp_varPosStack} = sp + {simbolo.posAmbito}; \n', sectionCode3d)
                 accesoStack = f'stack[int({tmp_varPosStack})]'
             GenCod3d.addCodigo3d(f'{tempString} = {accesoStack}; \n', sectionCode3d)
 

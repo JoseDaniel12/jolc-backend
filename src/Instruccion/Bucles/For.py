@@ -35,6 +35,8 @@ class For(Instruction):
         return res
 
 
+    # _________________________________________ COMPILACION _________________________________________
+
     def compilar(self, ambito, sectionCode3d):
         res = ResIns()
         simboloExp = None
@@ -65,10 +67,10 @@ class For(Instruction):
             simboloInicio = self.expresion.inicio.compilar(nuevoAmbito, sectionCode3d)
             simboloFin = self.expresion.fin.compilar(nuevoAmbito, sectionCode3d)
             simboloVariabelIteracion = SimboloVariable(self.id, simboloFin.valor, TipoDato.ENTERO, self.linea, self.columna)
-            GenCod3d.addCodigo3d(f'{tmp_posVariableIteracion} = sp + {nuevoAmbito.size + 1}; \n', sectionCode3d)
+            posSimboloAmbito = nuevoAmbito.addVariable(self.id, simboloVariabelIteracion)
+            GenCod3d.addCodigo3d(f'{tmp_posVariableIteracion} = sp + {posSimboloAmbito}; \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'stack[int({tmp_posVariableIteracion})] = {simboloInicio.valor}; \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'{tmp_valorFinal} = {simboloFin.valor}; \n', sectionCode3d)
-            nuevoAmbito.addVariable(self.id, simboloVariabelIteracion)
         else:
             simboloExp = self.expresion.compilar(ambito, sectionCode3d)
 
@@ -86,10 +88,10 @@ class For(Instruction):
                 GenCod3d.addCodigo3d('hp = hp + 1; \n', sectionCode3d)
                 GenCod3d.addCodigo3d('/* Fin de declaracion del caracter incial de la variable de iteracion */ \n\n', sectionCode3d)
                 # delcaro la variable de iteracion con su valor
-                GenCod3d.addCodigo3d(f'{tmp_posVariableIteracion} = sp + {nuevoAmbito.size + 1}; \n', sectionCode3d)
-                GenCod3d.addCodigo3d(f'stack[int({tmp_posVariableIteracion})] = {tmp_heapRespaldo}; \n', sectionCode3d)
                 simboloVariabelIteracion = SimboloVariable(self.id, tmp_heapRespaldo, TipoDato.CARACTER, self.linea, self.columna)
-                nuevoAmbito.addVariable(self.id, simboloVariabelIteracion)
+                posSimboloAmbito = nuevoAmbito.addVariable(self.id, simboloVariabelIteracion)
+                GenCod3d.addCodigo3d(f'{tmp_posVariableIteracion} = sp + {posSimboloAmbito}; \n', sectionCode3d)
+                GenCod3d.addCodigo3d(f'stack[int({tmp_posVariableIteracion})] = {tmp_heapRespaldo}; \n', sectionCode3d)
 
             elif simboloExp.tipo == TipoDato.ARREGLO:
                 GenCod3d.addCodigo3d(f'{tmp_tamanoArreglo} = heap[int({simboloExp.valor})]; // tamaño del vector \n', sectionCode3d)
@@ -101,10 +103,10 @@ class For(Instruction):
                 simboloVariabelIteracion = SimboloVariable(self.id, tmp_punteroElemArrHeap, tipo, self.linea, self.columna)
                 simboloVariabelIteracion.mapeo_tipos_arreglo = nuevo_mapeo
                 # declaracion de la variable de iteracion
-                GenCod3d.addCodigo3d(f'{tmp_posVariableIteracion} = sp + {nuevoAmbito.size + 1}; \n', sectionCode3d)
+                posSimboloAmbito = nuevoAmbito.addVariable(self.id, simboloVariabelIteracion)
+                GenCod3d.addCodigo3d(f'{tmp_posVariableIteracion} = sp + {posSimboloAmbito}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'stack[int({tmp_posVariableIteracion})] = {tmp_elementoArreglo}; // se declara i \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'{tmp_indiceRelativoElemArr} = 1; // indice relativo  \n\n', sectionCode3d)
-                nuevoAmbito.addVariable(self.id, simboloVariabelIteracion)
 
         # _________________________________________ INICIO _________________________________________
 
@@ -171,6 +173,7 @@ class For(Instruction):
         return res
 
 
+    # _________________________________________ CST _________________________________________
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "FOR", idPadre)

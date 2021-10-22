@@ -22,16 +22,15 @@ class Ambito:
 
     def addVariable(self, id, simbolo):
         simbolo.ambito_id = self.id
+        simbolo.ambito = self
         if type(simbolo) == SimboloVariable:
             if type(simbolo.valor) == StructInstance:
                 agregarSimboloTabla(SimboloTabla(id, simbolo.valor.tipoStruct, self.getAsString(), simbolo.linea, simbolo.columna))
                 simbolo.posAmbito = self.size
-                simbolo.profundidad = self.getProfundidad() + simbolo.posAmbito
                 self.size += 1
             else:
                 agregarSimboloTabla(SimboloTabla(id, simbolo.tipo.name, self.getAsString(), simbolo.linea, simbolo.columna))
                 simbolo.posAmbito = self.size
-                simbolo.profundidad = self.getProfundidad() + simbolo.posAmbito
                 self.size += 1
         elif type(simbolo) == SimboloFuncion:
             agregarSimboloTabla(SimboloTabla(id, "funcion", self.getAsString(), simbolo.linea, simbolo.columna))

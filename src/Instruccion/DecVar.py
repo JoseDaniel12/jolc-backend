@@ -61,12 +61,11 @@ class DecVar(Instruction):
                     existente = ambito.getVariable(self.id)
                     existente.valor = simboloExp.valor
                     existente.tipo  = simboloExp.tipo
-                    ambitoVariable = ambito.getAmbitoSimbolo(self.id)
-                    if ambitoVariable.nombre == 'GLOBAL':
+                    if existente.ambito.nombre == 'GLOBAL':
                         GenCod3d.addCodigo3d(f'stack[{existente.posAmbito}] = {simboloExp.valor}; \n\n', sectionCode3d)
                     else:
                         tmp_varPosStack = GenCod3d.addTemporal()
-                        GenCod3d.addCodigo3d(f'{tmp_varPosStack} = sp + {existente.posAmbito + 1}; \n', sectionCode3d)
+                        GenCod3d.addCodigo3d(f'{tmp_varPosStack} = sp + {existente.posAmbito}; \n', sectionCode3d)
                         GenCod3d.addCodigo3d(f'stack[int({tmp_varPosStack})] = {simboloExp.valor}; \n\n', sectionCode3d)
                 else:
                     simbolo = SimboloVariable(self.id, simboloExp.valor, simboloExp.tipo, self.linea, self.columna)
@@ -77,6 +76,7 @@ class DecVar(Instruction):
                     # se guarda porpiedad adicional en caso de ser un struct
                     simbolo.molde = simboloExp.molde
                     res.molde = simboloExp.molde
+
                     # leugo de agregar todas las propiedades adicionales se insereta al ambito
                     posSimboloAmbito = ambito.addVariable(self.id, simbolo)
 
@@ -86,7 +86,7 @@ class DecVar(Instruction):
                         accesoStack = f'stack[int({posSimboloAmbito})]'
                         if ambito.nombre != 'GLOBAL':
                             tmp_varPosStack = GenCod3d.addTemporal()
-                            GenCod3d.addCodigo3d(f'{tmp_varPosStack} = sp + {ambito.size}; \n', sectionCode3d)
+                            GenCod3d.addCodigo3d(f'{tmp_varPosStack} = sp + {posSimboloAmbito}; \n', sectionCode3d)
                             accesoStack = f'stack[int({tmp_varPosStack})]'
                         GenCod3d.addCodigo3d(f'{simboloExp.lbl_true}: \n', sectionCode3d)
                         GenCod3d.addCodigo3d(f'{accesoStack} = 1; \n', sectionCode3d)
@@ -100,7 +100,7 @@ class DecVar(Instruction):
                             GenCod3d.addCodigo3d(f'stack[int({posSimboloAmbito})] = {simboloExp.valor}; \n\n', sectionCode3d)
                         else:
                             tmp_stackDeclaration = GenCod3d.addTemporal()
-                            GenCod3d.addCodigo3d(f'{tmp_stackDeclaration} = sp + {ambito.size}; \n', sectionCode3d)
+                            GenCod3d.addCodigo3d(f'{tmp_stackDeclaration} = sp + {posSimboloAmbito}; \n', sectionCode3d)
                             GenCod3d.addCodigo3d(f'stack[int({tmp_stackDeclaration})] = {simboloExp.valor}; \n\n', sectionCode3d)
         return res
 

@@ -36,6 +36,7 @@ class DecFuncion(Instruction):
         lbl_finFuncion = GenCod3d.addLabel()
 
         nuevoAmbito = Ambito(ambito, self.id)
+        nuevoAmbito.size += 1
         sectionCodigo3d = "funciones"
         GenCod3d.funciones3d += f'func {self.id}()  {{ \n'
 
