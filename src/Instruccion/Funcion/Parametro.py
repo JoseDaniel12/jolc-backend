@@ -8,6 +8,7 @@ class Parametro:
         self.linea = linea
         self.columna = columna
         self.tipoStruct = ""
+        self.mapeo_tipos_arreglo = []
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "PARAMETRO", idPadre)

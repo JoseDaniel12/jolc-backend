@@ -47,7 +47,7 @@ auxiliar = [
 
 
 # Si no tienen implementado este for, pueden cambiarlo por algún otro ciclo que funcione parecido.
-function printMatriz()::None
+function printMatriz(matrix::Vector{Vector{Float64}})::None
     println("[");
     for i in matrix
         print("[");
@@ -59,25 +59,29 @@ function printMatriz()::None
     println("]");
 end;
 
-function sumarMatrices()::Array
-    if length(a) != length(b)
+function sumarMatrices(matrix1::Vector{Vector{Float64}}, matrix2::Vector{Vector{Float64}})::Vector{Vector{Float64}}
+    if length(matrix1) != length(matrix2)
         return "NO SE PUEDEN SUMAR. NO SON DE LA MISMA LONGITUD";
     end;
-    for i in 1:length(a)
-        for j in 1:length(a[1])
-            auxiliar[i][j] = a[i][j] + b[i][j];
+
+
+    for i in 1:length(matrix1)
+        for j in 1:length(matrix1[1])
+            auxiliar[i][j] = matrix1[i][j] + matrix2[i][j];
         end;
     end;
     return auxiliar;
 end;
 
-function compararMatrices()::Bool
-    if length(a) != length(b)
+function compararMatrices(matrix1::Vector{Vector{Float64}}, matrix2::Vector{Vector{Float64}})::Bool
+    if length(matrix1) != length(matrix2)
         return false;
     end;
-    for i in 1:length(a)
-        for j in 1:length(a[1])
-            if a[i][j] != b[i][j]
+
+
+    for i in 1:length(matrix1)
+        for j in 1:length(matrix1[1])
+            if matrix1[i][j] != matrix2[i][j]
                 return false;
             end;
         end;
@@ -86,50 +90,21 @@ function compararMatrices()::Bool
 end;
 
 println("MATRIZ a");
-for fila in a
-    for elemento in fila
-        print(elemento, ", ")
-    end
-    println("")
-end
+printMatriz(a);
 println();
 println("MATRIZ b");
-for fila in b
-    for elemento in fila
-        print(elemento, ", ")
-    end
-    println("")
-end
+printMatriz(b);
 
 println();
 println("LAS DOS MATRICES SUMADAS");
-suma = sumarMatrices();
-for fila in suma
-    for elemento in fila
-        print(elemento, ", ")
-    end
-    println("")
-end
+printMatriz(sumarMatrices(a, b));
 
 println();
 println("COMPARAR MATRICES. SON IGUALES?");
-println(compararMatrices());
-
-println();
-println("Pop Matriz a");
-
-println();
-println("Push a b");
-for fila in b
-    for elemento in fila
-        print(elemento, ", ")
-    end
-    println("")
-end
-
+println(compararMatrices(a, b));
 
 
 b = a;
 println();
 println("COMPARAR MATRICES. SON IGUALES?");
-println(compararMatrices());
+println(compararMatrices(a, b));

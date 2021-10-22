@@ -27,6 +27,7 @@ class AtomicExp(Expresion):
         res = ResExp("", "")
 
         if self.tipo == TipoDato.IDENTIFICADOR:
+
             simbolo = ambito.getVariable(self.valor)
 
             if simbolo is None:
@@ -50,7 +51,7 @@ class AtomicExp(Expresion):
                 res.lbl_true = simbolo.lbl_true
                 res.lbl_false = simbolo.lbl_false
             elif simbolo.tipo == TipoDato.ARREGLO:
-                res.mapeo_tipos_arreglo = simbolo.mapeo_tipos_arreglo
+                res.mapeo_tipos_arreglo = simbolo.mapeo_tipos_arreglo[:]
             elif simbolo.tipo == TipoDato.STRUCT:
                 res.molde = simbolo.molde
 

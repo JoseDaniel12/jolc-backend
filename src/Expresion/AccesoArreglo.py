@@ -60,10 +60,7 @@ class AccesoArreglo(Expresion):
         if simboloArreglo.tipo == TipoDato.ARREGLO:
             nuevo_mapeo = simboloArreglo.mapeo_tipos_arreglo[:]
             # esto pq se debe poner el mapeo desde la gramtica
-            if len(nuevo_mapeo)>0:
-                res.tipo = nuevo_mapeo.pop()
-            else:
-                res.tipo = TipoDato.ENTERO
+            res.tipo = nuevo_mapeo.pop()
             res.mapeo_tipos_arreglo = nuevo_mapeo
 
         lbl_error = GenCod3d.addLabel()

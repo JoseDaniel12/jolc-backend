@@ -1,10 +1,10 @@
-function swap(i::Int64, j::Int64, arr::Array)::None
+function swap(i::Int64, j::Int64, arr::Vector{Int64})::None
     temp = arr[i]::Int64;
     arr[i] = arr[j];
     arr[j] = temp;
 end;
 
-function bubbleSort(arr::Array)::None
+function bubbleSort(arr::Vector{Int64})::None
     for i in 0:(length(arr) - 1)
         for j in 1:(length(arr) - 1)
             if(arr[j] > arr[j + 1])
@@ -14,7 +14,7 @@ function bubbleSort(arr::Array)::None
     end;
 end;
 
-function insertionSort(arr::Array)::None
+function insertionSort(arr::Vector{Int64})::None
 
     for i in 2:length(arr)
         j = i;

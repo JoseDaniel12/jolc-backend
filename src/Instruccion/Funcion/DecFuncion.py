@@ -45,6 +45,7 @@ class DecFuncion(Instruction):
             simboloParam = SimboloVariable(param.id, "", param.tipo, param.linea, param.columna)
             simboloParam.is_param = True
             simboloParam.molde = ambito.getVariable(param.tipoStruct)
+            simboloParam.mapeo_tipos_arreglo = param.mapeo_tipos_arreglo[:]
             nuevoAmbito.addVariable(param.id, simboloParam)
 
         #instrucciones

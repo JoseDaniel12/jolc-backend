@@ -50,6 +50,7 @@ def getColumna(n):
     return n - inicio + 1
 
 tipoStruct = ""
+mapeo_tipos_arreglo = []
 
 # ________________________________________________SACANNER________________________________________________
 
@@ -76,7 +77,7 @@ rw = {
     'Bool': 'Bool',
     'Char': 'Char',
     'String': 'String',
-    'Array': 'Array',
+    'Vector':'Vector',
 
     'global': 'GLOBAL',
     'local': 'LOCAL',
@@ -125,6 +126,8 @@ tokens = [
              'DOS_PTS',
              'PT_Y_COMA',
              'COMA',
+             'LLAVE_A',
+             'LLAVE_C',
 
              'MAYORQUE',
              'MENORQUE',
@@ -167,6 +170,8 @@ t_DOBLE_DOS_PTS = r'::'
 t_DOS_PTS = r'\:'
 t_PT_Y_COMA = r'\;'
 t_COMA = r'\,'
+t_LLAVE_A = r'\{'
+t_LLAVE_C = r'\}'
 
 t_OR = r'\|\|'
 t_AND = r'\&\&'
@@ -303,6 +308,8 @@ def p_instrucion(p):
     '''
     p[0] = p[1]
 
+    global mapeo_tipos_arreglo
+    mapeo_tipos_arreglo.clear()
 
 def p_funcion_print(p):
     '''
@@ -557,7 +564,7 @@ def p_tipo(p):
             | Char
             | String
             | IDENTIFICADOR
-            | Array
+            | tipo_vector
     '''
     if p[1] == 'None':
         p[0] = TipoDato.NONE
@@ -571,12 +578,25 @@ def p_tipo(p):
         p[0] = TipoDato.CARACTER
     elif p[1] == 'String':
         p[0] = TipoDato.CADENA
-    elif p[1] == 'Array':
+    elif p.slice[1].type == 'tipo_vector':
         p[0] = TipoDato.ARREGLO
     else:
         p[0] = TipoDato.STRUCT
         global tipoStruct
         tipoStruct = p[1]
+
+    global mapeo_tipos_arreglo
+    if p.slice[1].type != 'tipo_vector':
+        mapeo_tipos_arreglo.append(p[0])
+
+def p_tipo_vector(p):
+    '''
+    tipo_vector : Vector LLAVE_A tipo LLAVE_C
+    '''
+    global mapeo_tipos_arreglo
+    p[0] = [TipoDato.ARREGLO] + mapeo_tipos_arreglo
+    mapeo_tipos_arreglo = p[0]
+
 
 def p_instruccion_if(p):
     '''
@@ -680,6 +700,7 @@ def p_dec_funcion_con_tipo_retorno(p):
     elif len(p) == 8:
         p[0] = DecFuncion(p[2], [], [], p.lineno(1), getColumna(p.lexpos(1)), p[6])
 
+
 def p_dec_funcion(p):
     '''
     dec_funcion : FUNCTION IDENTIFICADOR PARENTESIS_A listaParametros PARENTESIS_C listaInstrucciones END
@@ -707,20 +728,25 @@ def p_lista_parametros(p):
     elif len(p) == 2:
         p[0] = [p[1]]
 
-
 def p_parametro(p):
     '''
     parametro   : IDENTIFICADOR DOBLE_DOS_PTS tipo
                 | IDENTIFICADOR
     '''
     global tipoStruct
+    global mapeo_tipos_arreglo
     if len(p) == 4:
         miParametro = Parametro(p[1], p[3], p.lineno(1), getColumna(p.lexpos(1)))
         if p[3] == TipoDato.STRUCT:
             miParametro.tipoStruct = tipoStruct
+        elif p[3] == TipoDato.ARREGLO:
+            mapeo_tipos_arreglo.reverse()
+            mapeo_tipos_arreglo.pop()
+            miParametro.mapeo_tipos_arreglo = mapeo_tipos_arreglo[:]
         p[0] = miParametro
     elif len(p) == 2:
         p[0] = Parametro(p[1], None, p.lineno(1), getColumna(p.lexpos(1)))
+    mapeo_tipos_arreglo.clear()
 
 def p_llamda_funcion(p):
     '''
@@ -937,6 +963,8 @@ def armarCst(entrada):
     return cst
 
 def generarCodigo3d(entrada):
+    global mapeo_tipos_arreglo
+    mapeo_tipos_arreglo.clear()
     GenCod3d.resetCompileData()
     limpiarTablaErrores()
     limpiarTablaSimbolos()
