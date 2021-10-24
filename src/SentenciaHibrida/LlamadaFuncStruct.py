@@ -136,8 +136,10 @@ class LlamadaFuncStruct:
                 GenCod3d.addCodigo3d('\n\t/* Inicio de recuperacion de temporales */ \n', sectionCodigo3d)
                 tmp_tempPosStack = GenCod3d.addTemporal()
                 for i, temporal in enumerate(GenCod3d.temporales_funcion):
-                    GenCod3d.addCodigo3d(f'{tmp_tempPosStack} = sp + {ambito.size + i + 1}; \n', sectionCodigo3d)
-                    GenCod3d.addCodigo3d(f'{temporal} = stack[int({tmp_tempPosStack})]; \n', sectionCodigo3d)
+                    if temporal[0] == "t":
+                        GenCod3d.addCodigo3d(f'{tmp_tempPosStack} = sp + {ambito.size + i + 1}; \n', sectionCodigo3d)
+                        GenCod3d.addCodigo3d(f'{temporal} = stack[int({tmp_tempPosStack})]; \n', sectionCodigo3d)
+                GenCod3d.temporales_funcion.clear()
                 GenCod3d.addCodigo3d('/* Fin de recuperacion de temporales */ \n\n', sectionCodigo3d)
 
             res.tipo = resSimboloLlamada.tipoRetorno
@@ -168,8 +170,10 @@ class LlamadaFuncStruct:
 
                 # se verifica si hay errores en la propiedad
                 if simboloExp is None:
-                    print("F")
                     return None
+
+                # se marca como usado el temporal de expresion
+                GenCod3d.limpiar_temps_usados(simboloExp.valor)
 
                 # se guarda el elemento en el heap, en caso de ser booleano se la su tratamiento
                 if simboloExp.tipo == TipoDato.BOOLEANO:
@@ -186,14 +190,14 @@ class LlamadaFuncStruct:
                     GenCod3d.addCodigo3d(f'heap[int({tmp_posPropiedadHeap})] = {simboloExp.valor}; \n', sectionCodigo3d)
                 GenCod3d.addCodigo3d(f'{tmp_posPropiedadHeap} = {tmp_posPropiedadHeap} + 1; \n', sectionCodigo3d)
 
+            GenCod3d.addCodigo3d('\n', sectionCodigo3d)
             res.valor = tmp_posStructHeap
             res.tipo = TipoDato.STRUCT
             res.molde = resSimboloLlamada
 
 
         # se el temporal de llamada como no utilizada
-        if sectionCodigo3d == "funciones":
-            GenCod3d.temporales_funcion.append(res.valor)
+        GenCod3d.temporales_funcion.append(res.valor)
         return res
 
 

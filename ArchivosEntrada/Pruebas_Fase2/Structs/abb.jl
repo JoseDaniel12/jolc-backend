@@ -10,16 +10,16 @@ end;
 
 arbol = Tree(nothing);
 
-function insertar(nodo::Node, value::Int64)::Node
-    if nodo == nothing
-        nodo = Node(value, nothing, nothing);
-    elseif value < nodo.value
-        nodo.izq = insertar(nodo.izq, value);
-    else
-        nodo.der = insertar(nodo.der, value);
+    function insertar(nodo::Node, value::Int64)::Node
+        if nodo == nothing
+            nodo = Node(value, nothing, nothing);
+        elseif value < nodo.value
+            nodo.izq = insertar(nodo.izq, value);
+        else
+            nodo.der = insertar(nodo.der, value);
+        end;
+        return nodo;
     end;
-    return nodo;
-end;
 
 function preOrden(nodo::Node)::Nothing
     if nodo != nothing
@@ -59,6 +59,19 @@ function encontrarValor(nodo::Node, valor::Int64)::Bool
     return false;
 end;
 
+function encontrarValorR(nodo::Node, valor::Int64)::Int64
+    if nodo == nothing
+        return -1;
+    end;
+    if nodo.value == valor
+        return nodo.value;
+    elseif nodo.value > valor
+        return encontrarValorR(nodo.izq, valor);
+    else
+        return encontrarValorR(nodo.der, valor);
+    end;
+end;
+
 arbol.root = insertar(arbol.root, 35);
 arbol.root = insertar(arbol.root, 15);
 arbol.root = insertar(arbol.root, 55);
@@ -86,3 +99,13 @@ print("Existe 1: ");
 println(encontrarValor(arbol.root, 1));
 print("Existe 58: ");
 println(encontrarValor(arbol.root, 58));
+
+println("BUSCANDO VALORES RECURSIVAMENTE");
+print("Existe 7: ");
+println(encontrarValorR(arbol.root, 7));
+print("Existe 36: ");
+println(encontrarValorR(arbol.root, 36));
+print("Existe 1: ");
+println(encontrarValorR(arbol.root, 1));
+print("Existe 58: ");
+println(encontrarValorR(arbol.root, 58));

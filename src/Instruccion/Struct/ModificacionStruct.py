@@ -1,6 +1,7 @@
 from src.Instruccion.Instruccion import *
 from src.Reportes.Cst import *
 from src.Compilacion.GenCod3d import *
+from src.Tipos.TipoDato import *
 
 class ModificacionStruct(Instruction):
     def __init__(self, expStruct, idProp, expValor, linea, columna):

@@ -34,6 +34,9 @@ class AtomicExp(Expresion):
                 agregarError(Error(f"La variable {self.valor} no esta definida", self.linea, self.columna))
                 return None
 
+            # de no ser nulo se limpia el temporal
+            GenCod3d.limpiar_temps_usados(simbolo.valor)
+
             tempString = GenCod3d.addTemporal()
             accesoStack = f'stack[{simbolo.posAmbito}]'
             if simbolo.ambito.nombre != "GLOBAL":
@@ -54,10 +57,6 @@ class AtomicExp(Expresion):
                 res.mapeo_tipos_arreglo = simbolo.mapeo_tipos_arreglo[:]
             elif simbolo.tipo == TipoDato.STRUCT:
                 res.molde = simbolo.molde
-
-            # se agrega el temporal de la variable asingada como no utilizado
-            if sectionCode3d == "funciones":
-                GenCod3d.temporales_funcion.append(tempString)
 
             res.valor = tempString
             res.tipo = simbolo.tipo
@@ -98,9 +97,10 @@ class AtomicExp(Expresion):
             res.tipo = self.tipo
 
         else:
-            res.valor = self.valor
+            res.valor = str(self.valor)
             res.tipo = self.tipo
 
+        GenCod3d.temporales_funcion.append(res.valor)
         return res
 
 

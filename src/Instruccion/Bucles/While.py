@@ -41,6 +41,7 @@ class While(Instruction):
         resWhile = ResIns()
 
         nuevoAmbito = Ambito(ambito, "While")
+        nuevoAmbito.size += ambito.size
         lbl_inicioWhile = GenCod3d.addLabel()
         lbl_instruccionesWhile = GenCod3d.addLabel()
         lbl_finWhile = GenCod3d.addLabel()

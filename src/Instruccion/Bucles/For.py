@@ -151,7 +151,6 @@ class For(Instruction):
 
         elif simboloExp.tipo == TipoDato.CADENA or simboloExp.tipo == TipoDato.CARACTER:
             tmp_caracter = GenCod3d.addTemporal()
-            tmp_heapRespaldo = GenCod3d.addTemporal()
             tmp_posCaracter = GenCod3d.addTemporal()
             GenCod3d.addCodigo3d(f'{tmp_punteroCadenaOrignal} = {tmp_punteroCadenaOrignal} + 1; // acutalizo puntero cadena original \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'{tmp_caracter} = heap[int({tmp_punteroCadenaOrignal})]; // nuevo caracter de la original \n')

@@ -30,6 +30,9 @@ class AccesosStruct(Expresion):
         simboloStruct = self.expStruct.compilar(ambito, sectionCode3d)
         structMolde = ambito.getVariable(simboloStruct.molde.id)
 
+        # marco el temporal del struct como utilizado
+        GenCod3d.limpiar_temps_usados(simboloStruct.valor)
+
         tmp_posHeapInicioStruct = GenCod3d.addTemporal()
         tmp_posPropStruct = GenCod3d.addTemporal()
         tmp_prop = GenCod3d.addTemporal()
@@ -39,7 +42,6 @@ class AccesosStruct(Expresion):
             if prop.id == self.idProp:
                 indice_prop_desada = i + 1
                 res.tipo = prop.tipo
-                res.molde = ambito.getVariable(prop.tipoStruct)
                 break
 
         GenCod3d.addCodigo3d(f'{tmp_posHeapInicioStruct} = {simboloStruct.valor} // Se obtiene indice de inicio del struct en el heap \n', sectionCode3d)
@@ -50,6 +52,8 @@ class AccesosStruct(Expresion):
             res.lbl_false = GenCod3d.addLabel()
             GenCod3d.addCodigo3d(f'if ({tmp_prop} == 1) {{ goto {res.lbl_true}; }} \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'goto {res.lbl_false}; \n', sectionCode3d)
+        if res.tipo == TipoDato.STRUCT:
+            res.molde = ambito.getVariable(prop.tipoStruct)
 
         res.valor = tmp_prop
         return res

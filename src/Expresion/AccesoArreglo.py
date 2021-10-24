@@ -90,6 +90,10 @@ class AccesoArreglo(Expresion):
         GenCod3d.addCodigo3d(f'{lbl_continuar}: \n', sectionCode3d)
 
         res.valor = tmp_elemento
+        # se guarda temporal no utilizado y se limpian los utilizados
+        GenCod3d.temporales_funcion.append(res.valor)
+        GenCod3d.limpiar_temps_usados(simboloArreglo.valor)
+        GenCod3d.limpiar_temps_usados(simboloAcceso.valor)
         return res
 
 
