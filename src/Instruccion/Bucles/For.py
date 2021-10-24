@@ -66,13 +66,17 @@ class For(Instruction):
             tmp_posStackVar = GenCod3d.addTemporal()
             simboloInicio = self.expresion.inicio.compilar(nuevoAmbito, sectionCode3d)
             simboloFin = self.expresion.fin.compilar(nuevoAmbito, sectionCode3d)
+            GenCod3d.limpiar_temps_usados(simboloInicio.valor)
+            GenCod3d.limpiar_temps_usados(simboloFin.valor)
             simboloVariabelIteracion = SimboloVariable(self.id, simboloFin.valor, TipoDato.ENTERO, self.linea, self.columna)
             posSimboloAmbito = nuevoAmbito.addVariable(self.id, simboloVariabelIteracion)
             GenCod3d.addCodigo3d(f'{tmp_posVariableIteracion} = sp + {posSimboloAmbito}; \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'stack[int({tmp_posVariableIteracion})] = {simboloInicio.valor}; \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'{tmp_valorFinal} = {simboloFin.valor}; \n', sectionCode3d)
+            GenCod3d.temporales_funcion.append(tmp_valorFinal)
         else:
             simboloExp = self.expresion.compilar(ambito, sectionCode3d)
+            GenCod3d.limpiar_temps_usados(simboloExp.valor)
 
             if simboloExp.tipo == TipoDato.CADENA or simboloExp.tipo == TipoDato.CARACTER:
                 tmp_caracter = GenCod3d.addTemporal()
@@ -92,6 +96,7 @@ class For(Instruction):
                 posSimboloAmbito = nuevoAmbito.addVariable(self.id, simboloVariabelIteracion)
                 GenCod3d.addCodigo3d(f'{tmp_posVariableIteracion} = sp + {posSimboloAmbito}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'stack[int({tmp_posVariableIteracion})] = {tmp_heapRespaldo}; \n', sectionCode3d)
+                GenCod3d.temporales_funcion.append(simboloVariabelIteracion.valor)
 
             elif simboloExp.tipo == TipoDato.ARREGLO:
                 GenCod3d.addCodigo3d(f'{tmp_tamanoArreglo} = heap[int({simboloExp.valor})]; // tamaño del vector \n', sectionCode3d)
@@ -107,6 +112,7 @@ class For(Instruction):
                 GenCod3d.addCodigo3d(f'{tmp_posVariableIteracion} = sp + {posSimboloAmbito}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'stack[int({tmp_posVariableIteracion})] = {tmp_elementoArreglo}; // se declara i \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'{tmp_indiceRelativoElemArr} = 1; // indice relativo  \n\n', sectionCode3d)
+                GenCod3d.temporales_funcion.append(tmp_posVariableIteracion)
 
         # _________________________________________ INICIO _________________________________________
 
@@ -156,7 +162,6 @@ class For(Instruction):
             GenCod3d.addCodigo3d(f'{tmp_caracter} = heap[int({tmp_punteroCadenaOrignal})]; // nuevo caracter de la original \n')
             GenCod3d.addCodigo3d(f'{tmp_posCaracter} = stack[int({tmp_posVariableIteracion})]; // se obinene la pos del caracter de iteracion en el heap \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'heap[int({tmp_posCaracter})] = {tmp_caracter}; // se cambia el valor de la var de iteracion \n\n', sectionCode3d)
-
         elif simboloExp.tipo == TipoDato.ARREGLO:
             GenCod3d.addCodigo3d(f'{tmp_indiceRelativoElemArr} = {tmp_indiceRelativoElemArr} + 1; // inc indice realtivo \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'{tmp_punteroElemArrHeap} = {tmp_punteroElemArrHeap} + 1; // inc puntero elemento \n', sectionCode3d)
@@ -169,6 +174,7 @@ class For(Instruction):
         GenCod3d.addCodigo3d(f'goto {lbl_finFor}; \n', sectionCode3d)
         GenCod3d.addCodigo3d(f'{lbl_finFor}: \n', sectionCode3d)
 
+        GenCod3d.limpiar_temps_usados(tmp_variabelIteracion)
         return res
 
 

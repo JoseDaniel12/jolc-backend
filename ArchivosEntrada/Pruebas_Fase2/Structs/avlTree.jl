@@ -8,7 +8,7 @@ mutable struct Nodo
     indice::Int64;
 end;
 
-root = nothing;
+root = Nodo(0, 0, nothing, nothing, 0);
 
 
 function height(N::Nodo)::Int64
@@ -177,7 +177,7 @@ function graphviz(node::Nodo)::String
     return ("");
 end;
 
-function main()::None
+function inicio()::None
     root = insert(root, 10);
     root=insert(root,20);
   	println("");
@@ -190,8 +190,10 @@ function main()::None
   	root=insert(root,85);
     println("Preorder traversal of constructed tree is : ");
     preOrder(root);
-    println("Graphviz");
+    println("");
+    println("Graphviz: ");
+    println("");
     graphviz(root);
 end;
 
-main();
+inicio();

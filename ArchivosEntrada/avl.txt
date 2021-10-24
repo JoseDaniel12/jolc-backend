@@ -8,8 +8,7 @@ mutable struct Nodo
     indice::Int64;
 end;
 
-root = nothing;
-
+root = Nodo(0, 0, nothing, nothing, 0);
 
 function height(N)
     if N == nothing
