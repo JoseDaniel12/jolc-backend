@@ -57,22 +57,23 @@ class Parse(Expresion):
         if simboloExp is None:
             return None
 
-        tmp_valorTipoDeseado = GenCod3d.addTemporal()
         if simboloExp.tipo == self.tipoParseo:
             res.tipo = simboloExp.tipo
+            res.valor = simboloExp.tipo
         elif simboloExp.tipo == TipoDato.ENTERO and self.tipoParseo == TipoDato.DECIMAL:
-            GenCod3d.addCodigo3d(f'{tmp_valorTipoDeseado} = float64({simboloExp.valor}); \n', sectionCode3d)
             res.tipo = TipoDato.DECIMAL
+            res.valor = simboloExp.valor
         elif simboloExp.tipo == TipoDato.DECIMAL and self.tipoParseo == TipoDato.ENTERO:
+            tmp_valorTipoDeseado = GenCod3d.addTemporal()
             if "math" not in GenCod3d.imports:
                 GenCod3d.imports += "\t\"math\" \n"
             tmp_decimales = GenCod3d.addTemporal()
             GenCod3d.addCodigo3d(f'{tmp_decimales} = math.Mod({simboloExp.valor}, 1); \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'{tmp_valorTipoDeseado} = {simboloExp.valor} - {tmp_decimales}; \n', sectionCode3d)
             res.tipo = TipoDato.ENTERO
+            res.valor = tmp_valorTipoDeseado
         elif (simboloExp.tipo == TipoDato.CADENA or simboloExp.tipo == TipoDato.CARACTER) and self.tipoParseo == TipoDato.ENTERO:
             pass
-        res.valor = tmp_valorTipoDeseado
         return res
 
 

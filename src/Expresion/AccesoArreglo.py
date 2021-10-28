@@ -69,8 +69,8 @@ class AccesoArreglo(Expresion):
         tmp_tamanoArreglo = GenCod3d.addTemporal()
         tmp_posElementoArreglo = GenCod3d.addTemporal()
         tmp_elemento = GenCod3d.addTemporal()
-        GenCod3d.addCodigo3d(f'{tmp_posHeapInicioArreglo} = {simboloArreglo.valor} // Se obtiene indice de inicio del arreglo en el heap \n', sectionCode3d)
-        GenCod3d.addCodigo3d(f'{tmp_posElementoArreglo} = {tmp_posHeapInicioArreglo} + {simboloAcceso.valor}; // Se obtiene el indice del elemento deseado en el heap del arreglo en el heap \n', sectionCode3d)
+        GenCod3d.addCodigo3d(f'{tmp_posHeapInicioArreglo} = {simboloArreglo.valor}; // Se obtiene indice de inicio del arreglo en el heap \n', sectionCode3d)
+        GenCod3d.addCodigo3d(f'{tmp_posElementoArreglo} = {tmp_posHeapInicioArreglo} + {simboloAcceso.valor}; // Se obtiene el indice del elemento deseado en el heap del arreglo \n', sectionCode3d)
         GenCod3d.addCodigo3d(f'{tmp_tamanoArreglo} = heap[int({tmp_posHeapInicioArreglo})]; // Se obtiene el tamaño del arreglo \n',sectionCode3d)
         GenCod3d.addCodigo3d(f'if ({simboloAcceso.valor} < 1) {{ goto {lbl_error}; }} \n',sectionCode3d)
         GenCod3d.addCodigo3d(f'if ({simboloAcceso.valor} > {tmp_tamanoArreglo}) {{ goto {lbl_error}; }} \n', sectionCode3d)
@@ -83,6 +83,7 @@ class AccesoArreglo(Expresion):
             GenCod3d.addCodigo3d(f'goto {res.lbl_false}; \n', sectionCode3d)
         if res.tipo == TipoDato.STRUCT:
             res.molde = simboloArreglo.molde
+
         GenCod3d.addCodigo3d(f'goto {lbl_continuar}; \n', sectionCode3d)
 
         GenCod3d.addCodigo3d(f'{lbl_error}: \n', sectionCode3d)

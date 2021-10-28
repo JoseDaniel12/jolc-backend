@@ -43,6 +43,7 @@ class Arreglo(Expresion):
             # define de que tipo son los elementos del arreglo
             if i == len(self.listaExps) - 1:
                 self.mapeo_tipos_arreglo +=  simboloExp.mapeo_tipos_arreglo
+                res.molde = simboloExp.molde
 
             # se guarda el valor del elemento del arreglo en el heap
             if simboloExp.tipo == TipoDato.BOOLEANO:
@@ -59,6 +60,7 @@ class Arreglo(Expresion):
                 GenCod3d.addCodigo3d(f'heap[int({tmp_posElementoHeap})] = {simboloExp.valor}; \n', sectionCodigo3d)
             GenCod3d.addCodigo3d(f'{tmp_posElementoHeap} = {tmp_posElementoHeap} + 1; \n', sectionCodigo3d)
             tipo_de_elementos = simboloExp.tipo
+            res.molde = simboloExp.molde
 
         self.mapeo_tipos_arreglo.append(tipo_de_elementos)
         GenCod3d.addCodigo3d('\n', sectionCodigo3d)

@@ -55,6 +55,7 @@ class AtomicExp(Expresion):
                 res.lbl_false = simbolo.lbl_false
             elif simbolo.tipo == TipoDato.ARREGLO:
                 res.mapeo_tipos_arreglo = simbolo.mapeo_tipos_arreglo[:]
+                res.molde = simbolo.molde
             elif simbolo.tipo == TipoDato.STRUCT:
                 res.molde = simbolo.molde
 

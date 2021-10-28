@@ -157,11 +157,17 @@ class For(Instruction):
 
         elif simboloExp.tipo == TipoDato.CADENA or simboloExp.tipo == TipoDato.CARACTER:
             tmp_caracter = GenCod3d.addTemporal()
+            tmp_heapRespaldo = GenCod3d.addTemporal()
             tmp_posCaracter = GenCod3d.addTemporal()
             GenCod3d.addCodigo3d(f'{tmp_punteroCadenaOrignal} = {tmp_punteroCadenaOrignal} + 1; // acutalizo puntero cadena original \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'{tmp_caracter} = heap[int({tmp_punteroCadenaOrignal})]; // nuevo caracter de la original \n')
-            GenCod3d.addCodigo3d(f'{tmp_posCaracter} = stack[int({tmp_posVariableIteracion})]; // se obinene la pos del caracter de iteracion en el heap \n', sectionCode3d)
-            GenCod3d.addCodigo3d(f'heap[int({tmp_posCaracter})] = {tmp_caracter}; // se cambia el valor de la var de iteracion \n\n', sectionCode3d)
+            GenCod3d.addCodigo3d(f'{tmp_heapRespaldo} = hp; // se crea un nuevo caracter para la variable de iteracion \n', sectionCode3d)
+            GenCod3d.addCodigo3d(f'heap[int(hp)] = {tmp_caracter}; \n', sectionCode3d)
+            GenCod3d.addCodigo3d('hp = hp + 1; \n', sectionCode3d)
+            GenCod3d.addCodigo3d('heap[int(hp)] = -1; \n', sectionCode3d)
+            GenCod3d.addCodigo3d('hp = hp + 1; \n', sectionCode3d)
+            GenCod3d.addCodigo3d(f'stack[int({tmp_posVariableIteracion})] = {tmp_heapRespaldo}; \n\n', sectionCode3d)
+
         elif simboloExp.tipo == TipoDato.ARREGLO:
             GenCod3d.addCodigo3d(f'{tmp_indiceRelativoElemArr} = {tmp_indiceRelativoElemArr} + 1; // inc indice realtivo \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'{tmp_punteroElemArrHeap} = {tmp_punteroElemArrHeap} + 1; // inc puntero elemento \n', sectionCode3d)
@@ -171,7 +177,9 @@ class For(Instruction):
         # _________________________________________ FINAL _________________________________________
 
         GenCod3d.addCodigo3d(f'goto {lbl_inicioFor}; \n', sectionCode3d)
-        GenCod3d.addCodigo3d(f'goto {lbl_finFor}; \n', sectionCode3d)
+
+        if len(self.listaIns) == 0:
+            GenCod3d.addCodigo3d(f'goto {lbl_finFor}; \n', sectionCode3d)
         GenCod3d.addCodigo3d(f'{lbl_finFor}: \n', sectionCode3d)
 
         GenCod3d.limpiar_temps_usados(tmp_variabelIteracion)

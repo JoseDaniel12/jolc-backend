@@ -1,5 +1,4 @@
 from src.Instruccion.Instruccion import *
-from src.Entorno.Ambito import *
 from src.Instruccion.ejecutarBloqueIns import *
 from src.Reportes.Cst import *
 from src.Compilacion.GenCod3d import *
@@ -60,8 +59,10 @@ class While(Instruction):
             ins.lbl_break = lbl_finWhile
             ins.compilar(nuevoAmbito, sectionCode3d)
 
-
+        if len(self.listaIns) == 0:
+            GenCod3d.addCodigo3d(f'goto {lbl_finWhile}; \n', sectionCode3d)
         GenCod3d.addCodigo3d(f'goto {lbl_inicioWhile}; \n', sectionCode3d)
+
         GenCod3d.addCodigo3d(f'{lbl_finWhile}: \n', sectionCode3d)
 
         return resWhile

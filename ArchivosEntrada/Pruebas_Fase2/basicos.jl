@@ -28,5 +28,22 @@ println(uppercase("Hola Mundo! ") * lowercase(despedida));
 println("Probando funciones nativas de JOLC");
 println(trunc(35.156105));
 println(float(11));
+println(uppercase("Hola Mundo! ") * lowercase("WeNaS! :z"));
 carnet = "201807394";
 println("---------------------------------");
+
+palabra = "JOKLC";
+
+for letra in palabra
+    if letra == "J"
+        continue;
+    elseif letra == "L"
+        println("#");
+        break;
+    else
+        print("&");
+    end;
+
+    letra = letra ^ 3;
+    print(letra, "-");
+end;

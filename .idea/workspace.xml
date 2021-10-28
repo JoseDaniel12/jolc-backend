@@ -3,10 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="94d84502-f529-411c-92b4-ef30851d05e2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArchivosEntrada/Pruebas_Fase2/Structs/avlTree.jl" beforeDir="false" afterPath="$PROJECT_DIR$/ArchivosEntrada/Pruebas_Fase2/Structs/avlTree.jl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArchivosEntrada/avl.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ArchivosEntrada/avl.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArchivosEntrada/Pruebas_Fase2/basicos.jl" beforeDir="false" afterPath="$PROJECT_DIR$/ArchivosEntrada/Pruebas_Fase2/basicos.jl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Expresion/AccesoArreglo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/AccesoArreglo.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Expresion/AccesoStruct.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/AccesoStruct.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Expresion/Arreglo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/Arreglo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Expresion/AtomicExp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/AtomicExp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Parse.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/FuncionesNativas/Parse.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Expresion/OpRelacional.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expresion/OpRelacional.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Instruccion/Bucles/For.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instruccion/Bucles/For.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Instruccion/Bucles/While.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instruccion/Bucles/While.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -250,6 +255,14 @@
       <workItem from="1635099074700" duration="1004000" />
       <workItem from="1635100201800" duration="1131000" />
       <workItem from="1635101370776" duration="5802000" />
+      <workItem from="1635114104390" duration="1269000" />
+      <workItem from="1635120281661" duration="599000" />
+      <workItem from="1635275235373" duration="4507000" />
+      <workItem from="1635295910715" duration="2029000" />
+      <workItem from="1635304894125" duration="624000" />
+      <workItem from="1635362031318" duration="3495000" />
+      <workItem from="1635376600337" duration="2465000" />
+      <workItem from="1635383065700" duration="2383000" />
     </task>
     <servers />
   </component>
@@ -281,7 +294,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/jolc_backend$For.coverage" NAME="For Coverage Results" MODIFIED="1634929052680" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Instruccion/Bucles" />
-    <SUITE FILE_PATH="coverage/jolc_backend$jolc_backend.coverage" NAME="jolc-backend Coverage Results" MODIFIED="1635113798751" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/jolc_backend$jolc_backend.coverage" NAME="jolc-backend Coverage Results" MODIFIED="1635384982598" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/jolc_backend$GenCod3d.coverage" NAME="GenCod3d Coverage Results" MODIFIED="1633636003457" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compilacion" />
   </component>
 </project>

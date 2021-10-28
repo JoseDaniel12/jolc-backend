@@ -83,7 +83,7 @@ class OpRelacional(Expresion):
                 GenCod3d.addCodigo3d(f'compareStrings() ; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'{tmp_retorno} = stack[int(sp)]; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'sp = sp - {avanceAmbito}; \n', sectionCode3d)
-                GenCod3d.addCodigo3d(f'if ({tmp_retorno} == 1) {{ goto {self.lbl_true} }} \n', sectionCode3d)
+                GenCod3d.addCodigo3d(f'if ({tmp_retorno} == 1) {{ goto {self.lbl_true}; }} \n', sectionCode3d)
 
                 GenCod3d.addCodigo3d('/* Fin de llamada de funcion nativa compareStrings */ \n\n', sectionCode3d)
             else:
