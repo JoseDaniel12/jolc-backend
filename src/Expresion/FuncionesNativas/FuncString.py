@@ -22,6 +22,9 @@ class FuncString(Expresion):
 
         return res
 
+    def compilar(self, ambito, sectionCode3d):
+        agregarError(Error(f"funcion string no implementada", self.linea, self.columna))
+        return None
 
     def generateCst(self, idPadre):
         defElementCst(self.idSent, "funcString", idPadre)

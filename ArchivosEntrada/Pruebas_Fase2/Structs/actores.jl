@@ -28,12 +28,12 @@ function crearPelicula(nombre::String, posicion::Int64)::Pelicula
     return Pelicula(nombre,posicion);
 end;
 
-function imprimir(contrato::Contrato)::None
+function imprimir(contrato::Contrato)::Nothing
     println("Actor: ", contrato.actor.nombre, "   Edad: ", contrato.actor.edad);
     println("Pelicula: ", contrato.pelicula.nombre, "   Genero: ", contrato.pelicula.posicion);
 end;
 
-function contratos()::None
+function contratos()::Nothing
     for i in 1:(1*1+2)
         contrato = Contrato(Actor("",0),Pelicula("",0))::Contrato;
         if(i < 4)

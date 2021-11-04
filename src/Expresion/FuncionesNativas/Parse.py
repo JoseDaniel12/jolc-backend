@@ -72,8 +72,14 @@ class Parse(Expresion):
             GenCod3d.addCodigo3d(f'{tmp_valorTipoDeseado} = {simboloExp.valor} - {tmp_decimales}; \n', sectionCode3d)
             res.tipo = TipoDato.ENTERO
             res.valor = tmp_valorTipoDeseado
-        elif (simboloExp.tipo == TipoDato.CADENA or simboloExp.tipo == TipoDato.CARACTER) and self.tipoParseo == TipoDato.ENTERO:
-            pass
+        elif ((simboloExp.tipo == TipoDato.CADENA or simboloExp.tipo == TipoDato.CARACTER) and
+              (self.tipoParseo == TipoDato.ENTERO or self.tipoParseo == TipoDato.DECIMAL)):
+            agregarError(Error(f"Funcion Parse de String a tipo numerico no implementado" , self.linea,self.columna))
+            return None
+        elif ((simboloExp.tipo == TipoDato.ENTERO or simboloExp.tipo == TipoDato.DECIMAL) and
+              (self.tipoParseo == TipoDato.CADENA or self.tipoParseo == TipoDato.CARACTER)):
+            agregarError(Error(f"Funcion Parse de tipo numerico a tipo String no implementado" , self.linea,self.columna))
+            return None
         return res
 
 

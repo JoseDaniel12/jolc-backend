@@ -85,7 +85,6 @@ class Print(Instruction):
                 GenCod3d.addCodigo3d(f'printString(); \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'sp = sp - {avanceAmbito}; \n', sectionCode3d)
                 GenCod3d.addCodigo3d(f'/* Fin llamda a nativa de impresion */ \n\n', sectionCode3d)
-
         if self.isEnter:
             GenCod3d.addCodigo3d(f'fmt.Printf("%c", 10); \n', sectionCode3d)
 

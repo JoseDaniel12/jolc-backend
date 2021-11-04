@@ -47,7 +47,7 @@ auxiliar = [
 
 
 # Si no tienen implementado este for, pueden cambiarlo por algún otro ciclo que funcione parecido.
-function printMatriz(matrix::Vector{Vector{Float64}})::None
+function printMatriz(matrix::Vector{Vector{Float64}})::Nothing
     println("[");
     for i in matrix
         print("[");

@@ -14,6 +14,9 @@ class Break(Instruction):
 
 
     def compilar(self, ambito, sectionCode3d):
+        if self.lbl_break == '':
+            agregarError(Error(f"Break no se ecuentra dentro de una funcion", self.linea, self.columna))
+            return
         GenCod3d.addCodigo3d(f'goto {self.lbl_break}; \n')
 
 

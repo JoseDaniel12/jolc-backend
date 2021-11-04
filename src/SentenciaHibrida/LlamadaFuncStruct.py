@@ -28,7 +28,8 @@ class LlamadaFuncStruct:
                 if len(self.listaExps) == len(resSimboloLlamada.listaParams):
                     for i in range(len(self.listaExps)):
                         simboloParam = self.listaExps[i].ejecutar(ambito)
-                        if simboloParam.tipo == resSimboloLlamada.listaParams[i].tipo or resSimboloLlamada.listaParams[i].tipo is None:
+                        if ((simboloParam.tipo == resSimboloLlamada.listaParams[i].tipo or resSimboloLlamada.listaParams[i].tipo is None) or
+                            (simboloParam.tipo == TipoDato.NONE and resSimboloLlamada.listaParams[i].tipo == TipoDato.STRUCT)):
                             nuevoAmbito.addVariable(resSimboloLlamada.listaParams[i].id, SimboloVariable(resSimboloLlamada.listaParams[i].id, simboloParam.valor, simboloParam.tipo, self.linea, self.columna))
                             valores.append(simboloParam.valor)
                         else:
@@ -103,8 +104,9 @@ class LlamadaFuncStruct:
             tmp_paramPosStack = GenCod3d.addTemporal()
             for i in range(len(self.listaExps)):
                 simboloParam = self.listaExps[i].compilar(ambito, sectionCodigo3d)
-                if simboloParam.tipo != resSimboloLlamada.listaParams[i].tipo and resSimboloLlamada.listaParams[i].tipo is not None:
-                    agregarError(Error(f"Se esperaban tipo {resSimboloLlamada.listaParams[i].tipo.name} y se obtuvo {simboloParam.tipo.name}",self.linea, self.columna))
+                if (simboloParam.tipo != resSimboloLlamada.listaParams[i].tipo and resSimboloLlamada.listaParams[i].tipo is not None
+                    and not (simboloParam.tipo == TipoDato.NONE and resSimboloLlamada.listaParams[i].tipo == TipoDato.STRUCT)):
+                    agregarError(Error(f"Se esperaban tipo {resSimboloLlamada.listaParams[i].tipo} y se obtuvo {simboloParam.tipo.name}",self.linea, self.columna))
                     return res
                 temps_params.append(simboloParam.valor)
             for i, p in enumerate(temps_params):

@@ -3,6 +3,7 @@ from flask_cors import CORS
 import sys
 
 from src.Analizador.grammar import *
+from src.Analizador.gramOptimizacion import *
 
 sys.setrecursionlimit(10000000)
 app = Flask(__name__)
@@ -35,6 +36,13 @@ def getCst():
 def compilar3d():
     texto = request.json['entrada']
     return jsonify(generarCodigo3d(texto))
+
+@app.route("/optimizarMirilla", methods=['POST'])
+def optimizarMirilla():
+    texto = request.json['entrada']
+    optimizador = parseCode3d(texto)
+    optimizador.optimizarMirilla()
+    return jsonify(optimizador.getCode())
 
 @app.route("/")
 def pruebas():

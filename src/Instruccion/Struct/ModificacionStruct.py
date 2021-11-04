@@ -23,8 +23,7 @@ class ModificacionStruct(Instruction):
             agregarError(Error(f"{simboloStruct.valor.tipoStruct} no cuentra con la propiedad {self.idProp}", self.linea, self.columna))
             return res
         elif not simboloStruct.valor.isMutable:
-            agregarError(
-                Error(f"{simboloStruct.valor.tipoStruct} es inmutable", self.linea,self.columna))
+            agregarError(Error(f"{simboloStruct.valor.tipoStruct} es inmutable", self.linea,self.columna))
             return res
         simboloPropStruct = simboloStruct.valor.propiedades[self.idProp]
         simboloPropStruct.valor = simboloValor.valor
@@ -37,8 +36,14 @@ class ModificacionStruct(Instruction):
         tmp_posPropStruct = GenCod3d.addTemporal()
         simboloStruct = self.expStruct.compilar(ambito, sectionCode3d)
         structMole = ambito.getVariable(simboloStruct.molde.id)
-        simboloValor = self.expValor.compilar(ambito, sectionCode3d)
 
+        if simboloStruct is None:
+            return res
+        elif not structMole.isMutable:
+            agregarError(Error(f"{structMole.id} es inmutable", self.linea, self.columna))
+            return res
+
+        simboloValor = self.expValor.compilar(ambito, sectionCode3d)
         indice_prop_desada = -1
         for i, prop in enumerate(structMole.propiedades):
             if prop.id == self.idProp:

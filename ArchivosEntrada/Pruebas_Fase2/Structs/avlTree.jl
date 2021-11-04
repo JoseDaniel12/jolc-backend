@@ -8,7 +8,7 @@ mutable struct Nodo
     indice::Int64;
 end;
 
-root = Nodo(0, 0, nothing, nothing, 0);
+root = nothing;
 
 
 function height(N::Nodo)::Int64
@@ -102,7 +102,7 @@ function insert (node::Nodo, key::Int64)::Nodo
     return node;
 end;
 
-function preOrder (node::Nodo)::None
+function preOrder (node::Nodo)::Nothing
     if (node != nothing)
         print(node.valor);
     	print(" ");
@@ -111,7 +111,7 @@ function preOrder (node::Nodo)::None
     end;
 end;
 
-function indexnodes(node::Nodo)::None
+function indexnodes(node::Nodo)::Nothing
 
     if(node == nothing)
         return;
@@ -177,7 +177,7 @@ function graphviz(node::Nodo)::String
     return ("");
 end;
 
-function inicio()::None
+function inicio()::Nothing
     root = insert(root, 10);
     root=insert(root,20);
   	println("");

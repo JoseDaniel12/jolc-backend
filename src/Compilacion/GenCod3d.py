@@ -15,6 +15,7 @@ class GenCod3d(object):
     temporales_funcion = []
     etiquetas_retorno = {}
     tipo_struct = None
+    return_encontrado = False
 
     @staticmethod
     def limpiar_temps_usados(temporal):

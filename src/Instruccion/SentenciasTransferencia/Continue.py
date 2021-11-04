@@ -12,6 +12,9 @@ class Continue(Instruction):
         return res
 
     def compilar(self, ambito, sectionCode3d):
+        if self.lbl_continue == '':
+            agregarError(Error(f"Continue no se ecuentra dentro de una funcion", self.linea, self.columna))
+            return
         GenCod3d.addCodigo3d(f'goto {self.lbl_continue}; \n')
 
     def generateCst(self, idPadre):

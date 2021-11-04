@@ -49,12 +49,13 @@ class DecFuncion(Instruction):
             nuevoAmbito.addVariable(param.id, simboloParam)
 
         #instrucciones
+        GenCod3d.return_encontrado = False
         for ins in self.listaIns:
             ins.lbl_return = lbl_finFuncion
             ins.compilar(nuevoAmbito, sectionCodigo3d)
 
-        GenCod3d.addCodigo3d(f'goto {lbl_finFuncion}; \n', sectionCodigo3d)
-        GenCod3d.addCodigo3d(f'{lbl_finFuncion}: \n', sectionCodigo3d)
+        if GenCod3d.return_encontrado:
+            GenCod3d.addCodigo3d(f'{lbl_finFuncion}: \n', sectionCodigo3d)
         GenCod3d.addCodigo3d(f'return; \n', sectionCodigo3d)
         GenCod3d.funciones3d +='} \n'
         return res

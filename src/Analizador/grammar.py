@@ -71,7 +71,7 @@ rw = {
     'break': 'BREAK',
     'continue': 'CONTINUE',
 
-    'None': 'None',
+    'Nothing': 'Nothing',
     'Int64': 'Int64',
     'Float64': 'Float64',
     'Bool': 'Bool',
@@ -241,7 +241,7 @@ def t_error(t):
 
 
 t_ignore = ' \t\r\f\v'
-lex.lex()
+lexer_interprete = lex.lex()
 
 # ________________________________________________PARSER________________________________________________
 
@@ -557,7 +557,7 @@ def p_referencia_ambito(p):
 
 def p_tipo(p):
     '''
-    tipo    : None
+    tipo    : Nothing
             | Int64
             | Float64
             | Bool
@@ -566,7 +566,7 @@ def p_tipo(p):
             | IDENTIFICADOR
             | tipo_vector
     '''
-    if p[1] == 'None':
+    if p[1] == 'Nothing':
         p[0] = TipoDato.NONE
     elif p[1] == 'Int64':
         p[0] = TipoDato.ENTERO
@@ -932,7 +932,7 @@ def parse(entrada):
     limpiarTablaErrores()
     limpiarTablaSimbolos()
 
-    listaIns = parser.parse(entrada)
+    listaIns = parser.parse(entrada, lexer = lexer_interprete)
     ambitoGlobal = Ambito(None, "GLOBAL")
     for ins in listaIns:
         ins.ejecutar(ambitoGlobal)
@@ -948,7 +948,7 @@ def parse(entrada):
 
 def armarCst(entrada):
     limpiarCst()
-    listaIns = parser.parse(entrada)
+    listaIns = parser.parse(entrada, lexer = lexer_interprete)
     idPadre = uuid.uuid4()
     defNodoCst(idPadre, "START  ")
     idAnterior = idPadre
@@ -969,7 +969,7 @@ def generarCodigo3d(entrada):
     limpiarTablaErrores()
     limpiarTablaSimbolos()
     ambitoGlobal = Ambito(None, "GLOBAL")
-    listaIns = parser.parse(entrada)
+    listaIns = parser.parse(entrada, lexer = lexer_interprete)
     # for ins in listaIns:
     #     if type(ins) == DecFuncion:
     #         ins.compilar(ambitoGlobal, "main")

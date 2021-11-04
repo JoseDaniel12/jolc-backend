@@ -24,6 +24,10 @@ class Return(Instruction):
 
     def compilar(self, ambito, sectionCode3d):
         res = ResIns()
+        GenCod3d.return_encontrado = True
+        if self.lbl_return == '':
+            agregarError(Error(f"Return no se ecuentra dentro de una funcion", self.linea, self.columna))
+            return res
         if self.expresion is not None:
             simboloExp = self.expresion.compilar(ambito, sectionCode3d)
             GenCod3d.limpiar_temps_usados(simboloExp.valor)
