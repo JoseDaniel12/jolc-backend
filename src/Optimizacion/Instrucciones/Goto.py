@@ -7,5 +7,5 @@ class Goto(SentenciaC3d):
 
     def getCode(self):
         if not self.is_deleted:
-            return f'goto {self.etiqueta};'
-        return ''
+            return f'goto {self.etiqueta}; \n'
+        return '// Instrucción eliminada \n'

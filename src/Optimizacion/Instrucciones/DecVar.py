@@ -8,5 +8,5 @@ class DecVar(SentenciaC3d):
 
     def getCode(self):
         if self.is_deleted:
-            return ''
-        return f'{self.destino} = {self.expresion.getCode()};'
+            return '// Instrucción eliminada \n'
+        return f'{self.destino} = {self.expresion.getCode()}; \n'

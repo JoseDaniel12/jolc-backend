@@ -10,9 +10,8 @@ class Funcion(SentenciaC3d):
         if not self.is_deleted:
             codigo = f'func {self.id}() {{ \n'
             for ins in self.listaIns:
-                codigo_ins =  ins.getCode()
-                if codigo_ins != '':
-                    codigo += '\t' + ins.getCode() + '\n'
-            codigo += '}'
+                if not ins.is_deleted:
+                    codigo += '\t' + ins.getCode()
+            codigo += '} \n'
             return codigo
-        return ''
+        return '// Instrucción eliminada \n'

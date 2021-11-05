@@ -7,5 +7,5 @@ class Etiqueta(SentenciaC3d):
 
     def getCode(self):
         if not self.is_deleted:
-            return f'{self.id}: '
-        return ''
+            return f'{self.id}: \n'
+        return '// Instrucción eliminada \n'

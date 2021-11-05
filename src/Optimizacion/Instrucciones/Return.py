@@ -6,5 +6,5 @@ class Return(SentenciaC3d):
 
     def getCode(self):
         if not self.is_deleted:
-            return 'return;'
-        return ''
+            return 'return; \n'
+        return '// Instrucción eliminada \n'

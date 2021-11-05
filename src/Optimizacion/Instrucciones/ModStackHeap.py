@@ -9,5 +9,5 @@ class ModStackHeap(SentenciaC3d):
 
     def getCode(self):
         if not self.is_deleted:
-            return f'{self.stackHeap}[{self.expAcceso.getCode()}] = {self.expValor.getCode()};'
-        return ''
+            return f'{self.stackHeap}[{self.expAcceso.getCode()}] = {self.expValor.getCode()}; \n'
+        return '// Instrucción eliminada \n'

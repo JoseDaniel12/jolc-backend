@@ -8,5 +8,5 @@ class If(SentenciaC3d):
 
     def getCode(self):
         if not self.is_deleted:
-            return f'if ({self.exp.getCode()}) {{ goto {self.etiqueta}; }}'
-        return ''
+            return f'if ({self.exp.getCode()}) {{ goto {self.etiqueta}; }} \n'
+        return '// Instrucción eliminada \n'

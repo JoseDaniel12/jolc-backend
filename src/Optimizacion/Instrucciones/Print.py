@@ -8,5 +8,5 @@ class Print(SentenciaC3d):
 
     def getCode(self):
         if not self.is_deleted:
-            return f'fmt.Printf("{self.tipoImpresion}", {self.expresion.getCode()});'
-        return ''
+            return f'fmt.Printf("{self.tipoImpresion}", {self.expresion.getCode()}); \n'
+        return '// Instrucción eliminada \n'
