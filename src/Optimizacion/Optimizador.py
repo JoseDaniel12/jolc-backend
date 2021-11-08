@@ -24,7 +24,10 @@ class Optimizador:
         codigo += 'var stack[1000000]float64; \n'
         codigo += 'var heap[1000000]float64; \n'
         codigo += 'var sp, hp float64; \n'
-        codigo += 'var ' + ', '.join(self.temporales) + ' float64; \n\n'
+        if len(self.temporales) > 0:
+            codigo += 'var ' + ', '.join(self.temporales) + ' float64; \n'
+        codigo += '\n'
+
 
         for funcion in self.funciones:
             codigo += funcion.getCode() + '\n'
@@ -34,11 +37,6 @@ class Optimizador:
 
     def optimizarMirilla(self):
         for funcion in self.funciones:
-            for i, ins in enumerate(funcion.listaIns):
-                if type(ins) is Goto and i + 1 < len(funcion.listaIns):
-                    if type(funcion.listaIns[i + 1]) is Goto:
-                        funcion.listaIns[i + 1].is_deleted = True
-
             tamano_mirilla = 20
             if tamano_mirilla > len(funcion.listaIns):
                 tamano_mirilla = len(funcion.listaIns)
@@ -48,11 +46,11 @@ class Optimizador:
                 regla_aplicada = False
                 indice_sentencia = 0
                 while indice_sentencia + tamano_mirilla <= len(funcion.listaIns):
-                    regla_aplicada = regla_aplicada or self.mirillaRelga1(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla])
-                    regla_aplicada = regla_aplicada or self.mirillaRegla2(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla])
+                    regla_aplicada = regla_aplicada or self.mirillaRelga1(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla], funcion.listaIns)
+                    regla_aplicada = regla_aplicada or self.mirillaRegla2(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla], funcion.listaIns)
                     regla_aplicada = regla_aplicada or self.mirillaRegla3(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla], funcion.listaIns)
-                    regla_aplicada = regla_aplicada or self.mirillaRegla4(funcion.listaIns[indice_sentencia: indice_sentencia + tamano_mirilla], funcion.listaIns)
-                    regla_aplicada = regla_aplicada or self.mirillaRegla5(funcion.listaIns[indice_sentencia: indice_sentencia + tamano_mirilla], funcion.listaIns)
+                    regla_aplicada = regla_aplicada or self.mirillaRegla4(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla], funcion.listaIns)
+                    regla_aplicada = regla_aplicada or self.mirillaRegla5(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla], funcion.listaIns)
                     regla_aplicada = regla_aplicada or self.mirillaRegla6(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla])
                     regla_aplicada = regla_aplicada or self.mirillaRegla7(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla])
                     regla_aplicada = regla_aplicada or self.mirillaRegla8(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla])
@@ -60,7 +58,7 @@ class Optimizador:
 
                 # si no hubieron optimizaciones en la pasada se aumenta el tamaño de la mirilla
                 if not regla_aplicada:
-                    tamano_mirilla  += 20
+                    tamano_mirilla += 20
 
             for i, ins in enumerate(funcion.listaIns):
                 if type(ins) is Goto and i + 1 < len(funcion.listaIns):
@@ -75,7 +73,7 @@ class Optimizador:
                         ins.is_deleted = True
 
 
-    def mirillaRelga1(self, listaIns):
+    def mirillaRelga1(self, listaIns, ins_completas):
         regla_aplicada = False
         for i, ins in enumerate(listaIns):
             if type(ins) is DecVar and not ins.is_deleted:
@@ -86,7 +84,7 @@ class Optimizador:
                             ins_siguiente.destino ==  ins.expresion.getCode()):
                             codigo_original = self.get_codigo_bloque(listaIns[i : i + j + 2])
                             regla_aplicada = ins_siguiente.is_deleted = True
-                            codigo_optimizado = self.get_codigo_bloque(listaIns[i : i + j + 2])
+                            codigo_optimizado = self.get_codigo_bloque(listaIns[i : i + j + 2], True)
                             agregarOptimizacion(
                                 "Mirilla",
                                 "Regla 1",
@@ -94,12 +92,12 @@ class Optimizador:
                                 codigo_optimizado,
                                 listaIns[0].linea
                             )
-                    elif type(ins_siguiente) is Etiqueta:
+                    elif type(ins_siguiente) is Etiqueta and not ins_siguiente.is_deleted:
                         break
         return regla_aplicada
 
 
-    def mirillaRegla2(self, listaIns):
+    def mirillaRegla2(self, listaIns, ins_completas):
         regla_aplicada = False
         for i, ins in enumerate(listaIns):
             if type(ins) is Goto and not ins.is_deleted:
@@ -112,7 +110,7 @@ class Optimizador:
                             for k in range(j):
                                 lista_siguientes_ins[k].is_deleted = True
                             regla_aplicada = True
-                            codigo_optimizado = self.get_codigo_bloque(listaIns[i : i + j + 2])
+                            codigo_optimizado = self.get_codigo_bloque(listaIns[i : i + j + 2], True)
                             agregarOptimizacion(
                                 "Mirilla",
                                 "Regla 2",
@@ -120,9 +118,9 @@ class Optimizador:
                                 codigo_optimizado,
                                 listaIns[0].linea
                             )
-
                         else:
-                            break
+                            if f'goto {ins_siguiente.id};' in self.get_codigo_bloque(ins_completas):
+                                break
         return regla_aplicada
 
 
@@ -139,10 +137,10 @@ class Optimizador:
                             ins.exp.tipoOp = ins.exp.get_tipo_op_contrario()
                             ins.etiqueta = ins_siguiente.etiqueta
                             ins_siguiente.is_deleted = True
-                            if f'goto {listaIns[i + 2].id}' not in self.get_codigo_bloque(ins_completas):
+                            if f'goto {listaIns[i + 2].id};' not in self.get_codigo_bloque(ins_completas):
                                 listaIns[i + 2].is_deleted = True
                             regla_aplicada =  True
-                            codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + 3])
+                            codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + 3], True)
                             agregarOptimizacion(
                                 "Mirilla",
                                 "Regla 3",
@@ -195,7 +193,7 @@ class Optimizador:
                                 regla_aplicada = True
                                 if f'goto {ins_siguiente.id};' not in self.get_codigo_bloque(insFuncion):
                                     ins_siguiente.is_deleted = ins_siguiente_siguiente.is_deleted = True
-                                codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + j + 2])
+                                codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + j + 2], True)
                                 agregarOptimizacion(
                                     "Mirilla",
                                     "Regla 5",
@@ -212,7 +210,7 @@ class Optimizador:
                 if ins.expresion.desitno_in_operands(ins.destino) and ins.expresion.is_neutral_op():
                     codigo_original = self.get_codigo_bloque(listaIns[i : i + 1])
                     regla_aplicada = ins.is_deleted = True
-                    codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + 1])
+                    codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + 1], True)
                     agregarOptimizacion(
                         "Mirilla",
                         "Regla 6",
@@ -230,7 +228,7 @@ class Optimizador:
                 if not ins.expresion.desitno_in_operands(ins.destino) and ins.expresion.is_neutral_op():
                     codigo_original = self.get_codigo_bloque(listaIns[i: i + 1])
                     ins.expresion = ins.expresion.get_no_neutral_op()
-                    codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + 1])
+                    codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + 1], True)
                     regla_aplicada = True
                     agregarOptimizacion(
                         "Mirilla",
@@ -251,7 +249,7 @@ class Optimizador:
                 if cheper_exp is not None:
                     ins.expresion = cheper_exp
                     regla_aplicada = True
-                    codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + 1])
+                    codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + 1], True)
                     agregarOptimizacion(
                         "Mirilla",
                         "Regla 8",
@@ -262,9 +260,9 @@ class Optimizador:
         return regla_aplicada
 
 
-    def get_codigo_bloque(self, listaIns):
+    def get_codigo_bloque(self, listaIns, incluir_eliminadas = False):
         codigo = ""
         for ins in listaIns:
-            if not ins.is_deleted:
+            if not ins.is_deleted or incluir_eliminadas:
                 codigo += ins.getCode()
         return codigo

@@ -40,13 +40,14 @@ def getCst():
 
 @app.route("/compilar3d", methods=['POST'])
 def compilar3d():
-    limpiarReporteOptimizacion()
+    limpiarTablaErrores()
     texto = request.json['entrada']
     return jsonify(generarCodigo3d(texto))
 
 
 @app.route("/optimizarMirilla", methods=['POST'])
 def optimizarMirilla():
+    limpiarReporteOptimizacion()
     texto = request.json['entrada']
     optimizador = parseCode3d(texto)
     optimizador.optimizarMirilla()

@@ -221,6 +221,7 @@ def p_lista_ids(p):
     if len(p) == 4:
         p[1].append(p[3])
         p[0] = p[1]
+        p[0] = list(filter(lambda id: id != 'sp' and id != "hp", p[0]))
     else:
         p[0] = [p[1]]
 

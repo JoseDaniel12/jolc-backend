@@ -52,7 +52,11 @@ class OpRelacional(Expresion):
         simboloOpDer = self.opDer.compilar(ambito, sectionCode3d)
         if simboloOpIzq is None or simboloOpDer is None:
             return None
-        elif self.tipo == TipoExpRelacional.MAYORQUE:
+        elif TipoDato.BOOLEANO in [simboloOpIzq.tipo, simboloOpDer.tipo]:
+            agregarError(Error(f"Las operaciones relaciones no aceptan Booleanos", self.linea, self.columna))
+            return None
+
+        if self.tipo == TipoExpRelacional.MAYORQUE:
             GenCod3d.addCodigo3d(f'if ({simboloOpIzq.valor} > {simboloOpDer.valor}) {{ goto {self.lbl_true}; }} \n', sectionCode3d)
         elif self.tipo == TipoExpRelacional.MENORQUE:
             GenCod3d.addCodigo3d(f'if ({simboloOpIzq.valor} < {simboloOpDer.valor}) {{ goto {self.lbl_true}; }} \n', sectionCode3d)
@@ -61,8 +65,10 @@ class OpRelacional(Expresion):
         elif self.tipo == TipoExpRelacional.MENORIGUAL:
             GenCod3d.addCodigo3d(f'if ({simboloOpIzq.valor} <= {simboloOpDer.valor}) {{ goto {self.lbl_true}; }} \n', sectionCode3d)
         elif self.tipo == TipoExpRelacional.IGUALIGUAL:
+            # en caso de ser una igualdad entre cadaneas
             if ((simboloOpIzq.tipo == TipoDato.CADENA or simboloOpIzq.tipo == TipoDato.CARACTER) and
-                  (simboloOpDer.tipo == TipoDato.CADENA or simboloOpDer.tipo == TipoDato.CARACTER)):
+                (simboloOpDer.tipo == TipoDato.CADENA or simboloOpDer.tipo == TipoDato.CARACTER)):
+
                 GenCod3d.addCompareStrings()
                 tmp_paramPosStack = GenCod3d.addTemporal()
                 tmp_retorno = GenCod3d.addTemporal()
