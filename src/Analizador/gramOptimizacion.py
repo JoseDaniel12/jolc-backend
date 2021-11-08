@@ -176,6 +176,7 @@ def p_start(p):
     start   : PACKAGE IDENTIFICADOR IMPORT PARENTESIS_A lista_imports PARENTESIS_C declaraciones lista_funciones
     '''
     p[0] = Optimizador(p[5], p[7], p[8])
+    p.lexer.lineno = 1
 
 
 def p_lista_imports(p):
