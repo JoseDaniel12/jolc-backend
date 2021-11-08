@@ -54,7 +54,8 @@ def optimizarMirilla():
 
 @app.route("/reporteOptimizacion", methods=['POST'])
 def reporteOptimizacion():
-    return jsonify(getReporteOptimizacionAsSerializable())
+    reporte_optimizacion = getReporteOptimizacionAsSerializable()
+    return jsonify(reporte_optimizacion)
 
 
 @app.route("/")
