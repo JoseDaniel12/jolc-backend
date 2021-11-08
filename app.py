@@ -20,9 +20,7 @@ def getSalida():
 
 @app.route("/simbolos", methods=['POST'])
 def getSimbolos():
-    texto = request.json['entrada']
-    resCompilado = parse(texto)
-    return jsonify(resCompilado['tablaSimbolos'])
+    return jsonify(getTablaSimbolosAsSerializable())
 
 
 @app.route("/errores", methods=['POST'])
