@@ -47,9 +47,9 @@ class Optimizador:
                 indice_sentencia = 0
                 while indice_sentencia + tamano_mirilla <= len(funcion.listaIns):
                     regla_aplicada = regla_aplicada or self.mirillaRelga1(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla], funcion.listaIns)
+                    regla_aplicada = regla_aplicada or self.mirillaRegla4(funcion.listaIns[indice_sentencia: indice_sentencia + tamano_mirilla], funcion.listaIns)
                     regla_aplicada = regla_aplicada or self.mirillaRegla2(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla], funcion.listaIns)
                     regla_aplicada = regla_aplicada or self.mirillaRegla3(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla], funcion.listaIns)
-                    regla_aplicada = regla_aplicada or self.mirillaRegla4(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla], funcion.listaIns)
                     regla_aplicada = regla_aplicada or self.mirillaRegla5(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla], funcion.listaIns)
                     regla_aplicada = regla_aplicada or self.mirillaRegla6(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla])
                     regla_aplicada = regla_aplicada or self.mirillaRegla7(funcion.listaIns[indice_sentencia : indice_sentencia + tamano_mirilla])
