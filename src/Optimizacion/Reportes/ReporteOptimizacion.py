@@ -27,9 +27,9 @@ def agregarOptimizacion(tipo, regla, codOriginal, codOptimizado, linea):
 
 def getReporteOptimizacionAsSerializable():
     res = []
-    global optimizaciones
     for optimizacion in optimizaciones:
         res.append(optimizacion.getAsSerializable())
+    print(res)
     return res
 
 
