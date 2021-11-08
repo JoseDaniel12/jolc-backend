@@ -20,12 +20,14 @@ def getSalida():
 
 @app.route("/simbolos", methods=['POST'])
 def getSimbolos():
-    return jsonify(getTablaSimbolosAsSerializable())
+    tabla_simbolos = getTablaSimbolosAsSerializable()
+    return jsonify(tabla_simbolos)
 
 
 @app.route("/errores", methods=['POST'])
 def getErrores():
-    return jsonify(getTablaErroresAsJson())
+    tabla_errores = getTablaErroresAsJson()
+    return jsonify(tabla_errores)
 
 
 @app.route("/cst", methods=['POST'])
