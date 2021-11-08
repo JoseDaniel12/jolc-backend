@@ -27,9 +27,7 @@ def getSimbolos():
 
 @app.route("/errores", methods=['POST'])
 def getErrores():
-    texto = request.json['entrada']
-    resCompilado = parse(texto)
-    return jsonify(resCompilado['tablaErrores'])
+    return jsonify(getTablaErroresAsJson())
 
 
 @app.route("/cst", methods=['POST'])
