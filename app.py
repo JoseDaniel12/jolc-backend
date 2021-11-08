@@ -8,7 +8,7 @@ from src.Optimizacion.Reportes.ReporteOptimizacion import *
 
 sys.setrecursionlimit(10000000)
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
 
 
 @app.route("/compilar", methods=['POST'])
