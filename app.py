@@ -45,16 +45,16 @@ def compilar3d():
 
 @app.route("/optimizarMirilla", methods=['POST'])
 def optimizarMirilla():
-    ReporteOptimizacion.limpiarReporteOptimizacion()
+    limpiarReporteOptimizacion()
     texto = request.json['entrada']
     optimizador = parseCode3d(texto)
     optimizador.optimizarMirilla()
     return jsonify(optimizador.getCode())
 
 
-@app.route("/reporteOptimizacion", methods=['POST'])
+@app.route("/reporteOptimizacion")
 def reporteOptimizacion():
-    reporte_optimizacion = ReporteOptimizacion.getReporteOptimizacionAsSerializable()
+    reporte_optimizacion = getReporteOptimizacionAsSerializable()
     return jsonify(reporte_optimizacion)
 
 

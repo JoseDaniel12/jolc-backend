@@ -85,7 +85,7 @@ class Optimizador:
                             codigo_original = self.get_codigo_bloque(listaIns[i : i + j + 2])
                             regla_aplicada = ins_siguiente.is_deleted = True
                             codigo_optimizado = self.get_codigo_bloque(listaIns[i : i + j + 2], True)
-                            ReporteOptimizacion.agregarOptimizacion(
+                            agregarOptimizacion(
                                 "Mirilla",
                                 "Regla 1",
                                 codigo_original,
@@ -111,7 +111,7 @@ class Optimizador:
                                 lista_siguientes_ins[k].is_deleted = True
                             regla_aplicada = True
                             codigo_optimizado = self.get_codigo_bloque(listaIns[i : i + j + 2], True)
-                            ReporteOptimizacion.agregarOptimizacion(
+                            agregarOptimizacion(
                                 "Mirilla",
                                 "Regla 2",
                                 codigo_original,
@@ -141,7 +141,7 @@ class Optimizador:
                                 listaIns[i + 2].is_deleted = True
                             regla_aplicada =  True
                             codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + 3], True)
-                            ReporteOptimizacion.agregarOptimizacion(
+                            agregarOptimizacion(
                                 "Mirilla",
                                 "Regla 3",
                                 codigo_original,
@@ -168,7 +168,7 @@ class Optimizador:
                                     ins_siguiente_siguiente.is_deleted = True
                                 regla_aplicada = True
                                 codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + j + 3])
-                                ReporteOptimizacion.agregarOptimizacion(
+                                agregarOptimizacion(
                                     "Mirilla",
                                     "Regla 4",
                                     codigo_original,
@@ -194,7 +194,7 @@ class Optimizador:
                                 if f'goto {ins_siguiente.id};' not in self.get_codigo_bloque(insFuncion):
                                     ins_siguiente.is_deleted = ins_siguiente_siguiente.is_deleted = True
                                 codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + j + 2], True)
-                                ReporteOptimizacion.agregarOptimizacion(
+                                agregarOptimizacion(
                                     "Mirilla",
                                     "Regla 5",
                                     codigo_original,
@@ -211,7 +211,7 @@ class Optimizador:
                     codigo_original = self.get_codigo_bloque(listaIns[i : i + 1])
                     regla_aplicada = ins.is_deleted = True
                     codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + 1], True)
-                    ReporteOptimizacion.agregarOptimizacion(
+                    agregarOptimizacion(
                         "Mirilla",
                         "Regla 6",
                         codigo_original,
@@ -230,7 +230,7 @@ class Optimizador:
                     ins.expresion = ins.expresion.get_no_neutral_op()
                     codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + 1], True)
                     regla_aplicada = True
-                    ReporteOptimizacion.agregarOptimizacion(
+                    agregarOptimizacion(
                         "Mirilla",
                         "Regla 7",
                         codigo_original,
@@ -250,7 +250,7 @@ class Optimizador:
                     ins.expresion = cheper_exp
                     regla_aplicada = True
                     codigo_optimizado = self.get_codigo_bloque(listaIns[i: i + 1], True)
-                    ReporteOptimizacion.agregarOptimizacion(
+                    agregarOptimizacion(
                         "Mirilla",
                         "Regla 8",
                         codigo_original,
