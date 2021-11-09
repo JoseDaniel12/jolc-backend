@@ -1,6 +1,25 @@
 import uuid
 
-optimizaciones = []
+
+class ReporteOptimizacion:
+        optimizaciones = []
+
+        @staticmethod
+        def agregarOptimizacion(tipo, regla, codOriginal, codOptimizado, linea):
+            ReporteOptimizacion.optimizaciones.append(Optimizacion(tipo, regla, codOriginal, codOptimizado, linea))
+
+        @staticmethod
+        def getReporteOptimizacionAsSerializable():
+            res = []
+            for optimizacion in ReporteOptimizacion.optimizaciones:
+                res.append(optimizacion.getAsSerializable())
+            print(res)
+            return res
+
+        @staticmethod
+        def limpiarReporteOptimizacion():
+            ReporteOptimizacion.optimizaciones.clear()
+
 
 class Optimizacion:
     def __init__(self, tipo, regla, codOriginal, codOptimizado, linea):
@@ -19,19 +38,3 @@ class Optimizacion:
             'codOptimizado': self.codOptimizado,
             'linea': self.linea
         }
-
-
-def agregarOptimizacion(tipo, regla, codOriginal, codOptimizado, linea):
-    optimizaciones.append(Optimizacion(tipo, regla, codOriginal, codOptimizado, linea))
-
-
-def getReporteOptimizacionAsSerializable():
-    res = []
-    for optimizacion in optimizaciones:
-        res.append(optimizacion.getAsSerializable())
-    print(res)
-    return res
-
-
-def limpiarReporteOptimizacion():
-    optimizaciones.clear()
