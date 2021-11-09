@@ -49,7 +49,11 @@ def optimizarMirilla():
     texto = request.json['entrada']
     optimizador = parseCode3d(texto)
     optimizador.optimizarMirilla()
-    return jsonify(optimizador.getCode())
+    res = {
+        'codigo': optimizador.getCode(),
+        'optimizaciones': getReporteOptimizacionAsSerializable(),
+    }
+    return jsonify(res)
 
 
 @app.route("/reporteOptimizacion")
