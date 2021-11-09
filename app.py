@@ -15,19 +15,12 @@ CORS(app)
 def getSalida():
     texto = request.json['entrada']
     resCompilado = parse(texto)
-    return jsonify(resCompilado['textoSalida'])
-
-
-@app.route("/simbolos", methods=['POST'])
-def getSimbolos():
-    tabla_simbolos = getTablaSimbolosAsSerializable()
-    return jsonify(tabla_simbolos)
-
-
-@app.route("/errores", methods=['POST'])
-def getErrores():
-    tabla_errores = getTablaErroresAsJson()
-    return jsonify(tabla_errores)
+    res = {
+        'codigo': resCompilado['textoSalida'],
+        'simbolos': getTablaSimbolosAsSerializable(),
+        'errores': getTablaErroresAsJson(),
+    }
+    return jsonify(res)
 
 
 @app.route("/cst", methods=['POST'])
@@ -40,7 +33,12 @@ def getCst():
 def compilar3d():
     limpiarTablaErrores()
     texto = request.json['entrada']
-    return jsonify(generarCodigo3d(texto))
+    res = {
+        'codigo3d': generarCodigo3d(texto),
+        'simbolos': getTablaSimbolosAsSerializable(),
+        'errores': getTablaErroresAsJson(),
+    }
+    return jsonify(res)
 
 
 @app.route("/optimizarMirilla", methods=['POST'])
@@ -50,16 +48,10 @@ def optimizarMirilla():
     optimizador = parseCode3d(texto)
     optimizador.optimizarMirilla()
     res = {
-        'codigo': optimizador.getCode(),
-        'optimizaciones': getReporteOptimizacionAsSerializable(),
+        'codigo3d': optimizador.getCode(),
+        'optimizaciones': getReporteOptimizacionAsSerializable()
     }
     return jsonify(res)
-
-
-@app.route("/reporteOptimizacion")
-def reporteOptimizacion():
-    reporte_optimizacion = getReporteOptimizacionAsSerializable()
-    return jsonify(reporte_optimizacion)
 
 
 @app.route("/")
