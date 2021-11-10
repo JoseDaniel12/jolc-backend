@@ -6,6 +6,7 @@ class SentenciaC3d(ABC):
         self.linea = linea
         self.haveInt = False
         self.is_deleted = False
+        self.es_lider = False
 
     @abstractmethod
     def getCode(self):

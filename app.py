@@ -54,6 +54,33 @@ def optimizarMirilla():
     return jsonify(res)
 
 
+@app.route("/optimizarBloques", methods=['POST'])
+def optimizarBloques():
+    limpiarReporteOptimizacion()
+    texto = request.json['entrada']
+    optimizador = parseCode3d(texto)
+    optimizador.optimizar_bloques()
+    res = {
+        'codigo3d': optimizador.getCode(),
+        'optimizaciones': getReporteOptimizacionAsSerializable()
+    }
+    return jsonify(res)
+
+
+@app.route("/mirillaBloques", methods=['POST'])
+def mirillaBloques():
+    limpiarReporteOptimizacion()
+    texto = request.json['entrada']
+    optimizador = parseCode3d(texto)
+    optimizador.optimizarMirilla()
+    optimizador.optimizar_bloques()
+    res = {
+        'codigo3d': optimizador.getCode(),
+        'optimizaciones': getReporteOptimizacionAsSerializable()
+    }
+    return jsonify(res)
+
+
 @app.route("/")
 def pruebas():
     f = open("src/Analizador/entrada.txt", "r")

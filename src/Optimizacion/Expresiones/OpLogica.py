@@ -10,8 +10,8 @@ class OpLogica(SentenciaC3d):
 
     def getCode(self):
         if self.tipoOp == TipoExpLogica.AND:
-            return f'{self.opIzq.getCode()} && {self.opDer.getCode}'
+            return f'{self.opIzq.getCode()} && {self.opDer.getCode()}'
         elif self.tipoOp == TipoExpLogica.OR:
-            return f'{self.opIzq.getCode()} || {self.opDer.getCode}'
+            return f'{self.opIzq.getCode()} || {self.opDer.getCode()}'
         elif self.tipoOp == TipoExpLogica.NOT:
             return f'!{self.opIzq.getCode()}'

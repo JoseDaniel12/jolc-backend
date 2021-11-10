@@ -1,5 +1,4 @@
 from src.Optimizacion.SentenciaC3d import *
-from src.Tipos.TipoDato import *
 
 class AtomiExp(SentenciaC3d):
     def __init__(self, valor, tipo, linea):
