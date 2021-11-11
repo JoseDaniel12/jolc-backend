@@ -30,7 +30,10 @@ class GenCod3d(object):
         codigo = getTablaErroresAsComents()
         codigo += "package main \n"
         codigo += "import ( \n"
-        codigo += " \t\"fmt\";  \n"
+        codigo += " \t\"fmt\""
+        if len(GenCod3d.imports) > 0:
+            codigo += ";"
+        codigo += "\n"
         codigo += GenCod3d.imports
         codigo += ") \n\n"
         codigo += "var stack[1000000]float64; \n"
