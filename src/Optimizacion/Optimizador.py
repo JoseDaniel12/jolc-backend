@@ -20,8 +20,11 @@ class Optimizador:
         codigo = 'package main \n'
 
         codigo += 'import ( \n'
-        for paquete in self.paquetes:
-            codigo += '\t\"' + paquete + '\"\n'
+        for i, paquete in enumerate(self.paquetes):
+            codigo += '\t\"' + paquete + "\""
+            if i != len(self.paquetes) - 1:
+                codigo += ";"
+            codigo += '\n'
         codigo += ') \n\n'
 
         codigo += 'var stack[1000000]float64; \n'

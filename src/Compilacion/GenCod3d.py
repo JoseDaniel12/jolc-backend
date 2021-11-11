@@ -30,7 +30,7 @@ class GenCod3d(object):
         codigo = getTablaErroresAsComents()
         codigo += "package main \n"
         codigo += "import ( \n"
-        codigo += " \t\"fmt\"\n"
+        codigo += " \t\"fmt\";  \n"
         codigo += GenCod3d.imports
         codigo += ") \n\n"
         codigo += "var stack[1000000]float64; \n"
@@ -403,3 +403,54 @@ class GenCod3d(object):
             GenCod3d.funcNativas3d += codigo
 
         return tmp_newStrHeapPointer
+
+    @staticmethod
+    def addToString():
+        l1 = GenCod3d.addLabel()
+        l2 = GenCod3d.addLabel()
+        l3 = GenCod3d.addLabel()
+        t2 = GenCod3d.addTemporal()
+        t4 = GenCod3d.addTemporal()
+        t3 = GenCod3d.addTemporal()
+        t5 = GenCod3d.addTemporal()
+        t6 = GenCod3d.addTemporal()
+
+        codigo = '\n' + "func toString() { \n"
+        codigo += '\t' + f'heap[int(hp)] = -1; \n'
+        codigo += '\t' + f'hp = hp + 1; \n'
+        codigo += '\t' + f'{t2} = sp + 1; \n'
+        codigo += '\t' + f'{t4} = stack[int({t2})]; \n'
+        codigo += '\t' + f'if ({t4} >= 0) {{ goto {l1}; }} \n'
+        codigo += '\t' + f'{t4} = 0 - {t4}; \n'
+        codigo += '\t' + f'{l1}: \n'
+        codigo += '\t' + f'{t3} = math.Mod({t4}, 10); \n'
+        codigo += '\t' + f'{t3} = {t3} + 48; \n'
+        codigo += '\t' + f'{t4} = {t4} / 10; \n'
+        codigo += '\t' + f'{t6} = math.Mod({t4}, 1); \n'
+        codigo += '\t' + f'{t4} = {t4} - {t6}; \n'
+        codigo += '\t' + f'heap[int(hp)] = {t3}; \n'
+        codigo += '\t' + f'hp = hp + 1; \n'
+        codigo += '\t' + f'if ({t4} != 0)  {{ goto {l1}; }} \n'
+        codigo += '\t' + f'{t5} = hp; \n'
+        codigo += '\t' + f'{t2} = sp + 1; \n'
+        codigo += '\t' + f'{t4} = stack[int({t2})]; \n'
+        codigo += '\t' + f'if ({t4} >= 0) {{ goto {l2}; }} \n'
+        codigo += '\t' + f'heap[int(hp)] = 45; \n'
+        codigo += '\t' + f'hp = hp + 1; \n'
+        codigo += '\t' + f'{l2}: \n'
+        codigo += '\t' + f'{t2} = {t5}; \n'
+        codigo += '\t' + f'{l3}: \n'
+        codigo += '\t' + f'{t2} = {t2} - 1; \n'
+        codigo += '\t' + f'{t3} = heap[int({t2})]; \n'
+        codigo += '\t' + f'heap[int(hp)] = {t3}; \n'
+        codigo += '\t' + f'hp = hp + 1; \n'
+        codigo += '\t' + f'if ({t3} != -1) {{ goto {l3}; }} \n'
+        codigo += '\t' + f'stack[int(sp)] = {t5}; \n'
+        codigo += '\t' + f'return; \n'
+        codigo += '} \n'
+
+        if "toString" not in GenCod3d.nativasAgregadas:
+            GenCod3d.nativasAgregadas.append("toString")
+            GenCod3d.funcNativas3d += codigo
+
+        return t5

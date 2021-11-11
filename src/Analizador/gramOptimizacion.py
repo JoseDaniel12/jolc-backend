@@ -181,11 +181,11 @@ def p_start(p):
 
 def p_lista_imports(p):
     '''
-    lista_imports   : lista_imports CADENA
+    lista_imports   : lista_imports PT_Y_COMA CADENA
                     | CADENA
     '''
-    if len(p) == 3:
-        p[1].append(p[2])
+    if len(p) == 4:
+        p[1].append(p[3])
         p[0] = p[1]
     else:
         p[0] = [p[1]]
