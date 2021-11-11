@@ -1,5 +1,6 @@
 from src.Tipos.TipoExpArtimetica import *
 from src.Optimizacion.Expresiones.AtomicExp import *
+from src.Tipos.TipoDato import *
 
 class OpAritmetica(SentenciaC3d):
     def __init__(self, opIzq, opDer, tipoOp, linea):
