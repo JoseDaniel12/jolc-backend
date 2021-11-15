@@ -39,8 +39,6 @@ class While(Instruction):
     def compilar(self, ambito, sectionCode3d):
         resWhile = ResIns()
 
-        nuevoAmbito = Ambito(ambito, "While")
-        nuevoAmbito.size += ambito.size
         lbl_inicioWhile = GenCod3d.addLabel()
         lbl_instruccionesWhile = GenCod3d.addLabel()
         lbl_finWhile = GenCod3d.addLabel()
@@ -53,6 +51,7 @@ class While(Instruction):
         GenCod3d.addCodigo3d(f'{lbl_instruccionesWhile}: \n', sectionCode3d)
         #compilo mis instrucciones
         nuevoAmbito = Ambito(ambito, "While")
+        nuevoAmbito.size += ambito.size
         for ins in self.listaIns:
             ins.lbl_return = self.lbl_return
             ins.lbl_continue = lbl_inicioWhile
