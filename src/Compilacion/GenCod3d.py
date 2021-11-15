@@ -287,7 +287,7 @@ class GenCod3d(object):
         codigo += '\t' + f'{tmp_charUno} = heap[int({tmp_posHeapCharUno})]; \n'
         codigo += '\t' + f'{tmp_charDos} = heap[int({tmp_posHeapCharDos})]; \n'
         codigo += '\t' + f'if ({tmp_charUno} != {tmp_charDos}) {{ goto {lbl_dengarIgualdad}; }} \n'
-        codigo += '\t' + f'if ({tmp_charUno} != -1) {{ goto {lbl_validarIgualdad}; }} \n'
+        codigo += '\t' + f'if ({tmp_charUno} == -1) {{ goto {lbl_validarIgualdad}; }} \n'
         codigo += '\t' + f'{tmp_posHeapCharUno} = {tmp_posHeapCharUno} + 1; \n'
         codigo += '\t' + f'{tmp_posHeapCharDos} = {tmp_posHeapCharDos} + 1; \n'
         codigo += '\t' + f'goto {lbl_repetir}; \n'
