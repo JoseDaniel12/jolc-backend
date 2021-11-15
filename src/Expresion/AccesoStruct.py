@@ -28,7 +28,9 @@ class AccesosStruct(Expresion):
     def compilar(self, ambito, sectionCode3d):
         res = ResExp(None, None)
         simboloStruct = self.expStruct.compilar(ambito, sectionCode3d)
-        structMolde = ambito.getVariable(simboloStruct.molde.id)
+        if simboloStruct is None:
+            agregarError(Error(f"No se puede acceder a un tipo que no sea Struct", self.linea,self.columna))
+            return None
 
         # marco el temporal del struct como utilizado
         GenCod3d.limpiar_temps_usados(simboloStruct.valor)
@@ -38,11 +40,11 @@ class AccesosStruct(Expresion):
         tmp_prop = GenCod3d.addTemporal()
         indice_prop_desada = -1
 
-        for i, prop in enumerate(structMolde.propiedades):
+        for i, prop in enumerate(simboloStruct.molde.propiedades):
             if prop.id == self.idProp:
                 indice_prop_desada = i + 1
                 res.tipo = prop.tipo
-                res.molde = ambito.getVariable(prop.tipoStruct)
+                res.molde = ambito.getVariable(prop.tipoStruct) # ERROR ERROR ERROR ERROR
                 res.mapeo_tipos_arreglo = prop.mapeo_tipos_arreglo
                 break
 

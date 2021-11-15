@@ -563,8 +563,8 @@ def p_tipo(p):
             | Bool
             | Char
             | String
-            | IDENTIFICADOR
             | tipo_vector
+            | IDENTIFICADOR
     '''
     if p[1] == 'Nothing':
         p[0] = TipoDato.NONE
@@ -737,9 +737,8 @@ def p_parametro(p):
     global mapeo_tipos_arreglo
     if len(p) == 4:
         miParametro = Parametro(p[1], p[3], p.lineno(1), getColumna(p.lexpos(1)))
-        if p[3] == TipoDato.STRUCT:
-            miParametro.tipoStruct = tipoStruct
-        elif p[3] == TipoDato.ARREGLO:
+        miParametro.tipoStruct = tipoStruct
+        if p[3] == TipoDato.ARREGLO:
             mapeo_tipos_arreglo.reverse()
             mapeo_tipos_arreglo.pop()
             miParametro.mapeo_tipos_arreglo = mapeo_tipos_arreglo[:]

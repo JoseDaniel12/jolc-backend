@@ -81,9 +81,8 @@ class AccesoArreglo(Expresion):
             res.lbl_false = GenCod3d.addLabel()
             GenCod3d.addCodigo3d(f'if ({tmp_elemento} == 1) {{ goto {res.lbl_true}; }} \n', sectionCode3d)
             GenCod3d.addCodigo3d(f'goto {res.lbl_false}; \n', sectionCode3d)
-        if res.tipo == TipoDato.STRUCT:
-            res.molde = simboloArreglo.molde
 
+        res.molde = simboloArreglo.molde
         GenCod3d.addCodigo3d(f'goto {lbl_continuar}; \n', sectionCode3d)
 
         GenCod3d.addCodigo3d(f'{lbl_error}: \n', sectionCode3d)
