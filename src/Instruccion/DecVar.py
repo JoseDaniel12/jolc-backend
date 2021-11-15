@@ -61,12 +61,34 @@ class DecVar(Instruction):
                     existente = ambito.getVariable(self.id)
                     existente.valor = simboloExp.valor
                     existente.tipo  = simboloExp.tipo
+
                     if existente.ambito.nombre == 'GLOBAL':
-                        GenCod3d.addCodigo3d(f'stack[{existente.posAmbito}] = {simboloExp.valor}; \n\n', sectionCode3d)
+                        if existente.tipo == TipoDato.BOOLEANO:
+                            lbl_continuar = GenCod3d.addLabel()
+                            GenCod3d.addCodigo3d(f'{simboloExp.lbl_true}: \n', sectionCode3d)
+                            GenCod3d.addCodigo3d(f'stack[{existente.posAmbito}] = 1; \n', sectionCode3d)
+                            GenCod3d.addCodigo3d(f'goto {lbl_continuar}; \n', sectionCode3d)
+                            GenCod3d.addCodigo3d(f'{simboloExp.lbl_false}: \n', sectionCode3d)
+                            GenCod3d.addCodigo3d(f'stack[{existente.posAmbito}] = 0; \n', sectionCode3d)
+                            GenCod3d.addCodigo3d(f'{lbl_continuar}: \n\n', sectionCode3d)
+                        else:
+                            GenCod3d.addCodigo3d(f'stack[{existente.posAmbito}] = {simboloExp.valor}; \n\n', sectionCode3d)
                     else:
-                        tmp_varPosStack = GenCod3d.addTemporal()
-                        GenCod3d.addCodigo3d(f'{tmp_varPosStack} = sp + {existente.posAmbito}; \n', sectionCode3d)
-                        GenCod3d.addCodigo3d(f'stack[int({tmp_varPosStack})] = {simboloExp.valor}; \n\n', sectionCode3d)
+                        if existente.tipo == TipoDato.BOOLEANO:
+                            lbl_continuar = GenCod3d.addLabel()
+                            tmp_varPosStack = GenCod3d.addTemporal()
+                            GenCod3d.addCodigo3d(f'{tmp_varPosStack} = sp + {existente.posAmbito}; \n', sectionCode3d)
+                            GenCod3d.addCodigo3d(f'{simboloExp.lbl_true}: \n', sectionCode3d)
+                            GenCod3d.addCodigo3d(f'sstack[int({tmp_varPosStack})] = 1; \n', sectionCode3d)
+                            GenCod3d.addCodigo3d(f'goto {lbl_continuar}; \n', sectionCode3d)
+                            GenCod3d.addCodigo3d(f'{simboloExp.lbl_false}: \n', sectionCode3d)
+                            GenCod3d.addCodigo3d(f'stack[int({tmp_varPosStack})] = 0; \n', sectionCode3d)
+                            GenCod3d.addCodigo3d(f'{lbl_continuar}: \n\n', sectionCode3d)
+
+                        else:
+                            tmp_varPosStack = GenCod3d.addTemporal()
+                            GenCod3d.addCodigo3d(f'{tmp_varPosStack} = sp + {existente.posAmbito}; \n', sectionCode3d)
+                            GenCod3d.addCodigo3d(f'stack[int({tmp_varPosStack})] = {simboloExp.valor}; \n\n', sectionCode3d)
                 else:
                     simbolo = SimboloVariable(self.id, simboloExp.valor, simboloExp.tipo, self.linea, self.columna)
 

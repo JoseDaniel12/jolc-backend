@@ -1,3 +1,6 @@
+# Archivos de calificaciones: https://github.com/ManuelMiranda99/JOLC (los de la segunda fase tienen errores de tipos o comas de mas y asi)
+# Proyecto del aux de typescript: https://manuelmiranda99.github.io/OLC2Proyecto2/#BCBCBC
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sys
