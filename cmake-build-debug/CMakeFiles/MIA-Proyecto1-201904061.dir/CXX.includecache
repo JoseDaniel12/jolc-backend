@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jose/Desktop/MIA-Proyecto1-201904061/src/comandos/Command.h
+vector
+-
+string
+-
+Param.h
+/home/jose/Desktop/MIA-Proyecto1-201904061/src/comandos/Param.h
+../structs.h
+/home/jose/Desktop/MIA-Proyecto1-201904061/src/structs.h
+
+/home/jose/Desktop/MIA-Proyecto1-201904061/src/comandos/Mkfs.cpp
+iostream
+-
+math.h
+-
+cstring
+-
+Mkfs.h
+/home/jose/Desktop/MIA-Proyecto1-201904061/src/comandos/Mkfs.h
+
+/home/jose/Desktop/MIA-Proyecto1-201904061/src/comandos/Mkfs.h
+string
+-
+Command.h
+/home/jose/Desktop/MIA-Proyecto1-201904061/src/comandos/Command.h
+../structs.h
+/home/jose/Desktop/MIA-Proyecto1-201904061/src/structs.h
+
+/home/jose/Desktop/MIA-Proyecto1-201904061/src/comandos/Param.h
+string
+-
+
+/home/jose/Desktop/MIA-Proyecto1-201904061/src/structs.h
+time.h
+-
+
